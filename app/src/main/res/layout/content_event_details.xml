@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.vishnu.mapapi.EventDetailsActivity"
+    tools:showIn="@layout/activity_event_details"
+    android:background="?attr/colorPrimaryDark">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Event Venue:"
+            android:id="@+id/eventVenue"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="#fff" />
+
+        <Space
+            android:layout_width="20px"
+            android:layout_height="20px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Starts at"
+            android:id="@+id/eventStartTime"
+            android:layout_below="@+id/eventVenue"
+            android:layout_centerHorizontal="true"
+            android:textColor="#fff" />
+
+        <Space
+            android:layout_width="20px"
+            android:layout_height="20px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/eventCluster"
+            android:layout_below="@+id/eventStartTime"
+            android:layout_centerHorizontal="true"
+            android:text="Cluster"
+            android:textColor="#fff" />
+
+        <Space
+            android:layout_width="20px"
+            android:layout_height="20px" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register"
+            android:id="@+id/button"
+            android:background="#FF00"
+            android:textColor="#9977FF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="256dp"
+                android:id="@+id/mapPreview"
+                android:layout_marginTop="16dp"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
