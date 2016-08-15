@@ -41,6 +41,7 @@
             android:id="@+id/eventStartTime"
             android:layout_below="@+id/eventVenue"
             android:layout_centerHorizontal="true"
+            android:gravity="center"
             android:textColor="#fff" />
 
         <Space

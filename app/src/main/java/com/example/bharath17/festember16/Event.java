@@ -2,265 +2,299 @@ package com.example.bharath17.festember16;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Event {
 
-    @SerializedName("event_id")
-    @Expose
-    private String eventId;
-    @SerializedName("event_name")
-    @Expose
-    private String eventName;
-    @SerializedName("event_start_time")
-    @Expose
-    private String eventStartTime;
-    @SerializedName("event_end_time")
-    @Expose
-    private String eventEndTime;
-    @SerializedName("event_venue")
-    @Expose
-    private String eventVenue;
-    @SerializedName("event_last_update_time")
-    @Expose
-    private String eventLastUpdateTime;
-    @SerializedName("event_loc_x")
-    @Expose
-    private String eventLocX;
-    @SerializedName("event_loc_y")
-    @Expose
-    private String eventLocY;
-    @SerializedName("event_max_limit")
-    @Expose
-    private String eventMaxLimit;
-    @SerializedName("event_cluster")
-    @Expose
-    private String eventCluster;
-    @SerializedName("event_date")
-    @Expose
-    private String eventDate;
+@SerializedName("event_id")
+@Expose
+private String eventId;
+@SerializedName("event_name")
+@Expose
+private String eventName;
+@SerializedName("event_start_time")
+@Expose
+private String eventStartTime;
+@SerializedName("event_end_time")
+@Expose
+private String eventEndTime;
+@SerializedName("event_venue")
+@Expose
+private String eventVenue;
+@SerializedName("event_last_update_time")
+@Expose
+private String eventLastUpdateTime;
+@SerializedName("event_loc_x")
+@Expose
+private String eventLocX;
+@SerializedName("event_loc_y")
+@Expose
+private String eventLocY;
+@SerializedName("event_max_limit")
+@Expose
+private String eventMaxLimit;
+@SerializedName("event_cluster")
+@Expose
+private String eventCluster;
+@SerializedName("event_date")
+@Expose
+private String eventDate;
 
-    /**
-     *
-     * @return
-     * The eventId
-     */
-    public String getEventId() {
-        return eventId;
-    }
+/**
+* No args constructor for use in serialization
+*
+*/
+public Event() {
+}
 
-    /**
-     *
-     * @param eventId
-     * The event_id
-     */
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
-    }
+/**
+*
+* @param eventMaxLimit
+* @param eventVenue
+* @param eventDate
+* @param eventLocX
+* @param eventLocY
+* @param eventId
+* @param eventLastUpdateTime
+* @param eventEndTime
+* @param eventStartTime
+* @param eventName
+* @param eventCluster
+*/
+public Event(String eventId, String eventName, String eventStartTime, String eventEndTime, String eventVenue, String eventLastUpdateTime, String eventLocX, String eventLocY, String eventMaxLimit, String eventCluster, String eventDate) {
+this.eventId = eventId;
+this.eventName = eventName;
+this.eventStartTime = eventStartTime;
+this.eventEndTime = eventEndTime;
+this.eventVenue = eventVenue;
+this.eventLastUpdateTime = eventLastUpdateTime;
+this.eventLocX = eventLocX;
+this.eventLocY = eventLocY;
+this.eventMaxLimit = eventMaxLimit;
+this.eventCluster = eventCluster;
+this.eventDate = eventDate;
+}
 
-    /**
-     *
-     * @return
-     * The eventName
-     */
-    public String getEventName() {
-        return eventName;
-    }
+/**
+*
+* @return
+* The eventId
+*/
+public String getEventId() {
+return eventId;
+}
 
-    /**
-     *
-     * @param eventName
-     * The event_name
-     */
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
-    }
+/**
+*
+* @param eventId
+* The event_id
+*/
+public void setEventId(String eventId) {
+this.eventId = eventId;
+}
 
-    /**
-     *
-     * @return
-     * The eventStartTime
-     */
-    public String getEventStartTime() {
-        return eventStartTime;
-    }
+/**
+*
+* @return
+* The eventName
+*/
+public String getEventName() {
+return eventName;
+}
 
-    /**
-     *
-     * @param eventStartTime
-     * The event_start_time
-     */
-    public void setEventStartTime(String eventStartTime) {
-        this.eventStartTime = eventStartTime;
-    }
+/**
+*
+* @param eventName
+* The event_name
+*/
+public void setEventName(String eventName) {
+this.eventName = eventName;
+}
 
-    /**
-     *
-     * @return
-     * The eventEndTime
-     */
-    public String getEventEndTime() {
-        return eventEndTime;
-    }
+/**
+*
+* @return
+* The eventStartTime
+*/
+public String getEventStartTime() {
+return eventStartTime;
+}
 
-    /**
-     *
-     * @param eventEndTime
-     * The event_end_time
-     */
-    public void setEventEndTime(String eventEndTime) {
-        this.eventEndTime = eventEndTime;
-    }
+/**
+*
+* @param eventStartTime
+* The event_start_time
+*/
+public void setEventStartTime(String eventStartTime) {
+this.eventStartTime = eventStartTime;
+}
 
-    /**
-     *
-     * @return
-     * The eventVenue
-     */
-    public String getEventVenue() {
-        return eventVenue;
-    }
+/**
+*
+* @return
+* The eventEndTime
+*/
+public String getEventEndTime() {
+return eventEndTime;
+}
 
-    /**
-     *
-     * @param eventVenue
-     * The event_venue
-     */
-    public void setEventVenue(String eventVenue) {
-        this.eventVenue = eventVenue;
-    }
+/**
+*
+* @param eventEndTime
+* The event_end_time
+*/
+public void setEventEndTime(String eventEndTime) {
+this.eventEndTime = eventEndTime;
+}
 
-    /**
-     *
-     * @return
-     * The eventLastUpdateTime
-     */
-    public String getEventLastUpdateTime() {
-        return eventLastUpdateTime;
-    }
+/**
+*
+* @return
+* The eventVenue
+*/
+public String getEventVenue() {
+return eventVenue;
+}
 
-    /**
-     *
-     * @param eventLastUpdateTime
-     * The event_last_update_time
-     */
-    public void setEventLastUpdateTime(String eventLastUpdateTime) {
-        this.eventLastUpdateTime = eventLastUpdateTime;
-    }
+/**
+*
+* @param eventVenue
+* The event_venue
+*/
+public void setEventVenue(String eventVenue) {
+this.eventVenue = eventVenue;
+}
 
-    /**
-     *
-     * @return
-     * The eventLocX
-     */
-    public String getEventLocX() {
-        return eventLocX;
-    }
+/**
+*
+* @return
+* The eventLastUpdateTime
+*/
+public String getEventLastUpdateTime() {
+return eventLastUpdateTime;
+}
 
-    /**
-     *
-     * @param eventLocX
-     * The event_loc_x
-     */
-    public void setEventLocX(String eventLocX) {
-        this.eventLocX = eventLocX;
-    }
+/**
+*
+* @param eventLastUpdateTime
+* The event_last_update_time
+*/
+public void setEventLastUpdateTime(String eventLastUpdateTime) {
+this.eventLastUpdateTime = eventLastUpdateTime;
+}
 
-    /**
-     *
-     * @return
-     * The eventLocY
-     */
-    public String getEventLocY() {
-        return eventLocY;
-    }
+/**
+*
+* @return
+* The eventLocX
+*/
+public String getEventLocX() {
+return eventLocX;
+}
 
-    /**
-     *
-     * @param eventLocY
-     * The event_loc_y
-     */
-    public void setEventLocY(String eventLocY) {
-        this.eventLocY = eventLocY;
-    }
+/**
+*
+* @param eventLocX
+* The event_loc_x
+*/
+public void setEventLocX(String eventLocX) {
+this.eventLocX = eventLocX;
+}
 
-    /**
-     *
-     * @return
-     * The eventMaxLimit
-     */
-    public String getEventMaxLimit() {
-        return eventMaxLimit;
-    }
+/**
+*
+* @return
+* The eventLocY
+*/
+public String getEventLocY() {
+return eventLocY;
+}
 
-    /**
-     *
-     * @param eventMaxLimit
-     * The event_max_limit
-     */
-    public void setEventMaxLimit(String eventMaxLimit) {
-        this.eventMaxLimit = eventMaxLimit;
-    }
+/**
+*
+* @param eventLocY
+* The event_loc_y
+*/
+public void setEventLocY(String eventLocY) {
+this.eventLocY = eventLocY;
+}
 
-    /**
-     *
-     * @return
-     * The eventCluster
-     */
-    public String getEventCluster() {
-        return eventCluster;
-    }
+/**
+*
+* @return
+* The eventMaxLimit
+*/
+public String getEventMaxLimit() {
+return eventMaxLimit;
+}
 
-    /**
-     *
-     * @param eventCluster
-     * The event_cluster
-     */
-    public void setEventCluster(String eventCluster) {
-        this.eventCluster = eventCluster;
-    }
+/**
+*
+* @param eventMaxLimit
+* The event_max_limit
+*/
+public void setEventMaxLimit(String eventMaxLimit) {
+this.eventMaxLimit = eventMaxLimit;
+}
 
-    /**
-     *
-     * @return
-     * The eventDate
-     */
-    public String getEventDate() {
-        return eventDate;
-    }
+/**
+*
+* @return
+* The eventCluster
+*/
+public String getEventCluster() {
+return eventCluster;
+}
 
-    /**
-     *
-     * @param eventDate
-     * The event_date
-     */
-    public void setEventDate(String eventDate) {
-        this.eventDate = eventDate;
-    }
+/**
+*
+* @param eventCluster
+* The event_cluster
+*/
+public void setEventCluster(String eventCluster) {
+this.eventCluster = eventCluster;
+}
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
+/**
+*
+* @return
+* The eventDate
+*/
+public String getEventDate() {
+return eventDate;
+}
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(eventId).append(eventName).append(eventStartTime).append(eventEndTime).append(eventVenue).append(eventLastUpdateTime).append(eventLocX).append(eventLocY).append(eventMaxLimit).append(eventCluster).append(eventDate).toHashCode();
-    }
+/**
+*
+* @param eventDate
+* The event_date
+*/
+public void setEventDate(String eventDate) {
+this.eventDate = eventDate;
+}
 
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        if ((other instanceof Event) == false) {
-            return false;
-        }
-        Event rhs = ((Event) other);
-        return new EqualsBuilder().append(eventId, rhs.eventId).append(eventName, rhs.eventName).append(eventStartTime, rhs.eventStartTime).append(eventEndTime, rhs.eventEndTime).append(eventVenue, rhs.eventVenue).append(eventLastUpdateTime, rhs.eventLastUpdateTime).append(eventLocX, rhs.eventLocX).append(eventLocY, rhs.eventLocY).append(eventMaxLimit, rhs.eventMaxLimit).append(eventCluster, rhs.eventCluster).append(eventDate, rhs.eventDate).isEquals();
-    }
+@Override
+public String toString() {
+return ToStringBuilder.reflectionToString(this);
+}
+
+@Override
+public int hashCode() {
+return new HashCodeBuilder().append(eventId).append(eventName).append(eventStartTime).append(eventEndTime).append(eventVenue).append(eventLastUpdateTime).append(eventLocX).append(eventLocY).append(eventMaxLimit).append(eventCluster).append(eventDate).toHashCode();
+}
+
+@Override
+public boolean equals(Object other) {
+if (other == this) {
+return true;
+}
+if ((other instanceof Event) == false) {
+return false;
+}
+Event rhs = ((Event) other);
+return new EqualsBuilder().append(eventId, rhs.eventId).append(eventName, rhs.eventName).append(eventStartTime, rhs.eventStartTime).append(eventEndTime, rhs.eventEndTime).append(eventVenue, rhs.eventVenue).append(eventLastUpdateTime, rhs.eventLastUpdateTime).append(eventLocX, rhs.eventLocX).append(eventLocY, rhs.eventLocY).append(eventMaxLimit, rhs.eventMaxLimit).append(eventCluster, rhs.eventCluster).append(eventDate, rhs.eventDate).isEquals();
+}
 
 }

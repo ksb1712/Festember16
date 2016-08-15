@@ -277,7 +277,8 @@ public class EventDetailsActivity extends AppCompatActivity implements OnMapRead
                         .position(
                                 eventLocationLatLng
                         )
-                        .title("Event at " + event.getEventVenue())
+                        .title(EventsAdapter.parseEventName(event.getEventName()) +
+                                " at " + event.getEventVenue())
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.custom_marker_icon_olympics))
         );
 
