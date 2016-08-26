@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Festember16</string>
+    <string name="register">No account yet? <u><b>Create one</b></u>.</string>
+    <string name="love">Made with \u2665 by Delta Force</string>
 </resources>
