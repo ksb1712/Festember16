@@ -1,7 +1,7 @@
-package com.example.bharath17.festember16;
+package com.festember16.app;
 
 /**
- * Created by bharath17 on 1/8/16.
+ * Created by app on 1/8/16.
  * Class to organize commonly used variables
  */
 
