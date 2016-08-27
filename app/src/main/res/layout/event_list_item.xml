@@ -7,26 +7,34 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Event name: "
         android:ellipsize="none"
         android:scrollHorizontally="false"
-        android:id="@+id/eventName" />
+        android:id="@+id/eventName"
+        android:textColor="@color/textColorVibrant"
+        android:typeface="sans"
+        android:textStyle="bold|italic" />
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Starts at: "
-        android:id="@+id/startTime" />
+        android:id="@+id/startTime"
+        android:textColor="@color/textColorVibrant"
+        android:textStyle="bold"
+        android:typeface="sans" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Venue: "
         android:id="@+id/venue"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:typeface="sans"
+        android:textStyle="bold"
+        android:textColor="@color/textColorVibrant" />
 
 
 </LinearLayout>

@@ -239,7 +239,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .title(
                                 EventsAdapter.parseEventName(event.getEventName()) +
                                         " at " + event.getEventVenue())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.custom_marker_icon_olympics))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.festember_marker))
         );
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(centerBounds.getCenter(), 15));
 

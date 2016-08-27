@@ -104,8 +104,7 @@ public class EventsAdapter extends ArrayAdapter<Event>{
 
         for(String string: strings)
         {
-            string.toUpperCase();
-            builder.append(string + " ");
+            builder.append(string.toUpperCase() + " ");
         }
 
         return builder.toString();

@@ -12,13 +12,17 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +62,7 @@ public class EventDetailsActivity extends AppCompatActivity implements OnMapRead
     @InjectView(R.id.eventCluster)
     TextView eventCluster;
 
+
     private static final String[] PERMISSIONS = {
             android.Manifest.permission.ACCESS_COARSE_LOCATION,
             android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -81,13 +86,23 @@ public class EventDetailsActivity extends AppCompatActivity implements OnMapRead
 
         eventVenue.setText("Venue: " + event.getEventVenue());
 
-        eventStartTime.setText("Starts at: " + event.getEventStartTime() + " on " +
+        eventStartTime.setText("Starts at: " + event.getEventStartTime() + " \non " +
                 EventsAdapter.parseEventDate(event.getEventDate()));
 
         eventCluster.setText("Cluster: " + event.getEventCluster());
 
         SupportMapFragment mapFragment = (SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.mapPreview);
+
+        ViewGroup.LayoutParams layoutParams = mapFragment.getView().getLayoutParams();
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        layoutParams.height = (int) (displayMetrics.heightPixels*0.4);
+
+        mapFragment.getView().setLayoutParams(layoutParams);
+
         mapFragment.getMapAsync(this);
 
     }
@@ -196,7 +211,20 @@ public class EventDetailsActivity extends AppCompatActivity implements OnMapRead
                     return;
                 }
                 if (isPermissionGiven && isLocationEnabled && mMap != null)
+                {
                     mMap.setMyLocationEnabled(true);
+                    mMap.setOnMyLocationButtonClickListener(
+                            new GoogleMap.OnMyLocationButtonClickListener() {
+                                @Override
+                                public boolean onMyLocationButtonClick() {
+
+                                    Toast.makeText(EventDetailsActivity.this, "Loading...", Toast.LENGTH_SHORT).show();
+
+                                    return false;
+                                }
+                            }
+                    );
+                }
 
 
                 break;
@@ -248,6 +276,7 @@ public class EventDetailsActivity extends AppCompatActivity implements OnMapRead
         }
 
         else{
+            isLocationEnabled = false;
             enableLocationDialog();
         }
 
@@ -279,7 +308,7 @@ public class EventDetailsActivity extends AppCompatActivity implements OnMapRead
                         )
                         .title(EventsAdapter.parseEventName(event.getEventName()) +
                                 " at " + event.getEventVenue())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.custom_marker_icon_olympics))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.festember_marker))
         );
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
