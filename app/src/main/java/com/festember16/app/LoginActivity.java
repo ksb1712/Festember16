@@ -176,6 +176,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void callFB(View view) {
         Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
+        facebookIntent.setPackage("com.facebook.katana");
         String facebookUrl = getFacebookPageURL(this);
         facebookIntent.setData(Uri.parse(facebookUrl));
         startActivity(facebookIntent);
