@@ -97,6 +97,16 @@
                 android:onClick="callInsta"
                 android:layout_marginStart="20sp"
                 />
+            <ImageView android:src="@drawable/tweet"
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:layout_marginBottom="40sp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="10sp"
+                android:clickable="true"
+                android:onClick="callTweet"
+                android:layout_marginStart="20sp"
+                />
         </LinearLayout>
 
         <TextView

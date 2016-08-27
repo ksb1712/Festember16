@@ -23,20 +23,19 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import butterknife.ButterKnife;
-import butterknife.BindView;
+
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-    @BindView(R.id.input_email)
+
     EditText _emailText;
-    @BindView(R.id.input_password)
+
     EditText _passwordText;
-    @BindView(R.id.btn_login)
+
     Button _loginButton;
-    @BindView(R.id.link_signup)
+
     TextView _signupLink;
 
     @Override
@@ -46,8 +45,10 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
-
+        _emailText = (EditText)findViewById(R.id.input_email);
+        _passwordText = (EditText)findViewById(R.id.input_password);
+        _loginButton = (Button)findViewById(R.id.btn_login);
+        _signupLink = (TextView)findViewById(R.id.link_signup);
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -76,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         _loginButton.setEnabled(false);
+
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -142,8 +144,8 @@ public class LoginActivity extends AppCompatActivity {
             _emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+        if (password.isEmpty()) {
+            _passwordText.setError("enter valid password");
             valid = false;
         } else {
             _passwordText.setError(null);
@@ -170,6 +172,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+
+
     public void callFB(View view) {
         Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
         String facebookUrl = getFacebookPageURL(this);
@@ -179,7 +183,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void callInsta(View view)
     {
-        Uri uri = Uri.parse("http://instagram.com/festember");
+        Uri uri = Uri.parse("http://instagram.com/_u/festember");
         Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
 
         likeIng.setPackage("com.instagram.android");
@@ -190,6 +194,21 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(Intent.ACTION_VIEW,
                     Uri.parse("http://instagram.com/festember")));
         }
+    }
+
+    public void callTweet(View view)
+    {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("twitter://festember"));
+            intent.setPackage("com.twitter.android");
+            startActivity(intent);
+
+        }catch (Exception e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://twitter.com/festember")));
+        }
+
     }
 
 }
