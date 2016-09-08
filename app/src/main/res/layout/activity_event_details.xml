@@ -7,20 +7,36 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.bharath17.festember16.EventDetailsActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
 
-    </android.support.design.widget.AppBarLayout>
+        <!--<include-->
 
-    <include layout="@layout/content_event_details" />
+            <!--layout="@layout/actionbar"-->
+
+            <!--/>-->
+
+
+        <!--<com.example.bharath17.festember16.SlidingTabLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/tabs"-->
+            <!--&gt;-->
+        <!--</com.example.bharath17.festember16.SlidingTabLayout>-->
+
+        <!--<android.support.v4.view.ViewPager-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:id="@+id/pager"/>-->
+
+
+    <!--</LinearLayout>-->
+
+
+    <!--<include layout="@layout/content_event_details" />-->
 
 </android.support.design.widget.CoordinatorLayout>

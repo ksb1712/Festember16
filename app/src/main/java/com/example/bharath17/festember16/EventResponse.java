@@ -20,7 +20,7 @@ public class EventResponse {
     private long status;
     @SerializedName("data")
     @Expose
-    private List<Event> data = new ArrayList<Event>();
+    private List<Events> data = new ArrayList<Events>();
 
     /**
      *
@@ -45,7 +45,7 @@ public class EventResponse {
      * @return
      * The data
      */
-    public List<Event> getData() {
+    public List<Events> getData() {
         return data;
     }
 
@@ -54,7 +54,7 @@ public class EventResponse {
      * @param data
      * The data
      */
-    public void setData(List<Event> data) {
+    public void setData(List<Events> data) {
         this.data = data;
     }
 

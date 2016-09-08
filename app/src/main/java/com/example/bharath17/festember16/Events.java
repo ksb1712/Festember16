@@ -6,7 +6,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Event {
+public class Events {
 
 @SerializedName("event_id")
 @Expose
@@ -46,7 +46,7 @@ private String eventDate;
 * No args constructor for use in serialization
 *
 */
-public Event() {
+public Events() {
 }
 
 /**
@@ -63,7 +63,7 @@ public Event() {
 * @param eventName
 * @param eventCluster
 */
-public Event(String eventId, String eventName, String eventStartTime, String eventEndTime, String eventVenue, String eventLastUpdateTime, String eventLocX, String eventLocY, String eventMaxLimit, String eventCluster, String eventDate) {
+public Events(String eventId, String eventName, String eventStartTime, String eventEndTime, String eventVenue, String eventLastUpdateTime, String eventLocX, String eventLocY, String eventMaxLimit, String eventCluster, String eventDate) {
 this.eventId = eventId;
 this.eventName = eventName;
 this.eventStartTime = eventStartTime;
@@ -155,7 +155,7 @@ this.eventEndTime = eventEndTime;
 * The eventVenue
 */
 public String getEventVenue() {
-return eventVenue;
+return eventVenue.toUpperCase();
 }
 
 /**
@@ -290,10 +290,10 @@ public boolean equals(Object other) {
 if (other == this) {
 return true;
 }
-if ((other instanceof Event) == false) {
+if ((other instanceof Events) == false) {
 return false;
 }
-Event rhs = ((Event) other);
+Events rhs = ((Events) other);
 return new EqualsBuilder().append(eventId, rhs.eventId).append(eventName, rhs.eventName).append(eventStartTime, rhs.eventStartTime).append(eventEndTime, rhs.eventEndTime).append(eventVenue, rhs.eventVenue).append(eventLastUpdateTime, rhs.eventLastUpdateTime).append(eventLocX, rhs.eventLocX).append(eventLocY, rhs.eventLocY).append(eventMaxLimit, rhs.eventMaxLimit).append(eventCluster, rhs.eventCluster).append(eventDate, rhs.eventDate).isEquals();
 }
 

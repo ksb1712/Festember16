@@ -15,23 +15,23 @@ import butterknife.InjectView;
 /**
  * Created by vishnu on 3/8/16.
  */
-public class EventsAdapter extends ArrayAdapter<Event>{
+public class EventsAdapter extends ArrayAdapter<Events>{
 
     Context context;
-    List<Event> events;
+    List<Events> eventses;
 
 
-    public EventsAdapter(Context context, int resource, List<Event> objects) {
+    public EventsAdapter(Context context, int resource, List<Events> objects) {
         super(context, resource, objects);
 
         this.context = context;
-        this.events = objects;
+        this.eventses = objects;
 
     }
 
     @Override
     public int getCount() {
-        return events.size();
+        return eventses.size();
     }
 
     @Override
@@ -60,16 +60,16 @@ public class EventsAdapter extends ArrayAdapter<Event>{
             view.setTag(holder);
 
             holder.textView.setText(
-                    (position+1) + ") " + parseEventName(events.get(position).getEventName()));
+                    (position+1) + ") " + parseEventName(eventses.get(position).getEventName()));
             holder.textView1.setText(
-                    "Starts at: " + events.get(position).getEventStartTime()
+                    "Starts at: " + eventses.get(position).getEventStartTime()
 
                             + " on " +
 
-                            parseEventDate(events.get(position).getEventDate())
+                            parseEventDate(eventses.get(position).getEventDate())
             );
 
-            holder.textView2.setText(events.get(position).getEventVenue());
+            holder.textView2.setText(eventses.get(position).getEventVenue());
 
         }
 

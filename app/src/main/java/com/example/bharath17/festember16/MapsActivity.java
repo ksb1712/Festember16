@@ -1,6 +1,5 @@
 package com.example.bharath17.festember16;
 
-import android.*;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -46,7 +45,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             android.Manifest.permission.ACCESS_FINE_LOCATION
     };
 
-    Event event;
+    //Events events;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +57,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        Gson gson = new Gson();
-
-        event = gson.fromJson(getIntent().getStringExtra(ListActivity.EVENT), Event.class);
+//        Gson gson = new Gson();
+//
+//        events = gson.fromJson(getIntent().getStringExtra(ListActivity.EVENT), Events.class);
 
 
     }
@@ -223,9 +222,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         // Add a marker at event location and move the camera
-        LatLng eventLocation = new LatLng(
-                Double.parseDouble(event.getEventLocY()),
-                Double.parseDouble(event.getEventLocX()));
+//        LatLng eventLocation = new LatLng(
+//                Double.parseDouble(events.getEventLocY()),
+//                Double.parseDouble(events.getEventLocX()));
         LatLngBounds centerBounds = new LatLngBounds(
                 new LatLng(BARN.latitude, BARN.longitude),
                 new LatLng(BARN.latitude, BARN.longitude)
@@ -237,8 +236,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 new MarkerOptions()
                         .position(BARN)
                         .title(
-                                EventsAdapter.parseEventName(event.getEventName()) +
-                                        " at " + event.getEventVenue())
+                                EventsAdapter.parseEventName("Chore nite western" + //events.getEventName()) +
+                                        " at " + "Barn"))//events.getEventVenue())
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.festember_marker))
         );
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(centerBounds.getCenter(), 15));
