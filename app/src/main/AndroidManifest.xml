@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
     package="com.example.bharath17.festember16">
 
     <!--
@@ -9,12 +10,16 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+=======
+    package="com.festember16.app" >
+>>>>>>> 19a5959d814f5a93ca502fb7b435b326604b0c43
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+<<<<<<< HEAD
         android:theme="@style/AppTheme">
 
         <!--
@@ -36,12 +41,18 @@
             android:name=".ListActivity"
             android:label="@string/title_activity_list"
             android:theme="@style/AppTheme.NoActionBar">
+=======
+        android:theme="@style/AppTheme" >
+        <activity android:name=".MainActivity"
+            >
+>>>>>>> 19a5959d814f5a93ca502fb7b435b326604b0c43
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <activity
             android:name=".MyProfile"
             android:label="@string/title_activity_my_profile"
@@ -53,6 +64,11 @@
             <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".ListActivity" />
+=======
+        <activity android:name=".LoginActivity"
+            />
+        <activity android:name=".SignUpActivity" >
+>>>>>>> 19a5959d814f5a93ca502fb7b435b326604b0c43
         </activity>
     </application>
 
