@@ -1,4 +1,4 @@
-package com.example.bharath17.festember16;
+package com.festember16.example.bharath17.festember16;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

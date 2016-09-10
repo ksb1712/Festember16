@@ -1,6 +1,5 @@
-package com.example.bharath17.festember16;
+package com.festember16.app;
 
-import android.*;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -32,10 +31,7 @@ public class ContactsFragment extends Fragment {
 
     private boolean isPermissionGranted = true;
 
-    @InjectView(R.id.contact1)
-    TextView contact1;
-    @InjectView(R.id.contact2)
-    TextView contact2;
+
 
     public static ContactsFragment getInstance(int id){
 
@@ -51,7 +47,11 @@ public class ContactsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.contacts_layout, container, false);
+        View view = inflater.inflate(android.R.layout.contacts_layout, container, false);
+        @InjectView(android.R.id.contact1)
+        TextView contact1;
+        @InjectView(android.R.id.contact2)
+        TextView contact2;
 
         ButterKnife.inject(this, view);
 

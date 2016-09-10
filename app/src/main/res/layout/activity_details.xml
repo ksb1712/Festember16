@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.bharath17.festember16.DetailsActivity">
+    tools:context=".DetailsActivity">
 
     <LinearLayout
         android:orientation="vertical"
@@ -19,12 +19,12 @@
             />
 
 
-        <com.example.bharath17.festember16.SlidingTabLayout
+        <com.festember16.app.SlidingTabLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tabs"
             >
-        </com.example.bharath17.festember16.SlidingTabLayout>
+        </com.festember16.app.SlidingTabLayout>
 
         <android.support.v4.view.ViewPager
             android:layout_width="wrap_content"

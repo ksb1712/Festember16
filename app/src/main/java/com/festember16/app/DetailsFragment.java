@@ -1,4 +1,4 @@
-package com.example.bharath17.festember16;
+package com.festember16.app;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,8 +32,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
-
-import org.w3c.dom.Text;
 
 import java.lang.reflect.Field;
 

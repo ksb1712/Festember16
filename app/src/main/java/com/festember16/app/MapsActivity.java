@@ -1,4 +1,4 @@
-package com.example.bharath17.festember16;
+package com.festember16.app;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,7 +20,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 

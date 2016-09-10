@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-<<<<<<< HEAD
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -18,9 +18,9 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-=======
-        <item name="android:typeface">serif</item>
-    </style>
+
+
+
 
     <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">
         <item name="colorAccent">@color/white</item>
@@ -32,5 +32,5 @@
         <item name="android:typeface">serif</item>
     </style>
 
->>>>>>> 19a5959d814f5a93ca502fb7b435b326604b0c43
+
 </resources>

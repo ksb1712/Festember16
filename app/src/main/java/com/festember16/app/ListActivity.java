@@ -1,4 +1,4 @@
-package com.example.bharath17.festember16;
+package com.festember16.app;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.festember16.app.R;
 import com.google.gson.Gson;
 
 import java.util.List;

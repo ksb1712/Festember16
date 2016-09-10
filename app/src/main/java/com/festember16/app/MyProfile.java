@@ -1,4 +1,4 @@
-package com.example.bharath17.festember16;
+package com.festember16.app;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
