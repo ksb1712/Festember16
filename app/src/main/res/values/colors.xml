@@ -1,8 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<<<<<<< HEAD
     <color name="UpcomingTitle">#585858</color>
     <color name="colorPrimaryDark">#434344</color>
     <color name="colorAccent">#FF4081</color>
     <color name="UpcomingNotifications">#281b2d</color>
     <color name = "UpcomingColor1">#000000</color>
+=======
+
+    <color name="textColorLight">#0ccfa9</color>
+    <color name="textColorVibrant">#32b999</color>
+    <color name="background">#034336</color>
+    <color name="backgroundLight">#2b6157</color>
+    <color name="buttonBackground">#06735e</color>
+    <color name="grey">#fff</color>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="primary">#E43F3F</color>
+    <color name="primary_dark">#E12929</color>
+    <color name="primary_darker">#CC1D1D</color>
+    <color name="accent">#FFFFFF</color>
+    <color name="orange">#FFF4900E</color>
+    <color name="black">#000000</color>
+    <color name="jet">#222222</color>
+    <color name="oil">#333333</color>
+    <color name="monsoon">#777777</color>
+    <color name="jumbo">#888888</color>
+    <color name="aluminum">#999999</color>
+    <color name="base">#AAAAAA</color>
+    <color name="iron">#CCCCCC</color>
+    <color name="white">#FFFFFF</color>
+    <color name="back_g">#FF48629C</color>
+
+    <color name="splash_background">#7CBDFF</color>
+
+
+>>>>>>> upstream/master
 </resources>
