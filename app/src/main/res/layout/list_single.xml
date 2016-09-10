@@ -26,7 +26,7 @@
         android:layout_alignParentStart="false"
         android:layout_below="@+id/line"
         android:layout_alignLeft="@+id/line"
-        android:text="cccc"
+        android:text="ccccjj"
         android:background="@drawable/upcoming_cate_back"
         android:backgroundTint="#d41414"
         android:paddingStart="2dp"

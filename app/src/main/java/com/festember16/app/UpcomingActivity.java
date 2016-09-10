@@ -2,6 +2,7 @@ package com.festember16.app;
 
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,15 +23,15 @@ public class UpcomingActivity extends AppCompatActivity {
     String[][] present;
     String[][] tempeve={{"rat","barn","rodent"}
             ,{"cow","barn","mammal"}
-            ,{"horse","barn","brownnnnnnnnnnn"}
+            ,{"horse","barn","brown"}
             ,{"sheep","pen","mammal"}
             ,{"rooster","coop","bird"}
             ,{"tiger","den","stripe"}
             ,{"dog","kennel","nose"}
             ,{"snake","hole","twist"}
-            ,{"monkey","tree","brownnnnnnnnnnnn"}
+            ,{"monkey","tree","brown"}
             ,{"boar","field","tusk"}
-            ,{"dragon","sky","scalesssssssssss"}
+            ,{"dragon","sky","scales"}
             ,{"rabbit","burrow","carrot"}};
     int[][] prtime;
     int[][] temptime;
@@ -61,7 +62,7 @@ public class UpcomingActivity extends AppCompatActivity {
             ,"15:30:00"
             ,"17:30:00"
     };  //array of end times off all events
-    String fakedate="2016-09-07";
+    String fakedate="2016-09-10";
     String[] evdate={fakedate
             ,fakedate
             ,fakedate
@@ -99,6 +100,8 @@ public class UpcomingActivity extends AppCompatActivity {
     String[] items,itemscate;
     ArrayAdapter<String> spadapter;
     ArrayAdapter<String> caadapter;
+
+    private SwipeRefreshLayout swipeContainer;
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
         //to retain spinner state
@@ -297,6 +300,7 @@ public class UpcomingActivity extends AppCompatActivity {
         calendar.add(Calendar.SECOND, 10);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 60 * 1000, pendingIntent);
         */
+        swipeContainer.setRefreshing(false);
     }
 
     //updating list when spinner option is changed
@@ -314,10 +318,10 @@ public class UpcomingActivity extends AppCompatActivity {
 */
         RecycleList adapter = new
                 RecycleList(UpcomingActivity.this, present,prtime,t,Number,cates,co2);
-        mRecyclerView = (RecyclerView) findViewById(com.example.bharath17.festember16.R.id.recyclelist);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclelist);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(UpcomingActivity.this));
         mRecyclerView.setAdapter(adapter);
-        TextView texx=(TextView) findViewById(com.example.bharath17.festember16.R.id.noevent);
+        TextView texx=(TextView) findViewById(R.id.noevent);
         if(t==0){
             texx.setText(noentrytest);
         }
@@ -339,9 +343,9 @@ public class UpcomingActivity extends AppCompatActivity {
             }
         }
         //spinner for venues
-        spinner = (Spinner) findViewById(com.example.bharath17.festember16.R.id.recyclespinner);
+        spinner = (Spinner) findViewById(R.id.recyclespinner);
         spadapter = new ArrayAdapter<String>(
-                this, com.example.bharath17.festember16.R.layout.spinnerstyle, items);
+                this, R.layout.spinnerstyle, items);
         spinner.setAdapter(spadapter);
         spinner.setSelection(ch + 1);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -357,10 +361,10 @@ public class UpcomingActivity extends AppCompatActivity {
             }
         });
         //spinner for time limit
-        spinnertime = (Spinner) findViewById(com.example.bharath17.festember16.R.id.recyclespinnertime);
+        spinnertime = (Spinner) findViewById(R.id.recyclespinnertime);
         String[] itemstime = new String[] { "1 hour", "2 hours"};
         ArrayAdapter<String> tiadapter = new ArrayAdapter<String>(
-                this, com.example.bharath17.festember16.R.layout.spinnerstyle, itemstime);
+                this, R.layout.spinnerstyle, itemstime);
         spinnertime.setAdapter(tiadapter);
         spinnertime.setSelection(timelimit - 1);
         spinnertime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -384,7 +388,7 @@ public class UpcomingActivity extends AppCompatActivity {
             }
         });
         //spinner for category
-        spinnercate = (Spinner) findViewById(com.example.bharath17.festember16.R.id.recyclespinnercate);
+        spinnercate = (Spinner) findViewById(R.id.recyclespinnercate);
         String[] itemscate = new String[co2+1];
         itemscate[0]="All";
         if(cates!=null) {
@@ -393,7 +397,7 @@ public class UpcomingActivity extends AppCompatActivity {
             }
         }
         caadapter = new ArrayAdapter<String>(
-                this, com.example.bharath17.festember16.R.layout.spinnerstyle, itemscate);
+                this, R.layout.spinnerstyle, itemscate);
         spinnercate.setAdapter(caadapter);
         spinnercate.setSelection(catech+1);
         spinnercate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -435,11 +439,32 @@ public class UpcomingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.example.bharath17.festember16.R.layout.activity_upcoming);
+        setContentView(R.layout.activity_upcoming);
         setTitle("Upcoming Events Schedule");
      /*   mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);*/
+        //setContentView(R.layout.activity_main);
+
+        // Lookup the swipe container view
+
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                parseevents();
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         parseevents();
     }
 
