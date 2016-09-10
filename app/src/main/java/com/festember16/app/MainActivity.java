@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "fonts/Roboto-Regular.ttf");
         Intent i = new Intent(this,LoginActivity.class);
+        //Intent i = new Intent(this,UpcomingActivity.class);
         startActivity(i);
     }
 }
