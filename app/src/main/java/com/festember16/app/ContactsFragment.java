@@ -32,6 +32,9 @@ public class ContactsFragment extends Fragment {
     private boolean isPermissionGranted = true;
 
 
+    TextView contact1;
+
+    TextView contact2;
 
     public static ContactsFragment getInstance(int id){
 
@@ -47,11 +50,9 @@ public class ContactsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(android.R.layout.contacts_layout, container, false);
-        @InjectView(android.R.id.contact1)
-        TextView contact1;
-        @InjectView(android.R.id.contact2)
-        TextView contact2;
+        View view = inflater.inflate(R.layout.contacts_layout, container, false);
+        contact1 = (TextView)view.findViewById(R.id.contact1);
+        contact2 = (TextView)view.findViewById(R.id.contact2);
 
         ButterKnife.inject(this, view);
 
