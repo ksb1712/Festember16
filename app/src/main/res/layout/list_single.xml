@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/singlelistlayout">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/line"
+        android:background="@drawable/upcoming_cate_line"
+        android:minHeight="5dp"
+        android:maxHeight="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/Cate"
+        android:textColor="#ffffff"
+
+        android:textAllCaps="false"
+
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="false"
+        android:layout_below="@+id/line"
+        android:layout_alignLeft="@+id/line"
+        android:text="cccc"
+        android:background="@drawable/upcoming_cate_back"
+        android:backgroundTint="#d41414"
+        android:paddingStart="2dp"
+        android:paddingEnd="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/Event"
+
+
+        android:text="aaaaa"
+        android:textColor="@color/UpcomingColor1"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        android:layout_below="@+id/Cate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/Time"
+
+        android:text="begins in 12 hours 10 mins"
+        android:textColor="@color/UpcomingColor1"
+        android:layout_below="@+id/line"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/Location"
+
+        android:text="aaaaa"
+        android:textColor="@color/UpcomingColor1"
+        android:layout_below="@+id/Event"
+        android:layout_alignLeft="@+id/Event"
+        android:layout_alignStart="@+id/Event"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/describe"
+        android:layout_below="@+id/Event"
+        android:layout_alignRight="@+id/Time"
+        android:layout_alignEnd="@+id/Time" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:id="@+id/textView"
+        android:maxHeight="2dp"
+
+        android:background="#ffffff" />
+
+</RelativeLayout>

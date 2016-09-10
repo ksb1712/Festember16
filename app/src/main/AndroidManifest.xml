@@ -51,6 +51,11 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".UpcomingActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+
         <activity
             android:name=".MyProfile"
             android:label="@string/title_activity_my_profile"
@@ -62,6 +67,7 @@
             <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".ListActivity" />
+
 
 
 
