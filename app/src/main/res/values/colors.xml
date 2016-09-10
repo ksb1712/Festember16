@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<<<<<<< HEAD
+
     <color name="UpcomingTitle">#585858</color>
-    <color name="colorPrimaryDark">#434344</color>
-    <color name="colorAccent">#FF4081</color>
     <color name="UpcomingNotifications">#281b2d</color>
     <color name = "UpcomingColor1">#000000</color>
-=======
+
 
     <color name="textColorLight">#0ccfa9</color>
     <color name="textColorVibrant">#32b999</color>
@@ -37,5 +35,5 @@
     <color name="splash_background">#7CBDFF</color>
 
 
->>>>>>> upstream/master
+
 </resources>

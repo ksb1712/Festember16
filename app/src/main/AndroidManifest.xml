@@ -50,11 +50,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
+
         <activity android:name=".UpcomingActivity"
             android:screenOrientation="portrait">
         </activity>
-=======
+
 
         <activity
             android:name=".MyProfile"
@@ -70,7 +70,7 @@
 
 
 
->>>>>>> upstream/master
+
     </application>
 
 </manifest>

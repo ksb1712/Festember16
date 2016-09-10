@@ -1,4 +1,4 @@
-package com.example.bharath17.festember16;
+package com.festember16.app;
 
 
 import android.os.Bundle;
@@ -314,10 +314,10 @@ public class UpcomingActivity extends AppCompatActivity {
 */
         RecycleList adapter = new
                 RecycleList(UpcomingActivity.this, present,prtime,t,Number,cates,co2);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclelist);
+        mRecyclerView = (RecyclerView) findViewById(com.example.bharath17.festember16.R.id.recyclelist);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(UpcomingActivity.this));
         mRecyclerView.setAdapter(adapter);
-        TextView texx=(TextView) findViewById(R.id.noevent);
+        TextView texx=(TextView) findViewById(com.example.bharath17.festember16.R.id.noevent);
         if(t==0){
             texx.setText(noentrytest);
         }
@@ -339,9 +339,9 @@ public class UpcomingActivity extends AppCompatActivity {
             }
         }
         //spinner for venues
-        spinner = (Spinner) findViewById(R.id.recyclespinner);
+        spinner = (Spinner) findViewById(com.example.bharath17.festember16.R.id.recyclespinner);
         spadapter = new ArrayAdapter<String>(
-                this, R.layout.spinnerstyle, items);
+                this, com.example.bharath17.festember16.R.layout.spinnerstyle, items);
         spinner.setAdapter(spadapter);
         spinner.setSelection(ch + 1);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -357,10 +357,10 @@ public class UpcomingActivity extends AppCompatActivity {
             }
         });
         //spinner for time limit
-        spinnertime = (Spinner) findViewById(R.id.recyclespinnertime);
+        spinnertime = (Spinner) findViewById(com.example.bharath17.festember16.R.id.recyclespinnertime);
         String[] itemstime = new String[] { "1 hour", "2 hours"};
         ArrayAdapter<String> tiadapter = new ArrayAdapter<String>(
-                this, R.layout.spinnerstyle, itemstime);
+                this, com.example.bharath17.festember16.R.layout.spinnerstyle, itemstime);
         spinnertime.setAdapter(tiadapter);
         spinnertime.setSelection(timelimit - 1);
         spinnertime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -384,7 +384,7 @@ public class UpcomingActivity extends AppCompatActivity {
             }
         });
         //spinner for category
-        spinnercate = (Spinner) findViewById(R.id.recyclespinnercate);
+        spinnercate = (Spinner) findViewById(com.example.bharath17.festember16.R.id.recyclespinnercate);
         String[] itemscate = new String[co2+1];
         itemscate[0]="All";
         if(cates!=null) {
@@ -393,7 +393,7 @@ public class UpcomingActivity extends AppCompatActivity {
             }
         }
         caadapter = new ArrayAdapter<String>(
-                this, R.layout.spinnerstyle, itemscate);
+                this, com.example.bharath17.festember16.R.layout.spinnerstyle, itemscate);
         spinnercate.setAdapter(caadapter);
         spinnercate.setSelection(catech+1);
         spinnercate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -435,7 +435,7 @@ public class UpcomingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upcoming);
+        setContentView(com.example.bharath17.festember16.R.layout.activity_upcoming);
         setTitle("Upcoming Events Schedule");
      /*   mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);

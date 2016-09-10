@@ -1,8 +1,7 @@
-package com.example.bharath17.festember16;
+package com.festember16.app;
 
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,12 +50,12 @@ public class RecycleList extends RecyclerView.Adapter<RecycleList.CustomViewHold
         public CustomViewHolder(View view) {
             super(view);
 
-            this.Event = (TextView) view.findViewById(R.id.Event);
-            this.Time = (TextView) view.findViewById(R.id.Time);
-            this.Location=(TextView) view.findViewById(R.id.Location);
-            this.Cate = (TextView) view.findViewById(R.id.Cate);
-            this.lay=(RelativeLayout)itemView.findViewById(R.id.singlelistlayout);
-            this.line=(ImageView)itemView.findViewById(R.id.line);
+            this.Event = (TextView) view.findViewById(com.example.bharath17.festember16.R.id.Event);
+            this.Time = (TextView) view.findViewById(com.example.bharath17.festember16.R.id.Time);
+            this.Location=(TextView) view.findViewById(com.example.bharath17.festember16.R.id.Location);
+            this.Cate = (TextView) view.findViewById(com.example.bharath17.festember16.R.id.Cate);
+            this.lay=(RelativeLayout)itemView.findViewById(com.example.bharath17.festember16.R.id.singlelistlayout);
+            this.line=(ImageView)itemView.findViewById(com.example.bharath17.festember16.R.id.line);
             //this.text=(TextView)view.findViewById(R.id.textView);
 
         }
@@ -90,7 +89,7 @@ public class RecycleList extends RecyclerView.Adapter<RecycleList.CustomViewHold
 
     @Override
     public CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_single, null);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(com.example.bharath17.festember16.R.layout.list_single, null);
 
         CustomViewHolder viewHolder = new CustomViewHolder(view);
         return viewHolder;
