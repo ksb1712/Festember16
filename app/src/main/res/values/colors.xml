@@ -8,6 +8,9 @@
     <color name="buttonBackground">#06735e</color>
     <color name="grey">#fff</color>
 
+    <color name="UpcomingColor1">#0ccfa9</color>
+    <color name="UpcomingNotifications">#32b999</color>
+
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
