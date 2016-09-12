@@ -60,16 +60,16 @@ public class EventsAdapter extends ArrayAdapter<Events>{
             view.setTag(holder);
 
             holder.textView.setText(
-                    (position+1) + ") " + parseEventName(eventses.get(position).getEventName()));
+                    (position+1) + ") " + parseEventName(eventses.get(position).getName()));
             holder.textView1.setText(
-                    "Starts at: " + eventses.get(position).getEventStartTime()
+                    "Starts at: " + eventses.get(position).getStartTime()
 
                             + " on " +
 
-                            parseEventDate(eventses.get(position).getEventDate())
+                            parseEventDate(eventses.get(position).getDate())
             );
 
-            holder.textView2.setText(eventses.get(position).getEventVenue());
+            holder.textView2.setText(eventses.get(position).getVenue());
 
         }
 
