@@ -1,27 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textAppearance="?android:attr/textAppearanceSmall"
-    android:padding="5dp"
-<<<<<<< HEAD
-    android:background="@color/grey"
-=======
-    android:background="@color/pragyan_dark_grey"
->>>>>>> c400efa850cf2748e15fa89472f62f3524d8f932
-    android:id="@+id/spinnerstyle"
-    android:layout_alignBottom="@+id/describe"
-    android:layout_toLeftOf="@+id/describe"
-    android:layout_toStartOf="@+id/describe"
-    android:layout_marginRight="20dp"
-    android:layout_marginEnd="20dp"
-    android:textColor="#ffffff"
-    android:textSize="15dp"
-    android:gravity="center_vertical|center|center_horizontal"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-<<<<<<< HEAD
-    />
-=======
-    />
->>>>>>> c400efa850cf2748e15fa89472f62f3524d8f932
+</LinearLayout>
