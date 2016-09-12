@@ -5,7 +5,11 @@
     android:layout_height="wrap_content"
     android:textAppearance="?android:attr/textAppearanceSmall"
     android:padding="5dp"
+<<<<<<< HEAD
     android:background="@color/grey"
+=======
+    android:background="@color/pragyan_dark_grey"
+>>>>>>> c400efa850cf2748e15fa89472f62f3524d8f932
     android:id="@+id/spinnerstyle"
     android:layout_alignBottom="@+id/describe"
     android:layout_toLeftOf="@+id/describe"
@@ -16,4 +20,8 @@
     android:textSize="15dp"
     android:gravity="center_vertical|center|center_horizontal"
     xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
     />
+=======
+    />
+>>>>>>> c400efa850cf2748e15fa89472f62f3524d8f932
