@@ -125,12 +125,12 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        layoutParams.height = (int) (displayMetrics.heightPixels * 0.4);
+        layoutParams.height = (int) (displayMetrics.heightPixels * 0.3);
 
         mapFragment.getView().setLayoutParams(layoutParams);
-        eventVenue.setText(events.getEventVenue());
-        eventStartTime.setText(events.getEventStartTime());
-        eventCluster.setText(events.getEventCluster());
+        eventVenue.setText(events.getVenue());
+        eventStartTime.setText(events.getStartTime());
+        eventCluster.setText(events.getCluster());
 
     }
 
@@ -205,8 +205,8 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
 
 
         LatLng eventLocationLatLng = new LatLng(
-                Double.parseDouble(events.getEventLocY()),
-                Double.parseDouble(events.getEventLocX())
+                Double.parseDouble(events.getLocationY()),
+                Double.parseDouble(events.getLocationX())
         );
 
         BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.festember_logo);
@@ -218,8 +218,8 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
                         .position(
                                 eventLocationLatLng
                         )
-                        .title(EventsAdapter.parseEventName(events.getEventName()) +
-                                " at " + events.getEventVenue())
+                        .title(EventsAdapter.parseEventName(events.getName()) +
+                                " at " + events.getVenue())
                         .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
         );
 
