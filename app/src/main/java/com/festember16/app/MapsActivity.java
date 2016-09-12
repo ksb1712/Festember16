@@ -237,7 +237,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .title(
                                 EventsAdapter.parseEventName("Chore nite western" + //events.getEventName()) +
                                         " at " + "Barn"))//events.getEventVenue())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.festember_marker))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.festember_logo))
         );
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(centerBounds.getCenter(), 15));
 
