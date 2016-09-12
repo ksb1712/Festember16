@@ -1,4 +1,4 @@
-package com.festember16.app.festember16;
+package com.festember16.app;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
