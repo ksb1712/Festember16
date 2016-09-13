@@ -8,6 +8,13 @@
     android:background="@color/grey"
     tools:showIn="@layout/content_event_details">
 
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/eventPoster"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/ic_placeholder"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +35,7 @@
 
         <fragment
             android:layout_width="match_parent"
-            android:layout_height="256dp"
+            android:layout_height="180dp"
             android:id="@+id/mapPreview"
             android:layout_marginTop="16dp"
             class="com.google.android.gms.maps.SupportMapFragment" />
@@ -104,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Register"
-                android:id="@+id/button"
+                android:id="@+id/registerButton"
                 android:background="@color/buttonBackground"
                 android:textColor="@color/textColorLight"
                 android:textSize="24sp"

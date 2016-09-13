@@ -16,7 +16,11 @@ import butterknife.InjectView;
 public class DetailsActivity extends AppCompatActivity {
 
     public static final int MAP_REQUEST_CODE = 1001;
+    public static final String ID = "ID";
     int eventId = 2;
+
+    public static DBHandler db;
+    public static Events detailedEvent;
 
     @InjectView(R.id.pager)
     ViewPager pager;
@@ -32,7 +36,11 @@ public class DetailsActivity extends AppCompatActivity {
 
         ButterKnife.inject(this);
 
-        //Todo: get id from parent activity
+        db = new DBHandler(this);
+
+        //Todo: get id from parent activity// eventId = getIntent().getIntExtra("ID", 0);
+        //Todo: Test out dbhandler call
+        detailedEvent = db.getEvent(eventId);
 
         pager.setAdapter(
                 new MyPagerAdapter(getSupportFragmentManager(), eventId)
@@ -41,6 +49,13 @@ public class DetailsActivity extends AppCompatActivity {
         tabs.setDistributeEvenly(true);
         tabs.setViewPager(pager);
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        db.close();
     }
 
     @Override
@@ -61,7 +76,7 @@ public class DetailsActivity extends AppCompatActivity {
                         MapsActivity.class
                 );
 
-                Gson gson = new Gson();
+               intent.putExtra(ID, eventId);
 
                 startActivityForResult(intent, MAP_REQUEST_CODE);
 
