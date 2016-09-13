@@ -3,6 +3,8 @@ package com.festember16.app;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.LocationManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -25,26 +27,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public static final int PERMISSION_REQUEST_CODE = 1000;
     public static final int LOCATION_ENABLE_REQUEST_CODE = 1002;
+    public static final String ID = "ID";
     private GoogleMap mMap;
+    private DBHandler db;
+    private Events events;
     private boolean isLocationEnabled = false;
     private boolean isPermissionGiven = true;
-
-    private static LatLngBounds NITT = new LatLngBounds(
-            new LatLng(10.7608207, 78.8081094),
-            new LatLng(10.7675061, 78.8218299)
-    );
-
-    private static LatLng BARN = new LatLng(
-            10.7592756,
-            78.8132713
-    );
 
     private static final String[] PERMISSIONS = {
             android.Manifest.permission.ACCESS_COARSE_LOCATION,
             android.Manifest.permission.ACCESS_FINE_LOCATION
     };
-
-    //Events events;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +48,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        db = new DBHandler(this);
+
+        //Todo: get Event id from parent activity and take actual data from database
+        events = db.getEvent(getIntent().getIntExtra(ID, 1));
 
 //        Gson gson = new Gson();
 //
@@ -220,24 +218,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 
-        // Add a marker at event location and move the camera
-//        LatLng eventLocation = new LatLng(
-//                Double.parseDouble(events.getEventLocY()),
-//                Double.parseDouble(events.getEventLocX()));
+//         Add a marker at event location and move the camera
+        LatLng eventLocation = new LatLng(
+                Double.parseDouble(events.getLocationY()),
+                Double.parseDouble(events.getLocationX()));
         LatLngBounds centerBounds = new LatLngBounds(
-                new LatLng(BARN.latitude, BARN.longitude),
-                new LatLng(BARN.latitude, BARN.longitude)
+                new LatLng(eventLocation.latitude, eventLocation.longitude),
+                new LatLng(eventLocation.latitude, eventLocation.longitude)
         );
 
-
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.festember_logo);
+        Bitmap bitmap =  bitmapDrawable.getBitmap();
+        bitmap = Bitmap.createScaledBitmap(bitmap, 80, 80, false);
 
         mMap.addMarker(
                 new MarkerOptions()
-                        .position(BARN)
+                        .position(eventLocation)
                         .title(
-                                EventsAdapter.parseEventName("Chore nite western" + //events.getEventName()) +
-                                        " at " + "Barn"))//events.getEventVenue())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.festember_logo))
+                                EventsAdapter.parseEventName(events.getName() +
+                                        " at " + events.getVenue())
+                        )
+                        .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
         );
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(centerBounds.getCenter(), 15));
 

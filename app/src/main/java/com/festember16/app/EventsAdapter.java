@@ -79,6 +79,17 @@ public class EventsAdapter extends ArrayAdapter<Events>{
 
     }
 
+    public static String parseEventTime(String eventTime){
+        String buf[] = eventTime.split(":");
+
+        if(buf.length==3){
+            return buf[0] + ":" + buf[1];
+        }
+
+        else
+            return eventTime;
+    }
+
     public static String parseEventDate(String eventDate){
 
         String [] strings = eventDate.split("-");
