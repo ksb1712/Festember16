@@ -166,6 +166,18 @@ public class MyProfile extends AppCompatActivity {
             case R.id.qr_code:
                 Toast.makeText(MyProfile.this, "Coming Soon!", Toast.LENGTH_SHORT).show();
                 break;
+
+            case R.id.logout:
+                //Todo: Call api for logout
+                //Todo: if(response==true)
+
+                SharedPreferences preferences = getSharedPreferences
+                        (DetailsFragment.REGISTERED_EVENTS, MODE_PRIVATE);
+
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.clear();
+                editor.apply();
+
         }
 
         return super.onOptionsItemSelected(item);

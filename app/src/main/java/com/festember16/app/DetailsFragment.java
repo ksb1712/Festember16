@@ -273,9 +273,9 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
 
         mMap = googleMap;
 
-        hasPermission();
+        if(hasPermission());
 
-        if (checkLocationEnabled())
+        else if (checkLocationEnabled())
             isLocationEnabled = true;
         else {
             isLocationEnabled = false;

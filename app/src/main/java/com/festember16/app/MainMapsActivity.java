@@ -1,5 +1,6 @@
 package com.festember16.app;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,25 +13,30 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+public class MainMapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     public static final int PERMISSION_REQUEST_CODE = 1000;
     public static final int LOCATION_ENABLE_REQUEST_CODE = 1002;
-    public static final String ID = "ID";
+    public static final String LOG_TAG = "MainMapsActivity";
+
     private GoogleMap mMap;
-    private DBHandler db;
-    private Events events;
+
     private boolean isLocationEnabled = false;
     private boolean isPermissionGiven = true;
 
@@ -39,55 +45,120 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             android.Manifest.permission.ACCESS_FINE_LOCATION
     };
 
+    public static final Map<String, LatLng> allLocations;
+    static{
+        allLocations = new HashMap<>();
+
+        allLocations.put("BARN", new LatLng(
+                10.7592931, 78.8132237
+        ));
+        allLocations.put("OAT", new LatLng(
+                10.7614920, 78.8106944
+        ));
+        allLocations.put("LHC", new LatLng(
+                10.7611251, 78.8139496
+        ));
+        allLocations.put("ORION", new LatLng(
+                10.7596952, 78.8111098
+        ));
+        allLocations.put("EEE AUDI", new LatLng(
+                10.758921, 78.814679
+        ));
+        allLocations.put("ADMIN", new LatLng(
+                10.757987, 78.813314
+        ));
+        allLocations.put("ARCHI DEPT", new LatLng(
+                10.7601962, 78.8099749
+        ));
+        allLocations.put("SAC", new LatLng(
+                10.760196, 78.809975
+        ));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-
+        setContentView(R.layout.activity_main_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        db = new DBHandler(this);
-
-        //Todo: get Event id from parent activity and take actual data from database
-        events = db.getEvent(getIntent().getIntExtra(ID, 1));
-
-//        Gson gson = new Gson();
-//
-//        events = gson.fromJson(getIntent().getStringExtra(ListActivity.EVENT), Events.class);
-
-
     }
 
 
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
 
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 2) {
-                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED
-                            && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                        isPermissionGiven = true;
-                    } else {
+        if(hasPermission());
 
-                        Toast.makeText(MapsActivity.this, "Location needs to be enabled",
-                                Toast.LENGTH_SHORT).show();
-                        setResult(RESULT_CANCELED);
-                        finish();
-                    }
 
-                }
+
+        BitmapDrawable bitmapDrawable = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.festember_logo, null);
+        }
+        else{
+            bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.festember_logo);
+
+        }
+        Bitmap bitmap =  bitmapDrawable.getBitmap();
+        bitmap = Bitmap.createScaledBitmap(bitmap, 80, 80, false);
+
+
+        // Add a marker in Sydney and move the camera
+
+        Iterator iterator = allLocations.entrySet().iterator();
+
+        while(iterator.hasNext()){
+
+            Map.Entry<String, LatLng> entry = (Map.Entry<String, LatLng>) iterator.next();
+
+            mMap.addMarker(
+                    new MarkerOptions()
+                    .position(entry.getValue())
+                    .title(entry.getKey())
+                    .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+            );
+
         }
 
-
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(allLocations.get("ADMIN"), 15));
     }
 
-    private boolean checkLocationEnabled() {
+    public boolean hasPermission(){
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
 
-        LocationManager manager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            isPermissionGiven = false;
+            isLocationEnabled = false;
+
+            ActivityCompat.requestPermissions(
+                    this,
+                    PERMISSIONS,
+                    PERMISSION_REQUEST_CODE
+            );
+
+            return false;
+        }
+
+        else
+            return true;
+    }
+
+    public boolean checkLocationEnabled() {
+
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         return ((
                 manager.isProviderEnabled(LocationManager.GPS_PROVIDER)
@@ -95,10 +166,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ));
 
     }
-
     private void enableLocationDialog() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this)
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("Enable Location?")
                 .setMessage("You need to enable location to show your location on map")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -107,6 +177,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Intent intent = new Intent(
                                 Settings.ACTION_LOCATION_SOURCE_SETTINGS
                         );
+
+                        Log.d(LOG_TAG, "Starting settings implicit activity");
 
                         startActivityForResult(intent, LOCATION_ENABLE_REQUEST_CODE);
                     }
@@ -121,6 +193,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         builder.show();
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+
+            case PERMISSION_REQUEST_CODE:
+
+
+                if(grantResults.length==2){
+                    if(
+                            grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                                    grantResults[1] == PackageManager.PERMISSION_GRANTED
+                            )
+                        isPermissionGiven = true;
+                }
+                break;
+        }
     }
 
     @Override
@@ -156,7 +246,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 @Override
                                 public boolean onMyLocationButtonClick() {
 
-                                    Toast.makeText(MapsActivity.this, "Loading...", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainMapsActivity.this, "Loading...", Toast.LENGTH_SHORT).show();
 
                                     return false;
                                 }
@@ -167,82 +257,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            isPermissionGiven = false;
-            isLocationEnabled = false;
-
-            ActivityCompat.requestPermissions(
-                    this,
-                    PERMISSIONS,
-                    PERMISSION_REQUEST_CODE
-            );
-
-        }
-
-        else if(checkLocationEnabled()){
-            isLocationEnabled = true;
-        }
-
-        else{
-            enableLocationDialog();
-        }
-
-        if(isPermissionGiven&&isLocationEnabled)
-        {
-            mMap.setMyLocationEnabled(true);
-            mMap.setOnMyLocationButtonClickListener(
-                    new GoogleMap.OnMyLocationButtonClickListener() {
-                        @Override
-                        public boolean onMyLocationButtonClick() {
-
-                            Toast.makeText(MapsActivity.this, "Loading...", Toast.LENGTH_SHORT).show();
-
-                            return false;
-                        }
-                    }
-            );
-        }
-
-
-//         Add a marker at event location and move the camera
-        LatLng eventLocation = new LatLng(
-                Double.parseDouble(events.getLocationY()),
-                Double.parseDouble(events.getLocationX()));
-        LatLngBounds centerBounds = new LatLngBounds(
-                new LatLng(eventLocation.latitude, eventLocation.longitude),
-                new LatLng(eventLocation.latitude, eventLocation.longitude)
-        );
-
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.festember_logo);
-        Bitmap bitmap =  bitmapDrawable.getBitmap();
-        bitmap = Bitmap.createScaledBitmap(bitmap, 80, 80, false);
-
-        mMap.addMarker(
-                new MarkerOptions()
-                        .position(eventLocation)
-                        .title(
-                                EventsAdapter.parseEventName(events.getName() +
-                                        " at " + events.getVenue())
-                        )
-                        .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
-        );
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(centerBounds.getCenter(), 15));
-
-
-    }
 
 }
