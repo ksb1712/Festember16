@@ -128,7 +128,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public String getCluster() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String select = "SELECT DISTINCT " + KEY_CLUSTER + " from " + TABLE_EVENTS;
+        String select = "SELECT DISTINCT " + KEY_CLUSTER + " FROM " + TABLE_EVENTS;
         Cursor c = db.rawQuery(select, null);
 
         String s = c.toString();

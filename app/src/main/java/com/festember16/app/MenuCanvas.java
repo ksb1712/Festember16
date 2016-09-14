@@ -285,13 +285,15 @@ public class MenuCanvas extends View
                         // goto events Page
                         Log.d(LOG_TAG, "You clicked Events");
                         Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
-                        Intent i2 = new Intent(context, DetailsActivity.class);
-                        context.startActivity(i2);
+                        Intent i1 = new Intent(context, ClusterPage.class);
+                        context.startActivity(i1);
                         break;
                     case "Game":
                         // goto events Page
                         Log.d(LOG_TAG, "You clicked Game");
                         Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
+                        Intent i2 = new Intent(context, DetailsActivity.class);
+                        context.startActivity(i2);
 
                         break;
                     case "Profile":
