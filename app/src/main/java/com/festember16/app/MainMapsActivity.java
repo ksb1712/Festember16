@@ -139,14 +139,14 @@ public class MainMapsActivity extends FragmentActivity implements OnMapReadyCall
 
         BitmapDrawable bitmapDrawable = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.festember_logo, null);
+            bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.locator_icon, null);
         }
         else{
-            bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.festember_logo);
+            bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.locator_icon);
 
         }
         Bitmap bitmap =  bitmapDrawable.getBitmap();
-        bitmap = Bitmap.createScaledBitmap(bitmap, 80, 80, false);
+        bitmap = Bitmap.createScaledBitmap(bitmap, 90, 135, false);
 
 
         // Add a marker in Sydney and move the camera

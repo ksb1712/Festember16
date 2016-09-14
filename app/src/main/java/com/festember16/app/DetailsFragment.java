@@ -147,6 +147,8 @@ public class DetailsFragment extends Fragment {
 
         if(hasRegistered){
             registerButton.setText("REGISTERED");
+            registerButton.setBackgroundColor(getResources().getColor(R.color.aluminum));
+            registerButton.setTextColor(Color.BLACK);
         }
 
         registerButton.setOnClickListener(
