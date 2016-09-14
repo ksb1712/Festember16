@@ -101,7 +101,7 @@
 
     </ScrollView>
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Register"
@@ -112,9 +112,7 @@
         android:textStyle="bold"
         android:padding="10dp"
         android:layout_marginTop="20dp"
-        android:typeface="serif"
-
-/>
+        android:typeface="serif"/>
 
 </LinearLayout>
 
