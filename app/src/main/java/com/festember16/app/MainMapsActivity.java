@@ -100,7 +100,18 @@ public class MainMapsActivity extends FragmentActivity implements OnMapReadyCall
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        if(hasPermission());
+        if(!hasPermission()){
+            callPermissionRequest();
+        }
+
+        else if(checkLocationEnabled()){
+            isLocationEnabled=true;
+        }
+        else
+        {
+            isLocationEnabled=false;
+            enableLocationDialog();
+        }
 
 
 
@@ -133,7 +144,7 @@ public class MainMapsActivity extends FragmentActivity implements OnMapReadyCall
 
         }
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(allLocations.get("ADMIN"), 15));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(allLocations.get("ADMIN"), 16));
     }
 
     public boolean hasPermission(){
@@ -143,12 +154,6 @@ public class MainMapsActivity extends FragmentActivity implements OnMapReadyCall
             isPermissionGiven = false;
             isLocationEnabled = false;
 
-            ActivityCompat.requestPermissions(
-                    this,
-                    PERMISSIONS,
-                    PERMISSION_REQUEST_CODE
-            );
-
             return false;
         }
 
@@ -156,14 +161,26 @@ public class MainMapsActivity extends FragmentActivity implements OnMapReadyCall
             return true;
     }
 
+    private void callPermissionRequest() {
+        ActivityCompat.requestPermissions(
+                this,
+                PERMISSIONS,
+                PERMISSION_REQUEST_CODE
+        );
+    }
+
     public boolean checkLocationEnabled() {
+
 
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        return ((
+        boolean buf = ((
                 manager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                         || manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
         ));
+        Log.e(LOG_TAG, "Inside checkLocation Enabled " + buf);
+
+        return buf;
 
     }
     private void enableLocationDialog() {
@@ -228,7 +245,9 @@ public class MainMapsActivity extends FragmentActivity implements OnMapReadyCall
                     isLocationEnabled = true;
 
                 else
+                {
                     isLocationEnabled = false;
+                }
 
                 if (isPermissionGiven && isLocationEnabled) {
                     if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

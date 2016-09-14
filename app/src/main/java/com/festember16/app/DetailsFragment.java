@@ -273,7 +273,9 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
 
         mMap = googleMap;
 
-        if(hasPermission());
+        if(!hasPermission()){
+            callPermissionRequest();
+        }
 
         else if (checkLocationEnabled())
             isLocationEnabled = true;
@@ -341,17 +343,19 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback {
             isPermissionGiven = false;
             isLocationEnabled = false;
 
-            ActivityCompat.requestPermissions(
-                    getActivity(),
-                    PERMISSIONS,
-                    PERMISSION_REQUEST_CODE
-            );
-
             return false;
         }
 
         else
             return true;
+    }
+
+    private void callPermissionRequest() {
+        ActivityCompat.requestPermissions(
+                getActivity(),
+                PERMISSIONS,
+                PERMISSION_REQUEST_CODE
+        );
     }
 
     @Override
