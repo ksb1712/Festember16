@@ -124,4 +124,23 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         return event;
     }
+
+    public String getCluster() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String select = "SELECT DISTINCT " + KEY_CLUSTER + " from " + TABLE_EVENTS;
+        Cursor c = db.rawQuery(select, null);
+
+        String s = c.toString();
+        db.close();
+        c.close();
+        return s;
+    }
+
+
+
+
+
+
+    }
 }
