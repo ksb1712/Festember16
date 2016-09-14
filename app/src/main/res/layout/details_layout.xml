@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:background="@color/grey"
-    tools:showIn="@layout/content_event_details">
+    tools:showIn="@layout/content_event_details"
+    >
 
     <ImageView
         android:layout_width="100dp"
@@ -34,7 +35,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
         android:id="@+id/scrollView">
 
         <LinearLayout
@@ -97,21 +98,23 @@
 
         </LinearLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Register"
-            android:id="@+id/registerButton"
-            android:background="@color/buttonBackground"
-            android:textColor="@color/textColorLight"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:padding="10dp"
-            android:layout_marginTop="20dp"
-            android:typeface="serif" />
 
     </ScrollView>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:id="@+id/registerButton"
+        android:background="@color/buttonBackground"
+        android:textColor="@color/textColorLight"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        android:typeface="serif"
+
+/>
 
 </LinearLayout>
 

@@ -135,10 +135,10 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
         }
 
 
-        LatLng eventLocationLatLng = new LatLng(
-                Double.parseDouble(DetailsFragment.events.getLocationY()),
-                Double.parseDouble(DetailsFragment.events.getLocationX())
-        );
+//        LatLng eventLocationLatLng = new LatLng(
+//                Double.parseDouble(DetailsFragment.events.getLocationY()),
+//                Double.parseDouble(DetailsFragment.events.getLocationX())
+//        );
 
         BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.festember_logo);
         Bitmap bitmap =  bitmapDrawable.getBitmap();
@@ -147,15 +147,16 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
         mMap.addMarker(
                 new MarkerOptions()
                         .position(
-                                eventLocationLatLng
+                                MainMapsActivity.allLocations.get("BARN")
+                                //eventLocationLatLng
                         )
-                        .title(EventsAdapter.parseEventName(DetailsFragment.events.getName()) +
-                                " at " + DetailsFragment.events.getVenue())
+                        .title( "BARN")//EventsAdapter.parseEventName(DetailsFragment.events.getName()) +
+//                                " at " + DetailsFragment.events.getVenue())
                         .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
         );
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                eventLocationLatLng,
+                MainMapsActivity.allLocations.get("BARN"), //eventLocationLatLng,
                 16
         ));
 

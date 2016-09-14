@@ -47,7 +47,7 @@ public class RulesFragment extends Fragment {
             events = DetailsActivity.detailedEvent;
             //Just in case
             if(events == null){
-                events = DetailsActivity.db.getEvent(id);
+               // events = DetailsActivity.db.getEvent(id);
             }
 
             //Todo: set rules from events
