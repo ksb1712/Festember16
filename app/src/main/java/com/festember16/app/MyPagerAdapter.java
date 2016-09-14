@@ -29,7 +29,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 ContactsFragment contactsFragment = ContactsFragment.getInstance(eventId);
                 return contactsFragment;
-            
+
 
             case 2:
                 RulesFragment rulesFragment = RulesFragment.getInstance(eventId);

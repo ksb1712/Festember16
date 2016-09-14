@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }*/
 
-        Intent i = new Intent(this,MainMenu.class);
+        Intent i = new Intent(this,ClusterPage.class);
         startActivity(i);
 
 
