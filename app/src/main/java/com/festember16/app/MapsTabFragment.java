@@ -46,6 +46,7 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
 
     public GoogleMap mMap;
     SupportMapFragment mapFragment;
+    private static View view = null;
 
     private boolean isLocationEnabled = true;
     private boolean isPermissionGiven = true;
@@ -57,8 +58,30 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.mapsfragmentlayout, container, false);
 
+       if(view==null) {
+           view = inflater.inflate(R.layout.mapsfragmentlayout, container, false);
+
+           FragmentManager fm = getChildFragmentManager();
+           mapFragment = (SupportMapFragment)
+                   fm.findFragmentById(R.id.mapPreview);
+
+           if(mapFragment == null){
+               mapFragment = SupportMapFragment.newInstance();
+               fm.beginTransaction().replace(R.id.mapContainer, mapFragment);
+
+               ViewGroup.LayoutParams layoutParams = mapFragment.getView().getLayoutParams();
+
+               DisplayMetrics displayMetrics = new DisplayMetrics();
+               getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+               layoutParams.height = (int) (displayMetrics.heightPixels * 0.7);
+               layoutParams.width = (int) (displayMetrics.widthPixels * 0.9);
+
+               mapFragment.getView().setLayoutParams(layoutParams);
+           }
+
+       }
         return view;
     }
 
@@ -67,24 +90,8 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
         super.onActivityCreated(savedInstanceState);
 
 
-        FragmentManager fm = getChildFragmentManager();
-        mapFragment = (SupportMapFragment)
-                fm.findFragmentById(R.id.mapPreview);
 
-        if(mapFragment == null){
-            mapFragment = SupportMapFragment.newInstance();
-            fm.beginTransaction().replace(R.id.mapContainer, mapFragment);
-        }
 
-        ViewGroup.LayoutParams layoutParams = mapFragment.getView().getLayoutParams();
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-        layoutParams.height = (int) (displayMetrics.heightPixels * 0.7);
-        layoutParams.width = (int) (displayMetrics.widthPixels * 0.7);
-
-        mapFragment.getView().setLayoutParams(layoutParams);
     }
 
     @Override
@@ -140,9 +147,9 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
 //                Double.parseDouble(DetailsFragment.events.getLocationX())
 //        );
 
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.festember_logo);
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.locator_icon);
         Bitmap bitmap =  bitmapDrawable.getBitmap();
-        bitmap = Bitmap.createScaledBitmap(bitmap, 80, 80, false);
+        bitmap = Bitmap.createScaledBitmap(bitmap, 90, 135, false);
 
         mMap.addMarker(
                 new MarkerOptions()

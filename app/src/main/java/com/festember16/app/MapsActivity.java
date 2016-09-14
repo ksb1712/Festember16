@@ -229,9 +229,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 new LatLng(eventLocation.latitude, eventLocation.longitude)
         );
 
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.festember_logo);
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.locator_icon);
         Bitmap bitmap =  bitmapDrawable.getBitmap();
-        bitmap = Bitmap.createScaledBitmap(bitmap, 80, 80, false);
+        bitmap = Bitmap.createScaledBitmap(bitmap, 90, 135, false);
 
         mMap.addMarker(
                 new MarkerOptions()

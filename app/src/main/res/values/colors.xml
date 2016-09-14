@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="textColorLight">#0ccfa9</color>
-    <color name="textColorVibrant">#32b999</color>
-    <color name="background">#034336</color>
-    <color name="backgroundLight">#2b6157</color>
-    <color name="buttonBackground">#06735e</color>
+    <color name="textColorLight">#0887ab</color>
+    <color name="textColorVibrant">#2a7a83</color>
+    <color name="background">#034143</color>
+    <color name="backgroundLight">#2b5261</color>
+    <color name="buttonBackground">#054960</color>
     <color name="grey">#fff</color>
 
     <color name="UpcomingColor1">#0ccfa9</color>
