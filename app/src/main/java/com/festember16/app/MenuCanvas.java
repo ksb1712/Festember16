@@ -275,13 +275,27 @@ public class MenuCanvas extends View
                 {
                     case "Map":
                         // Call Intents
-                        Intent intent = new Intent(context, MainMenu.class);
                         Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, MainMapsActivity.class);
+                        context.startActivity(intent);
                         break;
                     case "Events":
                         // goto events Page
                         Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
+                        Intent i2 = new Intent(context, DetailsActivity.class);
+                        context.startActivity(i2);
                         break;
+                    case "Game":
+                        // goto events Page
+                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
+
+                        break;
+                    case "Profile":
+                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
+                        Intent i3 = new Intent(context,MyProfile.class);
+                        context.startActivity(i3);
+                        break;
+
                     // Add other cases
                     default:
                         // do nothing
