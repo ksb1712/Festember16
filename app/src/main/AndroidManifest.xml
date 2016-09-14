@@ -52,10 +52,6 @@
             android:label="@string/title_activity_details"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".ListActivity" />
-
         <activity
             android:name=".MainMapsActivity"
             android:label="@string/title_activity_main_maps" >
@@ -74,7 +70,8 @@
         </activity>
 
         <activity android:name=".MainMenu"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomNoActionBarTheme">
 
         </activity>
     </application>
