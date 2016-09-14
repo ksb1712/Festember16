@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
@@ -25,7 +26,7 @@ public class MenuCanvas extends View
 {
 
 
-
+    public static final String LOG_TAG = "MenuCanvas";
     private Context context;
 
     float dpHeight, dpWidth, maxRadius, m;
@@ -275,28 +276,44 @@ public class MenuCanvas extends View
                 {
                     case "Map":
                         // Call Intents
+                        Log.d(LOG_TAG, "You clicked Map");
                         Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, MainMapsActivity.class);
                         context.startActivity(intent);
                         break;
                     case "Events":
                         // goto events Page
+                        Log.d(LOG_TAG, "You clicked Events");
                         Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         Intent i2 = new Intent(context, DetailsActivity.class);
                         context.startActivity(i2);
                         break;
                     case "Game":
                         // goto events Page
+                        Log.d(LOG_TAG, "You clicked Game");
                         Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
 
                         break;
                     case "Profile":
+                        Log.d(LOG_TAG, "You clicked Profile");
                         Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         Intent i3 = new Intent(context,MyProfile.class);
                         context.startActivity(i3);
                         break;
 
                     // Add other cases
+
+                    case "Schedule":
+                        Log.d(LOG_TAG, "You clicked Schedule");
+                        break;
+
+                    case "Contacts":
+                        Log.d(LOG_TAG, "You clicked Contacts");
+                        break;
+
+                    case "Notifications":
+                        Log.d(LOG_TAG, "You clicked Notifications");
+
                     default:
                         // do nothing
 
