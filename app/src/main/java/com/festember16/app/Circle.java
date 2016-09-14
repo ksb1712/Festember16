@@ -41,7 +41,14 @@ public class Circle implements Comparable<Circle>
         {
             return 1;
         }
-
+        if( cy < o.cy )
+        {
+            return -1;
+        }
+        else if( cy > o.cy)
+        {
+            return 1;
+        }
         return  0;
     }
 }

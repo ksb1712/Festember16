@@ -2,10 +2,12 @@ package com.festember16.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class MenuCanvas extends View
@@ -26,7 +29,6 @@ public class MenuCanvas extends View
     private Context context;
 
     float dpHeight, dpWidth, maxRadius, m;
-    float vX , vY, acc = 20, dx, dy;
 
     //List of colours to choose random colours
     List<Paint> colours = new ArrayList<>();
@@ -37,6 +39,7 @@ public class MenuCanvas extends View
     Paint textPaint = new Paint();
 
     boolean draw = true;
+
 
 
     public MenuCanvas(Context context)
@@ -54,12 +57,8 @@ public class MenuCanvas extends View
 
         Paint p = new Paint();
         p.setAntiAlias(true);
-        p.setColor(Color.YELLOW);
-        p.setShadowLayer( maxRadius , 20 , 20 , Color.RED);
-        colours.add(p);
-        p = new Paint();
-        p.setAntiAlias(true);
-        p.setColor(Color.rgb(255, 105, 180));
+        p.setColor(Color.rgb(255 , 204 , 0));
+        //p.setShadowLayer( maxRadius , 20 , 20 , Color.RED);
         colours.add(p);
         p = new Paint();
         p.setAntiAlias(true);
@@ -67,15 +66,25 @@ public class MenuCanvas extends View
         colours.add(p);
         p = new Paint();
         p.setAntiAlias(true);
+        p.setColor(Color.rgb(255, 105, 180));
+        colours.add(p);
+        p = new Paint();
+        p.setAntiAlias(true);
         p.setColor(Color.CYAN);
         colours.add(p);
+        p = new Paint();
+        p.setAntiAlias(true);
+        p.setColor(Color.LTGRAY);
+        colours.add(p);
 
-        textPaint.setColor(Color.BLUE);
+        textPaint.setColor(Color.BLACK);
+        AssetManager am = context.getApplicationContext().getAssets();
+        Typeface custom_font = Typeface.createFromAsset(am , String.format(Locale.US, "fonts/%s" , "HARLOWSI.TTF"));
+        textPaint.setTypeface(custom_font);
         textPaint.setTextSize((maxRadius/3));
         initCircles();
 
     }
-
 
 
     private float dist( float x1, float y1, float x2, float y2)
@@ -104,10 +113,10 @@ public class MenuCanvas extends View
                 circle.cy = y;
 
 
-                index = random.nextInt(4);
+                index = random.nextInt(5);
                 while( index == prevIndex )
                 {
-                    index = random.nextInt(4);
+                    index = random.nextInt(5);
                 }
                 prevIndex = index;
                 circle.colour = colours.get(index);
@@ -136,6 +145,10 @@ public class MenuCanvas extends View
                     circle.radius = px(20)*maxRadius/dist( dpWidth/2, dpHeight/2, x , y);
                 }
 
+                if( circle.cx == 0)
+                {
+                    circle.visibility = false;
+                }
                 circles.add(circle);
             }
             c += dpHeight/3;
@@ -153,7 +166,12 @@ public class MenuCanvas extends View
                 circle.cy = y;
 
 
-                index = random.nextInt(4);
+                index = random.nextInt(5);
+                while( index == prevIndex )
+                {
+                    index = random.nextInt(5);
+                }
+                prevIndex = index;
                 circle.colour = colours.get(index);
                 //circle.radius = maxRadius;
                 if( x < 0 || y < 0 || y > dpHeight || x >= dpWidth)
@@ -178,7 +196,10 @@ public class MenuCanvas extends View
                     circle.text = "";
                     circle.radius = px(20)*maxRadius/dist( dpWidth/2, dpHeight/2, x , y);
                 }
-
+                if( circle.cx == 0)
+                {
+                    circle.visibility = false;
+                }
                 circles.add(circle);
             }
             c -= dpHeight/3;
@@ -193,30 +214,45 @@ public class MenuCanvas extends View
     protected void onDraw(Canvas canvas)
     {
         super.onDraw(canvas);
-        canvas.drawColor(Color.rgb(100,0,128));
+        canvas.drawColor(Color.rgb(100,0,100));
 
         for( Circle c: circles)
         {
-            canvas.drawCircle( c.cx, c.cy , c.radius , c.colour );
+            if( c.visibility)
+            {
+                canvas.drawCircle( c.cx, c.cy , c.radius , c.colour );
+            }
+            else
+            {
+                c.visibility = true;
+            }
 
         }
-        int div;
+        float div = 4;
         if( draw )
         {
             for( int i = 0 ; i < mainCircles.size() ; i++)
             {
                 Circle c = mainCircles.get(i);
-                if( c.text.length() < 6)
+                if( c.text.length() < 4)
                 {
+                    textPaint.setTextSize(maxRadius/2.5f);
+                    div = 3.5f;
+                }
+                else if( c.text.length() < 6)
+                {
+                    textPaint.setTextSize(maxRadius/2.5f);
                     div = 4;
                 }
                 else if( c.text.length() < 9)
                 {
+                    textPaint.setTextSize(maxRadius/2.5f);
                     div = 6;
                 }
                 else
                 {
                     div = 7;
+                    textPaint.setTextSize(maxRadius/3);
                 }
                 canvas.drawText( c.text , c.cx - c.text.length()/2.0f*maxRadius/div  , c.cy , textPaint );
             }
@@ -226,7 +262,7 @@ public class MenuCanvas extends View
     }
 
 
-    // Tapped event handler
+    //Call other sctivities
     public boolean tapped( float x , float y)
     {
 
@@ -238,6 +274,8 @@ public class MenuCanvas extends View
                 switch ( c.text )
                 {
                     case "Map":
+                        // Call Intents
+                        Intent intent = new Intent(context, MainMenu.class);
                         Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         break;
                     case "Events":
@@ -260,7 +298,7 @@ public class MenuCanvas extends View
 
     public void fling(float distanceX, float distanceY)
     {
-        int i , j;
+        int i;
         float x, y;
         Circle c;
         mainCircles.clear();
@@ -340,10 +378,10 @@ public class MenuCanvas extends View
             }
         }
 
-        //Collections.sort( mainCircles );
-        //sort_circles();
         invalidate();
     }
+
+
 
     private int px(double pix)
     {
