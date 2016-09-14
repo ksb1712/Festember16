@@ -42,7 +42,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 + KEY_VENUE + " TEXT," + KEY_LAST_UPDATE_TIME + " TEXT,"
                 + KEY_LOCATION_X + " TEXT," + KEY_LOCATION_Y + " TEXT,"
                 + KEY_MAX_LIMIT + " TEXT," + KEY_CLUSTER + " TEXT"
-                + KEY_DATE + " TEXT," + ")";
+                + KEY_DATE + " TEXT" + ")";
         db.execSQL(CREATE_EVENTS_TABLE);
     }
 
@@ -106,18 +106,19 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM Data WHERE id = " + id, null);
 
         Events event = new Events();
-
-        event.setId(cursor.getInt(0));
-        event.setName(cursor.getString(1));
-        event.setStartTime(cursor.getString(2));
-        event.setEndTime(cursor.getString(3));
-        event.setVenue(cursor.getString(4));
-        event.setLastUpdateTime(cursor.getString(5));
-        event.setLocationX(cursor.getString(6));
-        event.setLocationY(cursor.getString(7));
-        event.setMaxLimit(cursor.getString(8));
-        event.setCluster(cursor.getString(9));
-        event.setDate(cursor.getString(10));
+        if(cursor != null) {
+            event.setId(cursor.getInt(0));
+            event.setName(cursor.getString(1));
+            event.setStartTime(cursor.getString(2));
+            event.setEndTime(cursor.getString(3));
+            event.setVenue(cursor.getString(4));
+            event.setLastUpdateTime(cursor.getString(5));
+            event.setLocationX(cursor.getString(6));
+            event.setLocationY(cursor.getString(7));
+            event.setMaxLimit(cursor.getString(8));
+            event.setCluster(cursor.getString(9));
+            event.setDate(cursor.getString(10));
+        }
 
         db.close();
         cursor.close();
