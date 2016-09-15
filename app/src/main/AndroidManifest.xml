@@ -53,7 +53,8 @@
         <activity
             android:name=".DetailsActivity"
             android:label="@string/title_activity_details"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".MainMapsActivity"
@@ -70,7 +71,6 @@
 
         </activity>
 
-        <activity android:name=".ClusterPage"/>
 
         <activity android:name=".MainMenu"
             android:screenOrientation="portrait"
