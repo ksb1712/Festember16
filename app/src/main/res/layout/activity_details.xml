@@ -19,13 +19,23 @@
             />
 
 
-        <com.festember16.app.SlidingTabLayout
+        <!--<com.festember16.app.SlidingTabLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/tabs"-->
+            <!--android:scrollIndicators="bottom"-->
+            <!--&gt;-->
+        <!--</com.festember16.app.SlidingTabLayout>-->
+        <!---->
+        <android.support.design.widget.TabLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tabs"
-            android:scrollIndicators="bottom"
-            >
-        </com.festember16.app.SlidingTabLayout>
+            android:background="@color/colorPrimary"
+            app:tabTextColor="@color/white"
+            app:tabSelectedTextColor="@color/white">
+
+        </android.support.design.widget.TabLayout>
 
         <android.support.v4.view.ViewPager
             android:layout_width="wrap_content"

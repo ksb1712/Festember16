@@ -153,6 +153,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onCompleted() {
                 Log.d(LOG_TAG, "Completed!");
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9b8e6eecbe56ff763e5c75dce872e972097dabba
                 if(isFirstTime)
                 {
                     SharedPreferences preferences = getSharedPreferences(MainMapsActivity.FIRST_TIME, MODE_PRIVATE);
@@ -309,7 +313,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         );
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(centerBounds.getCenter(), 15));
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9b8e6eecbe56ff763e5c75dce872e972097dabba
 
 
     }
