@@ -72,7 +72,7 @@
             android:theme="@style/CustomNoActionBarTheme"></activity>
         <activity android:name="com.festember16.app.UpcomingActivity" />
 
-        </activity>
+
 
         <activity
             android:name="com.festember16.app.AndroidLauncher"
