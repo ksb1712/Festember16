@@ -134,7 +134,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String s = c.toString();
         db.close();
         c.close();
-        return s;
+        return s;       
     }
 
 
