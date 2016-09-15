@@ -32,6 +32,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText _passwordText;
 
     Button _loginButton;
-    SharedPreferences pref;
+    SharedPreferences pref,prefs;
 
     TextView _signupLink;
 
@@ -61,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
         pref = getSharedPreferences("user_auth", Context.MODE_PRIVATE);
+        prefs = getSharedPreferences("Time_stamp", Context.MODE_PRIVATE);
         _emailText = (EditText)findViewById(R.id.input_email);
         _passwordText = (EditText)findViewById(R.id.input_password);
         _loginButton = (Button)findViewById(R.id.btn_login);
@@ -85,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login() {
+        /*
         Log.d(TAG, "Login");
 
         if (!validate()) {
@@ -159,6 +163,11 @@ public class LoginActivity extends AppCompatActivity {
                                 onLoginFailed();
                                 break;
                         }
+
+                        String defaultValue = "Not yet updated";
+                        String time = prefs.getString("time", defaultValue);
+                        if(time == null || time.equals("Not yet updated")
+                            callDB();
                     }
                 },
                 new Response.ErrorListener() {
@@ -182,9 +191,50 @@ public class LoginActivity extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+        */
+        Intent i = new Intent(LoginActivity.this,MainMenu.class);
+        startActivity(i);
 
     }
 
+    public void callDB()
+    {
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
+                R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Fetching data...");
+        progressDialog.show();
+        //TODO called volley
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, Utilities.event_details_url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        JSONObject jsonResponse = null;
+                        Log.e("Response ",response);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        Date date = new Date();
+                        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
+                        String formattedDate = sdf.format(date);
+                        System.out.println(formattedDate);
+                        editor.putString("time",""+formattedDate);
+                        editor.apply();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        String defaultValue = "Not yet updated";
+                        String time = prefs.getString("time", defaultValue);
+                        Toast.makeText(LoginActivity.this," Events Last updated at "+ time,Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
