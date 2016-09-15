@@ -55,7 +55,12 @@ public class DetailsActivity extends AppCompatActivity {
             @TargetApi(Build.VERSION_CODES.M)
             @Override
             public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.colorAccent, null);
+                if(Build.VERSION.SDK_INT>=23){
+                    return getResources().getColor(R.color.colorAccent, null);
+                }
+                else{
+                    return getResources().getColor(R.color.colorAccent);
+                }
             }
         });
 
