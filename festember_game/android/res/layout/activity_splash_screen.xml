@@ -1,0 +1,76 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/splash_background"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.festember16.app.SplashScreen">
+
+
+    <ImageView
+        android:id="@+id/festember_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/festember_logo"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/fPlaneImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/fplane" />
+
+    <ImageView
+        android:id="@+id/polo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fPlaneImageView"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/polopunda" />
+
+    <ImageView
+        android:id="@+id/cloud0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/polo"
+        android:src="@drawable/cloud1" />
+
+    <ImageView
+        android:id="@+id/cloud1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/cloud0"
+        android:src="@drawable/cloud2" />
+
+    <ImageView
+        android:id="@+id/cloud2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cloud1"
+        android:src="@drawable/cloud2" />
+
+    <ImageView
+        android:id="@+id/cloud3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cloud2"
+        android:src="@drawable/cloud2" />
+
+    <ImageView
+        android:id="@+id/cloud4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/cloud3"
+        android:src="@drawable/cloud1" />
+
+</RelativeLayout>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/festember_logo">
+
+    <!--include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+
+        /-->
+
+
+    <Spinner
+        android:id="@+id/recyclespinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"
+        android:outlineProvider="paddedBounds"
+        android:background="@color/UpcomingColor1"
+        android:backgroundTint="#ffffff"
+        android:backgroundTintMode="src_atop"
+        android:layout_gravity="top|left"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="false"
+        android:layout_toLeftOf="@+id/recyclespinnertime"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignBaseline="@+id/recyclespinnercate" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/recyclespinnertime"
+        android:spinnerMode="dialog"
+        android:outlineProvider="paddedBounds"
+        android:background="@color/UpcomingColor1"
+        android:backgroundTint="#ffffff"
+        android:backgroundTintMode="src_atop"
+        android:layout_gravity="top|right"
+        android:layout_alignParentLeft="false"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignBaseline="@+id/recyclespinnercate" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/recyclespinnercate"
+        android:spinnerMode="dialog"
+        android:outlineProvider="paddedBounds"
+        android:background="@color/UpcomingColor1"
+        android:backgroundTint="#ffffff"
+        android:backgroundTintMode="src_atop"
+        android:layout_gravity="top|right"
+        android:layout_alignParentTop="false"
+        android:layout_toRightOf="@+id/recyclespinnertime"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/toolbar" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/recyclespinnercate">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclelist"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+
+            android:fadingEdgeLength="5dp"
+
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/noevent"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:linksClickable="true"
+        android:textColor="@color/material_blue_grey_900"
+
+        android:layout_margin="5dp"
+        android:gravity="center_vertical|center|center_horizontal" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/btn_notif"
+        android:text="Notifications"
+        android:textColor="#ffffff"
+        android:background="@color/UpcomingNotifications"
+        android:layout_alignParentBottom="true"
+        android:gravity="center">
+
+        </Button>
+
+
+
+
+</RelativeLayout>
