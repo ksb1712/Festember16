@@ -69,8 +69,7 @@ public class DetailsFragment extends Fragment {
     TextView eventStartTime;
 //    @InjectView(R.id.eventCluster)
 //    TextView eventCluster;
-    @InjectView(R.id.eventPoster)
-    ImageView eventPoster;
+
     @InjectView(R.id.registerButton)
     Button registerButton;
 

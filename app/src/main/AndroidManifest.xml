@@ -54,29 +54,24 @@
             android:name=".DetailsActivity"
             android:label="@string/title_activity_details"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".MainMapsActivity"
-            android:label="@string/title_activity_main_maps"></activity>
+            android:label="@string/title_activity_main_maps" />
         <activity
             android:name=".ActivityAR"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_activity_ar"
             android:screenOrientation="landscape"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".PlaceChooser"
-            android:screenOrientation="landscape">
-
-        </activity>
-
-        <activity android:name=".ClusterPage"/>
-
-        <activity android:name=".MainMenu"
+            android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".MainMenu"
             android:screenOrientation="portrait"
-            android:theme="@style/CustomNoActionBarTheme">
+            android:theme="@style/CustomNoActionBarTheme"></activity>
+        <activity android:name="com.festember16.app.UpcomingActivity" />
 
-        </activity>
     </application>
 
 </manifest>

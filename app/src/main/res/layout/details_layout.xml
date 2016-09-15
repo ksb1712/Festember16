@@ -9,12 +9,7 @@
     tools:showIn="@layout/content_event_details"
     >
 
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/eventPoster"
-        android:layout_gravity="center_horizontal"
-        android:src="@mipmap/ic_placeholder"/>
+
 
     <TextView
         android:layout_width="wrap_content"
