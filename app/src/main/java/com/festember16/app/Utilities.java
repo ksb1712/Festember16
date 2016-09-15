@@ -11,19 +11,14 @@ import android.content.SharedPreferences;
 public class Utilities {
 
     public static String username;
+    public static String token;
     public static String password;
-    public static int amount;
-    public static String gender;
-    public static String shirtSize;
+
     public static int status;
 
     public static SharedPreferences prefs;
     public static String base_url = "https://api.festember.com/";
+    public static String auth_url = "http://10.1.54.162:8000/auth/app";
 
-    public static void init()
-    {
-        username = password = shirtSize = gender = null;
-        amount = 0;
-        status = 0;
-    }
+
 }

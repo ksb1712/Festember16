@@ -90,8 +90,9 @@ public class MainMenu extends AppCompatActivity implements GestureDetector.OnGes
     }
 
     @Override
-    public void onLongPress(MotionEvent e) {
-
+    public void onLongPress(MotionEvent e)
+    {
+        c.tapped( e.getX() , e.getY());
     }
 
     @Override

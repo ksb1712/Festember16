@@ -184,7 +184,6 @@ public class PlaceChooser extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        mLocationManager.removeUpdates(mLocationListeners[0]);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -195,6 +194,7 @@ public class PlaceChooser extends AppCompatActivity {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+        mLocationManager.removeUpdates(mLocationListeners[0]);
         mLocationManager.removeUpdates(mLocationListeners[1]);
         isLoading = false;
         gotLocation = false;

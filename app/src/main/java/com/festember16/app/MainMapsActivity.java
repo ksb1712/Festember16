@@ -186,13 +186,7 @@ public class MainMapsActivity extends FragmentActivity implements OnMapReadyCall
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(allLocations.get("ADMIN"), 16));
 
-        if(isFirstTime)
-        {
-            SharedPreferences preferences = getSharedPreferences(FIRST_TIME, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(IS_FIRST_TIME, false);
-            editor.apply();
-        }
+
     }
 
     private void hasInternet() {
@@ -210,6 +204,13 @@ public class MainMapsActivity extends FragmentActivity implements OnMapReadyCall
             @Override
             public void onCompleted() {
                 Log.d(LOG_TAG, "Completed!");
+                if(isFirstTime)
+                {
+                    SharedPreferences preferences = getSharedPreferences(FIRST_TIME, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean(IS_FIRST_TIME, false);
+                    editor.apply();
+                }
             }
 
             @Override
