@@ -85,7 +85,7 @@ public class UpcomingActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     //private Toolbar mToolbar;
 
-    Event stored_events;
+    Events stored_events;
 
     String url = "http://api.pragyan.org/events/list";//"https://api.festember.com/events/list";
     String noentrytest="No ongoing/upcoming events.\nWhy not visit the FOODSTALLS instead?";  //default text for when no event in list
@@ -328,7 +328,7 @@ public class UpcomingActivity extends AppCompatActivity {
         else{
             texx.setText(null);
         }
-   }
+    }
 
     //to deal with flag updations when spinner list changes
     public void handlerecycle(){
@@ -471,7 +471,7 @@ public class UpcomingActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-     //   getMenuInflater().inflate(R.menu.menu_main, menu);
+        //   getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 

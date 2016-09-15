@@ -31,7 +31,6 @@ public class ContactsFragment extends Fragment {
 
     private boolean isPermissionGranted = true;
 
-
     TextView contact1;
 
     TextView contact2;
@@ -73,6 +72,8 @@ public class ContactsFragment extends Fragment {
 
         if(bundle!=null){
             //Todo: get the contact numbers and assign them to the respective textViews
+            //Need sample api to know how to parse through the contact data
+
         }
 
         return view;

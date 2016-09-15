@@ -2,7 +2,10 @@ package com.festember16.app;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.LocationManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -10,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,30 +25,31 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     public static final int PERMISSION_REQUEST_CODE = 1000;
     public static final int LOCATION_ENABLE_REQUEST_CODE = 1002;
+    public static final String ID = "ID";
+    public static final String LOG_TAG = "MapsActivity";
     private GoogleMap mMap;
+    private DBHandler db;
+    private Events events;
     private boolean isLocationEnabled = false;
     private boolean isPermissionGiven = true;
+    public static boolean isFirstTime = false;
 
-    private static LatLngBounds NITT = new LatLngBounds(
-            new LatLng(10.7608207, 78.8081094),
-            new LatLng(10.7675061, 78.8218299)
-    );
-
-    private static LatLng BARN = new LatLng(
-            10.7592756,
-            78.8132713
-    );
 
     private static final String[] PERMISSIONS = {
             android.Manifest.permission.ACCESS_COARSE_LOCATION,
             android.Manifest.permission.ACCESS_FINE_LOCATION
     };
-
-    //Events events;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        db = new DBHandler(this);
+
+        //Todo: get Event id from parent activity and take actual data from database
+        events = db.getEvent(getIntent().getIntExtra(ID, 1));
+
+        SharedPreferences preferences = getSharedPreferences(MainMapsActivity.FIRST_TIME, MODE_PRIVATE);
+
+        isFirstTime = preferences.getBoolean(MainMapsActivity.IS_FIRST_TIME, true);
 
 //        Gson gson = new Gson();
 //
@@ -122,6 +136,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
 
         builder.show();
+
+    }
+    private void hasInternet() {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(GooglePing.ENDPOINT)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        GooglePing ping = retrofit.create(GooglePing.class);
+
+        Observable<Void> results = ping.ping();
+
+        Subscriber<Void> subscriber = new Subscriber<Void>() {
+            @Override
+            public void onCompleted() {
+                Log.d(LOG_TAG, "Completed!");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(LOG_TAG, "Error!");
+
+                if(isFirstTime){
+                    Toast.makeText(
+                            MapsActivity.this,
+                            "Check internet connection to load map",
+                            Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onNext(Void o) {
+                Log.d(LOG_TAG, "onNext");
+            }
+        };
+
+        results.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+
+
 
     }
 
@@ -195,11 +252,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
 
-        if(checkLocationEnabled()){
+        else if(checkLocationEnabled()){
             isLocationEnabled = true;
         }
 
         else{
+            isLocationEnabled=false;
             enableLocationDialog();
         }
 
@@ -220,26 +278,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 
-        // Add a marker at event location and move the camera
-//        LatLng eventLocation = new LatLng(
-//                Double.parseDouble(events.getEventLocY()),
-//                Double.parseDouble(events.getEventLocX()));
+//         Add a marker at event location and move the camera
+        LatLng eventLocation = new LatLng(
+                Double.parseDouble(events.getLocationY()),
+                Double.parseDouble(events.getLocationX()));
         LatLngBounds centerBounds = new LatLngBounds(
-                new LatLng(BARN.latitude, BARN.longitude),
-                new LatLng(BARN.latitude, BARN.longitude)
+                new LatLng(eventLocation.latitude, eventLocation.longitude),
+                new LatLng(eventLocation.latitude, eventLocation.longitude)
         );
 
-
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.locator_icon);
+        Bitmap bitmap =  bitmapDrawable.getBitmap();
+        bitmap = Bitmap.createScaledBitmap(bitmap, 90, 135, false);
 
         mMap.addMarker(
                 new MarkerOptions()
-                        .position(BARN)
+                        .position(eventLocation)
                         .title(
-                                EventsAdapter.parseEventName("Chore nite western" + //events.getEventName()) +
-                                        " at " + "Barn"))//events.getEventVenue())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.festember_marker))
+                                EventsAdapter.parseEventName(events.getName() +
+                                        " at " + events.getVenue())
+                        )
+                        .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
         );
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(centerBounds.getCenter(), 15));
+
+        if(isFirstTime)
+        {
+            SharedPreferences preferences = getSharedPreferences(MainMapsActivity.FIRST_TIME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(MainMapsActivity.IS_FIRST_TIME, false);
+            editor.apply();
+        }
 
 
     }

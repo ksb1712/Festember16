@@ -20,6 +20,10 @@
 
 
 
+    <style name="CustomNoActionBarTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 
 
     <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">
@@ -31,6 +35,9 @@
         <item name="android:windowTitleSize">0dp</item>
         <item name="android:typeface">serif</item>
     </style>
-
+    <style name="MyRadioButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/back_g</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+    </style>
 
 </resources>

@@ -71,13 +71,17 @@ public class LoginActivity extends AppCompatActivity {
     public void login() {
         Log.d(TAG, "Login");
 
-        if (!validate()) {
+        /*if (!validate()) {
             onLoginFailed();
             return;
-        }
+        }*/
 
-        _loginButton.setEnabled(false);
+        Intent i = new Intent(this,MainMenu.class);
+        startActivity(i);
 
+
+        _loginButton.setEnabled(true);
+/*
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -98,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                         // onLoginFailed();
                         progressDialog.dismiss();
                     }
-                }, 3000);
+                }, 3000);*/
     }
 
 

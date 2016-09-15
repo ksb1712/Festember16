@@ -1,6 +1,8 @@
 package com.festember16.app;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +18,11 @@ import butterknife.InjectView;
 public class DetailsActivity extends AppCompatActivity {
 
     public static final int MAP_REQUEST_CODE = 1001;
+    public static final String ID = "ID";
     int eventId = 2;
+
+   // public static DBHandler db;
+    public static Events detailedEvent;
 
     @InjectView(R.id.pager)
     ViewPager pager;
@@ -32,7 +38,11 @@ public class DetailsActivity extends AppCompatActivity {
 
         ButterKnife.inject(this);
 
-        //Todo: get id from parent activity
+        //db = new DBHandler(this);
+
+        //Todo: get id from parent activity// eventId = getIntent().getIntExtra("ID", 0);
+        //Todo: Test out dbhandler call
+        //detailedEvent = db.getEvent(eventId);
 
         pager.setAdapter(
                 new MyPagerAdapter(getSupportFragmentManager(), eventId)
@@ -41,6 +51,26 @@ public class DetailsActivity extends AppCompatActivity {
         tabs.setDistributeEvenly(true);
         tabs.setViewPager(pager);
 
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @TargetApi(Build.VERSION_CODES.M)
+            @Override
+            public int getIndicatorColor(int position) {
+                if(Build.VERSION.SDK_INT>=23){
+                    return getResources().getColor(R.color.colorAccent, null);
+                }
+                else{
+                    return getResources().getColor(R.color.colorAccent);
+                }
+            }
+        });
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+    //    db.close();
     }
 
     @Override
@@ -61,7 +91,7 @@ public class DetailsActivity extends AppCompatActivity {
                         MapsActivity.class
                 );
 
-                Gson gson = new Gson();
+               intent.putExtra(ID, eventId);
 
                 startActivityForResult(intent, MAP_REQUEST_CODE);
 

@@ -25,11 +25,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_name"
+            <EditText android:id="@+id/input_user_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textCapWords"
-                android:hint="Name" />
+                android:inputType="text"
+                android:hint="User name" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Email Label -->
@@ -57,6 +57,94 @@
                 android:inputType="textPassword"
                 android:hint="Password"/>
         </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_re_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="Re enter Password"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="Full name" />
+        </android.support.design.widget.TextInputLayout>
+
+        <RadioGroup
+            android:id="@+id/radioGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sex"
+                android:textSize="21dp"
+                android:layout_marginTop="4dp"
+                />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:id="@+id/genderMale"
+            android:text="Male"
+            android:theme="@style/MyRadioButton"
+            android:layout_marginLeft="30dp"
+            android:textSize="20dp"/>
+
+
+
+           <RadioButton
+               android:layout_width="wrap_content"
+               android:id="@+id/genderFemale"
+               android:layout_height="wrap_content"
+               android:checked="false"
+               android:text="Female"
+               android:layout_marginLeft="30dp"
+               android:theme="@style/MyRadioButton"
+               android:textSize="20dp"
+               android:layout_weight="0.2"/>
+
+    </RadioGroup>
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_marginTop="8dp"
+           android:paddingTop="10dp"
+           android:layout_height="wrap_content"
+           android:id="@+id/input_college"
+           android:textSize="22dp"
+           android:text="College"
+
+           />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_other"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="College name"
+                android:visibility="visible"/>
+        </android.support.design.widget.TextInputLayout>
+
+
+
 
         <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton

@@ -16,6 +16,9 @@ import butterknife.InjectView;
 public class RulesFragment extends Fragment {
 
     public static final String ID = "ID";
+
+    Events events;
+
     @InjectView(R.id.rules)
     TextView rules;
 
@@ -37,7 +40,18 @@ public class RulesFragment extends Fragment {
         Bundle bundle = getArguments();
 
         if(bundle!=null) {
+            int id = bundle.getInt(ID);
+
             //Todo: get event rules from db.
+
+            events = DetailsActivity.detailedEvent;
+            //Just in case
+            if(events == null){
+               // events = DetailsActivity.db.getEvent(id);
+            }
+
+            //Todo: set rules from events
+
         }
 
 
