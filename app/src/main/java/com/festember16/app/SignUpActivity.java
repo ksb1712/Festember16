@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,8 +35,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     EditText _nameText;
     EditText _emailText;
     EditText _passwordText;
-    EditText _collegeText;
+    TextView _collegeText;
     Button _signupButton;
+
+    private RadioGroup radioSexGroup;
+    private RadioButton radioSexButton;
     int status = 0;
     String TitleName[]={
 
@@ -621,7 +626,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_sign_up);
         _nameText = (EditText)findViewById(R.id.input_name);
         _emailText = (EditText)findViewById(R.id.input_email);
-        _collegeText = (EditText)findViewById(R.id.input_college);
+        _collegeText = (TextView) findViewById(R.id.input_college);
         _passwordText = (EditText)findViewById(R.id.input_password);
         _signupButton = (Button)findViewById(R.id.btn_signup);
         _signupButton.setOnClickListener(new View.OnClickListener() {
@@ -631,6 +636,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
         _collegeText.setOnClickListener(this);
+        radioSexGroup = (RadioGroup) findViewById(R.id.radioGender);
+
+
         _collegeText.setOnTouchListener(new View.OnTouchListener(){
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 // your code here....
@@ -665,6 +673,16 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         String name = _nameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
+
+
+        // get selected radio button from radioGroup
+        int selectedId = radioSexGroup.getCheckedRadioButtonId();
+
+        // find the radiobutton by returned id
+        radioSexButton = (RadioButton) findViewById(selectedId);
+
+        Toast.makeText(SignUpActivity.this,
+                radioSexButton.getText(), Toast.LENGTH_SHORT).show();
 
         // TODO: Implement your own signup logic here.
 
