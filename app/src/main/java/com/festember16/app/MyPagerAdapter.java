@@ -10,6 +10,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class MyPagerAdapter extends FragmentPagerAdapter {
 
     int eventId = 2;
+    ContactsFragment contactsFragment;
+    RulesFragment rulesFragment;
+    MapsTabFragment mapsTabFragment;
+    DetailsFragment detailsFragment;
 
     public MyPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -19,6 +23,11 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
         super(fm);
 
         eventId = id;
+        contactsFragment = ContactsFragment.getInstance(eventId);
+        rulesFragment = RulesFragment.getInstance(eventId);
+        mapsTabFragment = new MapsTabFragment();
+        detailsFragment = DetailsFragment.getInstance(eventId);
+
     }
 
     @Override
@@ -27,15 +36,15 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
         switch(position){
 
             case 0:
-                ContactsFragment contactsFragment = ContactsFragment.getInstance(eventId);
                 return contactsFragment;
 
             case 2:
-                RulesFragment rulesFragment = RulesFragment.getInstance(eventId);
                 return rulesFragment;
 
+            case 3:
+                return mapsTabFragment;
+
             default:
-                DetailsFragment detailsFragment = DetailsFragment.getInstance(eventId);
                 return detailsFragment;
         }
 
@@ -43,7 +52,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -56,6 +65,8 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
             case 2:
                 return "Rules";
+
+            case 3: return "Map";
 
             default:
                 return "Details";

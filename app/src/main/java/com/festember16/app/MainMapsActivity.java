@@ -113,18 +113,40 @@ public class MainMapsActivity extends FragmentActivity implements OnMapReadyCall
             enableLocationDialog();
         }
 
+        if (isPermissionGiven && isLocationEnabled) {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+            }
+            mMap.setMyLocationEnabled(true);
+            mMap.setOnMyLocationButtonClickListener(
+                    new GoogleMap.OnMyLocationButtonClickListener() {
+                        @Override
+                        public boolean onMyLocationButtonClick() {
 
+                            Toast.makeText(MainMapsActivity.this, "Loading...", Toast.LENGTH_SHORT).show();
+
+                            return false;
+                        }
+                    }
+            );
+        }
 
         BitmapDrawable bitmapDrawable = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.festember_logo, null);
+            bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.locator_icon, null);
         }
         else{
-            bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.festember_logo);
+            bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.locator_icon);
 
         }
         Bitmap bitmap =  bitmapDrawable.getBitmap();
-        bitmap = Bitmap.createScaledBitmap(bitmap, 80, 80, false);
+        bitmap = Bitmap.createScaledBitmap(bitmap, 90, 135, false);
 
 
         // Add a marker in Sydney and move the camera

@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.festember16.app" >
+    package="com.festember16.app">
 
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/festember_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -34,9 +36,10 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignUpActivity" />
+        <activity android:name=".ClusterPage" />
         <activity
             android:name=".SplashScreen"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,29 +55,26 @@
             android:label="@string/title_activity_details"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".ListActivity" />
-
         <activity
             android:name=".MainMapsActivity"
-            android:label="@string/title_activity_main_maps" >
-        </activity>
+            android:label="@string/title_activity_main_maps"></activity>
         <activity
             android:name=".ActivityAR"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_activity_ar"
             android:screenOrientation="landscape"
-            android:theme="@style/FullscreenTheme">
-        </activity>
+            android:theme="@style/FullscreenTheme"></activity>
         <activity
             android:name=".PlaceChooser"
             android:screenOrientation="landscape">
 
         </activity>
 
+        <activity android:name=".ClusterPage"/>
+
         <activity android:name=".MainMenu"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomNoActionBarTheme">
 
         </activity>
     </application>
