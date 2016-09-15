@@ -307,6 +307,8 @@ public class MenuCanvas extends View
 
                     case "Schedule":
                         Log.d(LOG_TAG, "You clicked Schedule");
+                        Intent i4 = new Intent(context,UpcomingActivity.class);
+                        context.startActivity(i4);
                         break;
 
                     case "Contacts":
