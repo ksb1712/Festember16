@@ -12,9 +12,13 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class VirtualLayer extends View
@@ -67,12 +71,32 @@ public class VirtualLayer extends View
                 allPOIs = PointOfInterestManager.getUtils();
                 break;
             case EVENTS:
-                allPOIs = PointOfInterestManager.getEvents();
+                getEvents();
                 break;
         }
 
     }
 
+    private void getEvents()
+    {
+        DBHandler handler = new DBHandler(context);
+        List<Events> allEvents;
+        PointOfInterest poi;
+        allEvents = handler.getAllEvents();
+        String  lat , lon;
+        Double _lat, _lon;
+
+        for( Events e: allEvents)
+        {
+            lat = e.getLocationX();
+            lon = e.getLocationY();
+            _lat = Double.parseDouble(lat);
+            _lon = Double.parseDouble(lon);
+            poi = new PointOfInterest( e.getName() ,_lat, _lon );
+            allPOIs.add(poi);
+
+        }
+    }
     public void shiftScroll( float distY)
     {
         Log.wtf("wtf", distY + "");

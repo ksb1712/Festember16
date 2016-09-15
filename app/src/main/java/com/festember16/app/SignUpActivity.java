@@ -696,12 +696,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         _nameText = (EditText)findViewById(R.id.input_user_name);
         _emailText = (EditText)findViewById(R.id.input_email);
         _collegeText = (TextView) findViewById(R.id.input_college);
+        _yearText = (TextView) findViewById(R.id.input_year);
+        _degreeText = (TextView) findViewById(R.id.input_fegree);
+        _collegeText = (TextView) findViewById(R.id.input_college);
         _passwordText = (EditText)findViewById(R.id.input_password);
         _re_passwordText = (EditText)findViewById(R.id.input_re_password);
         _fullnameText = (EditText)findViewById(R.id.input_name);
         _college_Text = (EditText)findViewById(R.id.input_other);
-        _passwordText = (EditText)findViewById(R.id.input_password);
-        _passwordText = (EditText)findViewById(R.id.input_password);
+        _phoneText = (EditText)findViewById(R.id.input_phone);
+        _addressText = (EditText)findViewById(R.id.input_address);
         _signupButton = (Button)findViewById(R.id.btn_signup);
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
