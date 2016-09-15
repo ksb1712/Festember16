@@ -21,7 +21,7 @@ public class PointOfInterest implements Comparable<PointOfInterest>
     public double top;
 
     public String eta;
-    public Color eventStatus;
+    public int eventStatus;
 
     PointOfInterest(String title , double lat , double lon)
     {
