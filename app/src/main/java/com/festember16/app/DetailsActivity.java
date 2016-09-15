@@ -1,6 +1,8 @@
 package com.festember16.app;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +50,14 @@ public class DetailsActivity extends AppCompatActivity {
         pager.setCurrentItem(1);
         tabs.setDistributeEvenly(true);
         tabs.setViewPager(pager);
+
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @TargetApi(Build.VERSION_CODES.M)
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.colorAccent, null);
+            }
+        });
 
     }
 
