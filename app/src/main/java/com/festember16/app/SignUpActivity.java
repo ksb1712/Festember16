@@ -688,6 +688,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     int textlength=0;
     AlertDialog myalertDialog=null;
 
+    String value[] = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -697,8 +698,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         _emailText = (EditText)findViewById(R.id.input_email);
         _collegeText = (TextView) findViewById(R.id.input_college);
         _yearText = (TextView) findViewById(R.id.input_year);
-        _degreeText = (TextView) findViewById(R.id.input_fegree);
-        _collegeText = (TextView) findViewById(R.id.input_college);
+        _degreeText = (TextView) findViewById(R.id.input_degree);
+        _cityText = (TextView) findViewById(R.id.input_city);
+        _yearText = (TextView) findViewById(R.id.input_year);
+        _stateText = (TextView) findViewById(R.id.input_state);
+        _branchText = (TextView) findViewById(R.id.input_branch);
         _passwordText = (EditText)findViewById(R.id.input_password);
         _re_passwordText = (EditText)findViewById(R.id.input_re_password);
         _fullnameText = (EditText)findViewById(R.id.input_name);
@@ -713,6 +717,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
         _collegeText.setOnClickListener(this);
+        _stateText.setOnClickListener(this);
+        _cityText.setOnClickListener(this);
+        _countryText.setOnClickListener(this);
+        _degreeText.setOnClickListener(this);
+        _branchText.setOnClickListener(this);
+        _yearText.setOnClickListener(this);
+
         radioSexGroup = (RadioGroup) findViewById(R.id.radioGender);
 
 
@@ -730,6 +741,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         });
 
     }
+
+
 
     public void signup() {
         Log.d(TAG, "Signup");

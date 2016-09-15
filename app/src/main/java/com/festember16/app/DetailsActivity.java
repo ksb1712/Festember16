@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,7 +28,7 @@ public class DetailsActivity extends AppCompatActivity {
     @InjectView(R.id.pager)
     ViewPager pager;
     @InjectView(R.id.tabs)
-    SlidingTabLayout tabs;
+    TabLayout tabs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,21 +49,25 @@ public class DetailsActivity extends AppCompatActivity {
                 new MyPagerAdapter(getSupportFragmentManager(), eventId)
         );
         pager.setCurrentItem(1);
-        tabs.setDistributeEvenly(true);
-        tabs.setViewPager(pager);
 
-        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-            @TargetApi(Build.VERSION_CODES.M)
-            @Override
-            public int getIndicatorColor(int position) {
-                if(Build.VERSION.SDK_INT>=23){
-                    return getResources().getColor(R.color.colorAccent, null);
-                }
-                else{
-                    return getResources().getColor(R.color.colorAccent);
-                }
-            }
-        });
+        tabs.setupWithViewPager(pager);
+
+//        tabs.setSelectedTabIndicatorColor(new SlidingTabLayout.TabColorizer() {
+//            @TargetApi(Build.VERSION_CODES.M)
+//            @Override
+//            public int getIndicatorColor(int position) {
+//                if(Build.VERSION.SDK_INT>=23){
+//                    return getResources().getColor(R.color.colorAccent, null);
+//                }
+//                else{
+//                    return getResources().getColor(R.color.colorAccent);
+//                }
+//            }
+//        });
+
+        tabs.setSelectedTabIndicatorColor(
+                getResources().getColor(R.color.colorAccent)
+        );
 
     }
 
