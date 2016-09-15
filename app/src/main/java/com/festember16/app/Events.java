@@ -1,300 +1,128 @@
 package com.festember16.app;
-
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Events {
 
-@SerializedName("event_id")
-@Expose
-private String eventId;
-@SerializedName("event_name")
-@Expose
-private String eventName;
-@SerializedName("event_start_time")
-@Expose
-private String eventStartTime;
-@SerializedName("event_end_time")
-@Expose
-private String eventEndTime;
-@SerializedName("event_venue")
-@Expose
-private String eventVenue;
-@SerializedName("event_last_update_time")
-@Expose
-private String eventLastUpdateTime;
-@SerializedName("event_loc_x")
-@Expose
-private String eventLocX;
-@SerializedName("event_loc_y")
-@Expose
-private String eventLocY;
-@SerializedName("event_max_limit")
-@Expose
-private String eventMaxLimit;
-@SerializedName("event_cluster")
-@Expose
-private String eventCluster;
-@SerializedName("event_date")
-@Expose
-private String eventDate;
+    @SerializedName("eventId")
+    public int id;
 
-/**
-* No args constructor for use in serialization
-*
-*/
-public Events() {
-}
+    @SerializedName("eventName")
+    public String name;
 
-/**
-*
-* @param eventMaxLimit
-* @param eventVenue
-* @param eventDate
-* @param eventLocX
-* @param eventLocY
-* @param eventId
-* @param eventLastUpdateTime
-* @param eventEndTime
-* @param eventStartTime
-* @param eventName
-* @param eventCluster
-*/
-public Events(String eventId, String eventName, String eventStartTime, String eventEndTime, String eventVenue, String eventLastUpdateTime, String eventLocX, String eventLocY, String eventMaxLimit, String eventCluster, String eventDate) {
-this.eventId = eventId;
-this.eventName = eventName;
-this.eventStartTime = eventStartTime;
-this.eventEndTime = eventEndTime;
-this.eventVenue = eventVenue;
-this.eventLastUpdateTime = eventLastUpdateTime;
-this.eventLocX = eventLocX;
-this.eventLocY = eventLocY;
-this.eventMaxLimit = eventMaxLimit;
-this.eventCluster = eventCluster;
-this.eventDate = eventDate;
-}
+    @SerializedName("eventStartTime")
+    public String startTime;
 
-/**
-*
-* @return
-* The eventId
-*/
-public String getEventId() {
-return eventId;
-}
+    @SerializedName("eventEndTime")
+    public String endTime;
 
-/**
-*
-* @param eventId
-* The event_id
-*/
-public void setEventId(String eventId) {
-this.eventId = eventId;
-}
+    @SerializedName("eventVenue")
+    public String venue;
 
-/**
-*
-* @return
-* The eventName
-*/
-public String getEventName() {
-return eventName;
-}
+    @SerializedName("eventLastUpdateTime")
+    public String lastUpdateTime;
 
-/**
-*
-* @param eventName
-* The event_name
-*/
-public void setEventName(String eventName) {
-this.eventName = eventName;
-}
+    @SerializedName("eventLocX")
+    public String locationX;
 
-/**
-*
-* @return
-* The eventStartTime
-*/
-public String getEventStartTime() {
-return eventStartTime;
-}
+    @SerializedName("eventLocY")
+    public String locationY;
 
-/**
-*
-* @param eventStartTime
-* The event_start_time
-*/
-public void setEventStartTime(String eventStartTime) {
-this.eventStartTime = eventStartTime;
-}
+    @SerializedName("eventMaxLimit")
+    public String maxLimit;
 
-/**
-*
-* @return
-* The eventEndTime
-*/
-public String getEventEndTime() {
-return eventEndTime;
-}
+    @SerializedName("eventCluster")
+    public String cluster;
 
-/**
-*
-* @param eventEndTime
-* The event_end_time
-*/
-public void setEventEndTime(String eventEndTime) {
-this.eventEndTime = eventEndTime;
-}
+    @SerializedName("eventDate")
+    public String date;
 
-/**
-*
-* @return
-* The eventVenue
-*/
-public String getEventVenue() {
-return eventVenue.toUpperCase();
-}
+    public int getId() {
+        return id;
+    }
 
-/**
-*
-* @param eventVenue
-* The event_venue
-*/
-public void setEventVenue(String eventVenue) {
-this.eventVenue = eventVenue;
-}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-/**
-*
-* @return
-* The eventLastUpdateTime
-*/
-public String getEventLastUpdateTime() {
-return eventLastUpdateTime;
-}
+    public String getName() {
+        return name;
+    }
 
-/**
-*
-* @param eventLastUpdateTime
-* The event_last_update_time
-*/
-public void setEventLastUpdateTime(String eventLastUpdateTime) {
-this.eventLastUpdateTime = eventLastUpdateTime;
-}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-/**
-*
-* @return
-* The eventLocX
-*/
-public String getEventLocX() {
-return eventLocX;
-}
+    public String getStartTime() {
+        return startTime;
+    }
 
-/**
-*
-* @param eventLocX
-* The event_loc_x
-*/
-public void setEventLocX(String eventLocX) {
-this.eventLocX = eventLocX;
-}
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
 
-/**
-*
-* @return
-* The eventLocY
-*/
-public String getEventLocY() {
-return eventLocY;
-}
+    public String getEndTime() {
+        return endTime;
+    }
 
-/**
-*
-* @param eventLocY
-* The event_loc_y
-*/
-public void setEventLocY(String eventLocY) {
-this.eventLocY = eventLocY;
-}
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
 
-/**
-*
-* @return
-* The eventMaxLimit
-*/
-public String getEventMaxLimit() {
-return eventMaxLimit;
-}
+    public String getVenue() {
+        return venue;
+    }
 
-/**
-*
-* @param eventMaxLimit
-* The event_max_limit
-*/
-public void setEventMaxLimit(String eventMaxLimit) {
-this.eventMaxLimit = eventMaxLimit;
-}
+    public void setVenue(String venue) {
+        this.venue = venue;
+    }
 
-/**
-*
-* @return
-* The eventCluster
-*/
-public String getEventCluster() {
-return eventCluster;
-}
+    public String getLastUpdateTime() {
+        return lastUpdateTime;
+    }
 
-/**
-*
-* @param eventCluster
-* The event_cluster
-*/
-public void setEventCluster(String eventCluster) {
-this.eventCluster = eventCluster;
-}
+    public void setLastUpdateTime(String lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
+    }
 
-/**
-*
-* @return
-* The eventDate
-*/
-public String getEventDate() {
-return eventDate;
-}
+    public String getLocationX() {
+        return locationX;
+    }
 
-/**
-*
-* @param eventDate
-* The event_date
-*/
-public void setEventDate(String eventDate) {
-this.eventDate = eventDate;
-}
+    public void setLocationX(String locationX) {
+        this.locationX = locationX;
+    }
 
-@Override
-public String toString() {
-return ToStringBuilder.reflectionToString(this);
-}
+    public String getLocationY() {
+        return locationY;
+    }
 
-@Override
-public int hashCode() {
-return new HashCodeBuilder().append(eventId).append(eventName).append(eventStartTime).append(eventEndTime).append(eventVenue).append(eventLastUpdateTime).append(eventLocX).append(eventLocY).append(eventMaxLimit).append(eventCluster).append(eventDate).toHashCode();
-}
+    public void setLocationY(String locationY) {
+        this.locationY = locationY;
+    }
 
-@Override
-public boolean equals(Object other) {
-if (other == this) {
-return true;
-}
-if ((other instanceof Events) == false) {
-return false;
-}
-Events rhs = ((Events) other);
-return new EqualsBuilder().append(eventId, rhs.eventId).append(eventName, rhs.eventName).append(eventStartTime, rhs.eventStartTime).append(eventEndTime, rhs.eventEndTime).append(eventVenue, rhs.eventVenue).append(eventLastUpdateTime, rhs.eventLastUpdateTime).append(eventLocX, rhs.eventLocX).append(eventLocY, rhs.eventLocY).append(eventMaxLimit, rhs.eventMaxLimit).append(eventCluster, rhs.eventCluster).append(eventDate, rhs.eventDate).isEquals();
-}
+    public String getMaxLimit() {
+        return maxLimit;
+    }
+
+    public void setMaxLimit(String maxLimit) {
+        this.maxLimit = maxLimit;
+    }
+
+    public String getCluster() {
+        return cluster;
+    }
+
+    public void setCluster(String cluster) {
+        this.cluster = cluster;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
 
 }

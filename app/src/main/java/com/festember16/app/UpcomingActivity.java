@@ -85,7 +85,7 @@ public class UpcomingActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     //private Toolbar mToolbar;
 
-    Event stored_events;
+    Events stored_events;
 
     String url = "http://api.pragyan.org/events/list";//"https://api.festember.com/events/list";
     String noentrytest="No ongoing/upcoming events.\nWhy not visit the FOODSTALLS instead?";  //default text for when no event in list

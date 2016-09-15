@@ -17,5 +17,10 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_main_maps">Map</string>
+
+    <string name="action_refresh">Settings</string>
+    <string name="action_new">Settings</string>
+    <string name="title_activity_activity_ar">ActivityAR</string>
 
 </resources>

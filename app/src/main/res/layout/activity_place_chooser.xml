@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.festember16.app.PlaceChooser"
+    android:background="@android:color/white">
+
+
+
+    <TextView
+        android:id="@+id/TitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Festember AR"
+        android:textSize="32sp"
+        android:layout_weight="1"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3">
+        <Button
+            android:id="@+id/HostelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Hostels"
+            android:textSize="25sp"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_style"/>
+
+        <Button
+            android:id="@+id/EventsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Events"
+            android:textSize="25sp"
+            android:textColor="#FFFFFF"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_style"/>
+
+        <Button
+            android:id="@+id/UtilitiesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="25sp"
+            android:textColor="#FFFFFF"
+            android:text="utilities"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_style"/>
+
+    </LinearLayout>
+</LinearLayout>
