@@ -3,6 +3,7 @@ package com.festember16.app;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -30,6 +31,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 /**
  * Created by vishnu on 14/9/16.
  */
@@ -50,6 +58,8 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
 
     private boolean isLocationEnabled = true;
     private boolean isPermissionGiven = true;
+    public static boolean isFirstTime = false;
+
 
     public MapsTabFragment(){
 
@@ -82,8 +92,58 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
            }
 
        }
+
+        SharedPreferences preferences = getActivity().getSharedPreferences(MainMapsActivity.FIRST_TIME, Context.MODE_PRIVATE);
+
+        isFirstTime = preferences.getBoolean(MainMapsActivity.IS_FIRST_TIME, true);
+
         return view;
     }
+
+    private void hasInternet() {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(GooglePing.ENDPOINT)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        GooglePing ping = retrofit.create(GooglePing.class);
+
+        Observable<Void> results = ping.ping();
+
+        Subscriber<Void> subscriber = new Subscriber<Void>() {
+            @Override
+            public void onCompleted() {
+                Log.d(LOG_TAG, "Completed!");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(LOG_TAG, "Error!");
+
+                if(isFirstTime){
+                    Toast.makeText(
+                            getActivity(),
+                            "Check internet connection to load map",
+                            Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onNext(Void o) {
+                Log.d(LOG_TAG, "onNext");
+            }
+        };
+
+        results.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+
+
+
+    }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -168,6 +228,14 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
         ));
 
 
+
+        if(isFirstTime)
+        {
+            SharedPreferences preferences = getActivity().getSharedPreferences(MainMapsActivity.FIRST_TIME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(MainMapsActivity.IS_FIRST_TIME, false);
+            editor.apply();
+        }
 
     }
 

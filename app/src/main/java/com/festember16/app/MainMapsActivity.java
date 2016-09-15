@@ -3,6 +3,7 @@ package com.festember16.app;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -29,16 +30,26 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 public class MainMapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     public static final int PERMISSION_REQUEST_CODE = 1000;
     public static final int LOCATION_ENABLE_REQUEST_CODE = 1002;
     public static final String LOG_TAG = "MainMapsActivity";
+    public static final String FIRST_TIME = "First time";
+    public static final String IS_FIRST_TIME = "IS FIRST TIME";
 
     private GoogleMap mMap;
 
     private boolean isLocationEnabled = false;
     private boolean isPermissionGiven = true;
+    public static boolean isFirstTime = false;
 
     private static final String[] PERMISSIONS = {
             android.Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -81,6 +92,10 @@ public class MainMapsActivity extends FragmentActivity implements OnMapReadyCall
         setContentView(R.layout.activity_main_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
+        SharedPreferences preferences = getSharedPreferences(FIRST_TIME, MODE_PRIVATE);
+
+        isFirstTime = preferences.getBoolean(IS_FIRST_TIME, true);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -98,6 +113,9 @@ public class MainMapsActivity extends FragmentActivity implements OnMapReadyCall
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+        hasInternet();
+
         mMap = googleMap;
 
         if(!hasPermission()){
@@ -167,6 +185,58 @@ public class MainMapsActivity extends FragmentActivity implements OnMapReadyCall
         }
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(allLocations.get("ADMIN"), 16));
+
+        if(isFirstTime)
+        {
+            SharedPreferences preferences = getSharedPreferences(FIRST_TIME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(IS_FIRST_TIME, false);
+            editor.apply();
+        }
+    }
+
+    private void hasInternet() {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(GooglePing.ENDPOINT)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        GooglePing ping = retrofit.create(GooglePing.class);
+
+        Observable<Void> results = ping.ping();
+
+        Subscriber<Void> subscriber = new Subscriber<Void>() {
+            @Override
+            public void onCompleted() {
+                Log.d(LOG_TAG, "Completed!");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(LOG_TAG, "Error!");
+
+                if(isFirstTime){
+                    Toast.makeText(
+                        MainMapsActivity.this,
+                        "Check internet connection to load map",
+                        Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onNext(Void o) {
+                Log.d(LOG_TAG, "onNext");
+            }
+        };
+
+        results.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+
+
+
     }
 
     public boolean hasPermission(){

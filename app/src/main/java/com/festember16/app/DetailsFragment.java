@@ -146,7 +146,12 @@ public class DetailsFragment extends Fragment {
 
         if(hasRegistered){
             registerButton.setText("REGISTERED");
-            registerButton.setBackgroundColor(getResources().getColor(R.color.aluminum));
+            if(Build.VERSION.SDK_INT>=23){
+            registerButton.setBackgroundColor(getResources().getColor(R.color.aluminum, null));
+            }
+            else{
+                registerButton.setBackgroundColor(getResources().getColor(R.color.aluminum));
+            }
             registerButton.setTextColor(Color.BLACK);
         }
 
