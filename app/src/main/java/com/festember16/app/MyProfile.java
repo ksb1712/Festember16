@@ -165,7 +165,7 @@ public class MyProfile extends AppCompatActivity {
         switch(id){
             case R.id.qr_code:
                 Toast.makeText(MyProfile.this, "Coming Soon!", Toast.LENGTH_SHORT).show();
-                
+
                 break;
 
             case R.id.logout:
