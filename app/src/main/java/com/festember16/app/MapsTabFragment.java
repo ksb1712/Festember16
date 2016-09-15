@@ -115,6 +115,13 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
             @Override
             public void onCompleted() {
                 Log.d(LOG_TAG, "Completed!");
+                if(isFirstTime)
+                {
+                    SharedPreferences preferences = getActivity().getSharedPreferences(MainMapsActivity.FIRST_TIME, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean(MainMapsActivity.IS_FIRST_TIME, false);
+                    editor.apply();
+                }
             }
 
             @Override
@@ -164,6 +171,8 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        hasInternet();
+
         mMap = googleMap;
 
         if(!hasPermission()){
@@ -229,13 +238,7 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
 
 
 
-        if(isFirstTime)
-        {
-            SharedPreferences preferences = getActivity().getSharedPreferences(MainMapsActivity.FIRST_TIME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(MainMapsActivity.IS_FIRST_TIME, false);
-            editor.apply();
-        }
+
 
     }
 

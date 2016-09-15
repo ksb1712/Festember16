@@ -2,6 +2,7 @@ package com.festember16.app;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -21,8 +22,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import okhttp3.internal.Util;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -35,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText _passwordText;
 
     Button _loginButton;
+    SharedPreferences pref;
 
     TextView _signupLink;
 
@@ -45,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
+        pref = getSharedPreferences("user_auth", Context.MODE_PRIVATE);
         _emailText = (EditText)findViewById(R.id.input_email);
         _passwordText = (EditText)findViewById(R.id.input_password);
         _loginButton = (Button)findViewById(R.id.btn_login);
@@ -71,17 +87,13 @@ public class LoginActivity extends AppCompatActivity {
     public void login() {
         Log.d(TAG, "Login");
 
-        /*if (!validate()) {
+        if (!validate()) {
             onLoginFailed();
             return;
-        }*/
+        }
 
-        Intent i = new Intent(this,MainMenu.class);
-        startActivity(i);
+        _loginButton.setEnabled(false);
 
-
-        _loginButton.setEnabled(true);
-/*
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -89,20 +101,88 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
+        final String email = _emailText.getText().toString();
+      final   String password = _passwordText.getText().toString();
 
         // TODO: Implement your own authentication logic here.
 
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Utilities.auth_url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
                         progressDialog.dismiss();
+                        JSONObject jsonResponse = null;
+                        try {
+                            jsonResponse = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        int status = 0;
+                        try {
+                            status = jsonResponse.getInt("status_code");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        String message = null;
+                        try {
+                            message = jsonResponse.getString("message");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        switch (status) {
+
+                            case 200:
+
+                                SharedPreferences.Editor editor = pref.edit();
+                                Utilities.status = 1;
+                                editor.putInt("Logged_in", Utilities.status);
+                                editor.putString("user_email", email);
+                                Utilities.username = email;
+                                editor.putString("user_pass", password);
+                                Utilities.password = password;
+                                editor.putString("token", message);
+                                Utilities.token = message;
+                                editor.apply();
+
+
+                                Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
+                                Intent i = new Intent(LoginActivity.this, MainMenu.class);
+                                startActivity(i);
+
+                                break;
+
+                            default:
+                                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                                _emailText.setText("");
+                                _passwordText.setText("");
+                                onLoginFailed();
+                                break;
+                        }
                     }
-                }, 3000);*/
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+                        Toast.makeText(LoginActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                        onLoginFailed();
+                    }
+                })
+        {
+            @Override
+            protected Map<String,String> getParams(){
+            Map<String,String> params = new HashMap<String, String>();
+            params.put("user_email",email);
+            params.put("user_pass",password);
+            return params;
+        }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
     }
 
 
