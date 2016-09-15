@@ -71,7 +71,7 @@ public class SplashScreen extends Activity {
                         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
                         String formattedDate = sdf.format(date);
                         System.out.println(formattedDate);
-                        editor.putString("time",""+formattedDate);
+                        editor.putString("time","Event last updated at "+formattedDate);
                         editor.apply();
                     }
                 },
@@ -79,9 +79,9 @@ public class SplashScreen extends Activity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
-                        String defaultValue = "Not yet updated";
+                        String defaultValue = "Events not yet updated";
                         String time = prefs.getString("time", defaultValue);
-                        Toast.makeText(SplashScreen.this," Events Last updated at "+ time,Toast.LENGTH_LONG).show();
+                        Toast.makeText(SplashScreen.this,time,Toast.LENGTH_LONG).show();
                     }
                 });
 
