@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class SignUpActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class SignUpActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = "SignupActivity";
 
     EditText _nameText;
@@ -49,6 +49,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     TextView _cityText;
     Button _signupButton;
 
+    int id;
     private RadioGroup radioSexGroup;
     private RadioButton radioSexButton;
     int status = 0;
@@ -700,7 +701,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         _yearText = (TextView) findViewById(R.id.input_year);
         _degreeText = (TextView) findViewById(R.id.input_degree);
         _cityText = (TextView) findViewById(R.id.input_city);
-        _yearText = (TextView) findViewById(R.id.input_year);
+        _countryText = (TextView) findViewById(R.id.input_country);
         _stateText = (TextView) findViewById(R.id.input_state);
         _branchText = (TextView) findViewById(R.id.input_branch);
         _passwordText = (EditText)findViewById(R.id.input_password);
@@ -716,29 +717,78 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 signup();
             }
         });
-        _collegeText.setOnClickListener(this);
-        _stateText.setOnClickListener(this);
-        _cityText.setOnClickListener(this);
-        _countryText.setOnClickListener(this);
-        _degreeText.setOnClickListener(this);
-        _branchText.setOnClickListener(this);
-        _yearText.setOnClickListener(this);
+        _collegeText.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                       id = view.getId();
+                        callAlert(view,CollegeName);
+                    }
+                });
+        _stateText.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        id = view.getId();
+                        callAlert(view,stateName);
+                    }
+                }
+        );
+        _degreeText.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        id = view.getId();
+                        callAlert(view,degreeName);
+                    }
+                }
+        );
+       _cityText.setOnClickListener(
+               new View.OnClickListener() {
+                   @Override
+                   public void onClick(View view) {
+
+                       id = view.getId();
+                       callAlert(view,cityName);
+                   }
+               }
+       );
+        _countryText.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        id = view.getId();
+                        callAlert(view,countryName);
+                    }
+                }
+        );
+
+       _branchText.setOnClickListener(
+               new View.OnClickListener() {
+                   @Override
+                   public void onClick(View view) {
+
+                       id = view.getId();
+                       callAlert(view,branchName);
+                   }
+               }
+       );
+      _yearText.setOnClickListener(
+        new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                id = view.getId();
+                callAlert(view,yearName);
+            }
+        }
+        );
 
         radioSexGroup = (RadioGroup) findViewById(R.id.radioGender);
 
-
-        _collegeText.setOnTouchListener(new View.OnTouchListener(){
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                // your code here....
-                if(status == 0)
-                {
-                    onClick(view);
-                    status = 1;
-                }
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                return false;
-            }
-        });
 
     }
 
@@ -769,13 +819,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         String phone = _passwordText.getText().toString();
         String Address = _passwordText.getText().toString();
 
-        String college;
-        String  branch;
-        String year;
-        String dept;
-        String city;
-        String state;
-        String country;
+        String college = _collegeText.getText().toString();
+        String  branch = _branchText.getText().toString();
+        String year = _yearText.getText().toString();
+        String dept = _branchText.getText().toString();
+        String city = _cityText.getText().toString();
+        String state = _stateText.getText().toString();
+        String country = _countryText.getText().toString();
 
 
         // get selected radio button from radioGroup
@@ -800,8 +850,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 }, 3000);
     }
-    @Override
-    public void onClick(View view)
+
+    public void callAlert(View view, final String TitleName[])
     {
         AlertDialog.Builder myDialog = new AlertDialog.Builder(SignUpActivity.this);
 
@@ -854,8 +904,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         });
 
         myalertDialog=myDialog.show();
-
     }
+
 
 
     @Override
@@ -863,8 +913,32 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         myalertDialog.dismiss();
         String strName=array_sort.get(position);
-        _collegeText.setText(strName);
+        switch(id)
+        {
+            case R.id.input_college:
+                _collegeText.setText(strName);
+                break;
+            case R.id.input_state:
+                _stateText.setText(strName);
+                break;
+            case R.id.input_city:
+                _cityText.setText(strName);
+                break;
+            case R.id.input_country:
+                _countryText.setText(strName);
+                break;
+            case R.id.input_branch:
+                _branchText.setText(strName);
+                break;
+            case R.id.input_year:
+                _yearText.setText(strName);
+                break;
+            case R.id.input_degree:
+                _degreeText.setText(strName);
+                break;
+        }
     }
+
 
 
 
@@ -886,6 +960,19 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         String name = _nameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
+        String rePassword = _passwordText.getText().toString();
+        String fullName = _passwordText.getText().toString();
+        String college_other = _passwordText.getText().toString();
+        String phone = _passwordText.getText().toString();
+        String Address = _passwordText.getText().toString();
+
+        String college = _collegeText.getText().toString();
+        String  branch = _branchText.getText().toString();
+        String year = _yearText.getText().toString();
+        String dept = _branchText.getText().toString();
+        String city = _cityText.getText().toString();
+        String state = _stateText.getText().toString();
+        String country = _countryText.getText().toString();
 
         if (name.isEmpty() || name.length() < 3) {
             _nameText.setError("at least 3 characters");
@@ -901,12 +988,20 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             _emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+        if (password.isEmpty()) {
+            _passwordText.setError("Must be filled");
             valid = false;
         } else {
             _passwordText.setError(null);
         }
+        if(rePassword.isEmpty() || !rePassword.equals(password))
+        {
+            _re_passwordText.setError("Must be same as password");
+            valid = false;
+        } else {
+            _passwordText.setError(null);
+        }
+        //TODO remaining validate
 
         return valid;
     }
