@@ -28,6 +28,8 @@ public class ClusterPage extends AppCompatActivity {
         db = new DBHandler(this);
 
 
+//        String s = db.getCluster();
+//        Log.e("clusters ",s);
         List<ItemObject> rowListItem = getAllItemList();
         lLayout = new GridLayoutManager(ClusterPage.this, 2);
 

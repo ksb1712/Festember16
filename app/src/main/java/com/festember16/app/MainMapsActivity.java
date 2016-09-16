@@ -57,32 +57,81 @@ public class MainMapsActivity extends FragmentActivity implements OnMapReadyCall
     };
 
     public static final Map<String, LatLng> allLocations;
+
+    public static final String BARN_HALL = "BARN HALL";
+
+    public static final String OAT = "OAT";
+
+    public static final String LHC = "LHC";
+
+    public static final String A2_HALL = "A2 HALL";
+
+    public static final String A13_HALL = "A13 HALL";
+
+    public static final String CEESAT = "CEESAT";
+
+    public static final String SAC = "SAC";
+
+    public static final String SPORTS_CENTER = "SPORTS CENTER";
+
+    public static final String NSO_GROUND = "NSO GROUND";
+
+    public static final String ORION = "ORION";
+
+    public static final String EEE_AUDI = "EEE AUDI";
+
+    public static final String ADMIN = "ADMIN";
+
+    public static final String ARCHI_DEPT = "ARCHI DEPT";
+
     static{
         allLocations = new HashMap<>();
 
-        allLocations.put("BARN", new LatLng(
+        allLocations.put(BARN_HALL, new LatLng(
                 10.7592931, 78.8132237
         ));
-        allLocations.put("OAT", new LatLng(
+        allLocations.put(OAT, new LatLng(
                 10.7614920, 78.8106944
         ));
-        allLocations.put("LHC", new LatLng(
+        allLocations.put(LHC, new LatLng(
                 10.7611251, 78.8139496
         ));
-        allLocations.put("ORION", new LatLng(
+
+        allLocations.put(A2_HALL, new LatLng(
+                10.7589327, 78.8128636
+        ));
+
+        allLocations.put(A13_HALL, new LatLng(
+                10.758962, 78.813679
+        ));
+
+        allLocations.put(CEESAT, new LatLng(
+                10.7610447, 78.8127074
+        ));
+
+        allLocations.put(SAC, new LatLng(
+                10.7560068, 78.8156323
+        ));
+
+        allLocations.put(SPORTS_CENTER, new LatLng(
+                10.7579340, 78.8167008
+        ));
+
+        allLocations.put(NSO_GROUND, new LatLng(
+                10.7578639, 78.8147455
+        ));
+
+        allLocations.put(ORION, new LatLng(
                 10.7596952, 78.8111098
         ));
-        allLocations.put("EEE AUDI", new LatLng(
+        allLocations.put(EEE_AUDI, new LatLng(
                 10.758921, 78.814679
         ));
-        allLocations.put("ADMIN", new LatLng(
+        allLocations.put(ADMIN, new LatLng(
                 10.757987, 78.813314
         ));
-        allLocations.put("ARCHI DEPT", new LatLng(
+        allLocations.put(ARCHI_DEPT, new LatLng(
                 10.7601962, 78.8099749
-        ));
-        allLocations.put("SAC", new LatLng(
-                10.760196, 78.809975
         ));
     }
 

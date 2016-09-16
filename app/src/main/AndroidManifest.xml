@@ -71,16 +71,23 @@
         <activity
             android:name=".MainMenu"
             android:screenOrientation="portrait"
-            android:theme="@style/CustomNoActionBarTheme" />
-        <activity
-            android:name=".AndroidLauncher"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:label="@string/app_name"
-            android:screenOrientation="landscape" />
+            android:theme="@style/CustomNoActionBarTheme">
+
+        </activity>
+
+        <!--<activity-->
+            <!--android:name="com.festember16.app.AndroidLauncher"-->
+            <!--android:label="@string/app_name"-->
+            <!--android:screenOrientation="landscape"-->
+            <!--android:configChanges="keyboard|keyboardHidden|orientation|screenSize">-->
+
+        <!--</activity>-->
+
         <activity android:name=".Events_list" />
         <activity android:name=".QR" />
         <activity android:name=".Scoreboard" />
         <activity android:name=".FeedbackActivity"></activity>
+
     </application>
 
 </manifest>
