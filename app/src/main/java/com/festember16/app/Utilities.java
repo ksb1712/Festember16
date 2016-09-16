@@ -16,7 +16,7 @@ public class Utilities {
     public static String password;
 
     public static int status;
-
+    public static String registered_events;
     public static SharedPreferences prefs;
     public static String base_url = "http://api.festember.com";
     public static String auth_url = base_url + "/auth/app";
@@ -24,7 +24,7 @@ public class Utilities {
     public static String event_details_url = base_url + "/events/details";
     public static String event_register = base_url + "/event/register";
     public static String user_profile = base_url + "/events/user/details";
-    public static String user_qr = base_url + "/";
+    public static String user_qr = base_url + "/tshirt/qr";
     public static String scoreboard_url = "https://festember.com/scoreboard/getScoreBoard";
 
 

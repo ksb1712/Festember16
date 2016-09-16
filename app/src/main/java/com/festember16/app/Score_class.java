@@ -5,12 +5,21 @@ package com.festember16.app;
  */
 public class Score_class {
 
-    private String college,score;
+    private String college,score,rank;
 
-    public Score_class( String college, String score) {
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
+    }
+
+    public Score_class(String college, String score, String rank) {
 
         this.college = college;
         this.score = score;
+        this.rank = rank;
     }
 
 

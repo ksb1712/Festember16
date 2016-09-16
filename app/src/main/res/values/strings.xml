@@ -23,4 +23,17 @@
     <string name="action_new">Settings</string>
     <string name="title_activity_activity_ar">ActivityAR</string>
 
+
+    <string-array name="come_across_array">
+        <item>Friends</item>
+        <item>Newspapers</item>
+        <item>Posters</item>
+        <item>Website</item>
+        <item>Facebook</item>
+        <item>Twitter</item>
+        <item>Blog</item>
+        <item>Email</item>
+        <item>Others</item>
+    </string-array>
+
 </resources>

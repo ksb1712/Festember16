@@ -79,7 +79,8 @@
             android:screenOrientation="landscape" />
         <activity android:name=".Events_list" />
         <activity android:name=".QR" />
-        <activity android:name=".Scoreboard"></activity>
+        <activity android:name=".Scoreboard" />
+        <activity android:name=".FeedbackActivity"></activity>
     </application>
 
 </manifest>
