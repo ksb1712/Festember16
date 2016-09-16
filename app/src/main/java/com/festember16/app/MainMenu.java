@@ -33,7 +33,7 @@ public class MainMenu extends AppCompatActivity implements GestureDetector.OnGes
         DBHandler db = new DBHandler(this);
         String[] clusters = db.getClusters();
         List<Events> e = db.getEventsByCluster("english_lits");
-        Log.e("test" , clusters[5]);
+        //Log.e("test" , clusters[5]);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -60,6 +60,7 @@ public class MainMenu extends AppCompatActivity implements GestureDetector.OnGes
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e)
     {
+        c.callIntent = null;
         c.tapped( e.getX() , e.getY());
         return true;
     }
