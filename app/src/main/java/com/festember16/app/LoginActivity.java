@@ -204,32 +204,51 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Fetching data...");
         progressDialog.show();
+
+        //TODO Retrofit for Events dB, remove volley and uncomment
+        /*db = new DBHandler(this);
+
+        retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(Utilities.base_url)
+                .build();
+
+        EventsInterface eventsInterface = retrofit.create(EventsInterface.class);
+
+        eventsObservable = eventsInterface.getEvents();
+
+        eventsObservable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> {
+                    if (data.getStatusCode()== 200) {
+                        for (Events event : data.getEvents()) {
+                            db.addEvent(event);
+                        }
+                        progressDialog.dismiss();
+                    } else Log.e("fest", "RetroError"
+        });
+        */
+
         //TODO called volley
-
         StringRequest stringRequest = new StringRequest(Request.Method.GET, Utilities.event_details_url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                response -> {
 
-                        JSONObject jsonResponse = null;
-                        Log.e("Response ",response);
-                        SharedPreferences.Editor editor = prefs.edit();
-                        Date date = new Date();
-                        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
-                        String formattedDate = sdf.format(date);
-                        System.out.println(formattedDate);
-                        editor.putString("time",""+formattedDate);
-                        editor.apply();
-                    }
+                    JSONObject jsonResponse = null;
+                    Log.e("Response ",response);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    Date date = new Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
+                    String formattedDate = sdf.format(date);
+                    System.out.println(formattedDate);
+                    editor.putString("time",""+formattedDate);
+                    editor.apply();
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                error -> {
 
-                        String defaultValue = "Not yet updated";
-                        String time = prefs.getString("time", defaultValue);
-                        Toast.makeText(LoginActivity.this," Events Last updated at "+ time,Toast.LENGTH_LONG).show();
-                    }
+                    String defaultValue = "Not yet updated";
+                    String time = prefs.getString("time", defaultValue);
+                    Toast.makeText(LoginActivity.this," Events Last updated at "+ time,Toast.LENGTH_LONG).show();
                 });
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
