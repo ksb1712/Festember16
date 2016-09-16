@@ -295,8 +295,8 @@ public class MenuCanvas extends View
                 {
                     case "Map":
                         // Call Intents
-                        Log.d(LOG_TAG, "You clicked Map");
-                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
+//                        Log.d(LOG_TAG, "You clicked Map");
+//                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         callIntent = new Intent(context, MainMapsActivity.class);
                         touchEffect(c);
                         Handler handler = new Handler();
@@ -307,16 +307,21 @@ public class MenuCanvas extends View
                                 context.startActivity(callIntent);
                             }
                         }, 1000);
-
                         break;
                     case "Events":
                         // goto events Page
-                        Log.e(LOG_TAG, "You click Events");
+//                        Log.e(LOG_TAG, "You click Events");
                         callIntent = new Intent(context, ClusterPage.class);
                         touchEffect(c);
-                        DBHandler db;
-                        db = new DBHandler(context);
-
+//                        DBHandler db;
+//                        db = new DBHandler(context);
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
+                                touched = false;
+                                scaleRadius = 0;
+                                context.startActivity(callIntent);
+                            }
+                        }, 1000);
 
                         //String s = db.getCluster();
                         //Log.e("Cluster ",s);
@@ -324,40 +329,72 @@ public class MenuCanvas extends View
                         break;
                     case "Game":
                         // goto events Page
-                        touchEffect(c);
-                        Log.d(LOG_TAG, "You clicked Game");
                         callIntent = new Intent(context, DetailsActivity.class);
+                        touchEffect(c);
+//                        Log.d(LOG_TAG, "You clicked Game");
 //                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
-
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
+                                touched = false;
+                                scaleRadius = 0;
+                                context.startActivity(callIntent);
+                            }
+                        }, 1000);
                         break;
                     case "Profile":
-                        touchEffect(c);
-                        Log.d(LOG_TAG, "You clicked Profile");
-                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         callIntent = new Intent(context,MyProfile.class);
+                        touchEffect(c);
+//                        Log.d(LOG_TAG, "You clicked Profile");
+//                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
+                                touched = false;
+                                scaleRadius = 0;
+                                context.startActivity(callIntent);
+                            }
+                        }, 1000);
 
                         break;
 
                     // Add other cases
 
                     case "Schedule":
-                        touchEffect(c);
                         Log.d(LOG_TAG, "You clicked Schedule");
                         callIntent = new Intent(context,UpcomingActivity.class);
-
+                        touchEffect(c);
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
+                                touched = false;
+                                scaleRadius = 0;
+                                context.startActivity(callIntent);
+                            }
+                        }, 1000);
                         break;
 
                     case "Scoreboard":
-                        touchEffect(c);
-                        Log.d(LOG_TAG, "You clicked ScoreBoard");
                         callIntent = new Intent(context,Scoreboard.class);
-
+                        touchEffect(c);
+//                        Log.d(LOG_TAG, "You clicked ScoreBoard");
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
+                                touched = false;
+                                scaleRadius = 0;
+                                context.startActivity(callIntent);
+                            }
+                        }, 1000);
                         break;
 
                     case "Notifications":
                         touchEffect(c);
                         Log.d(LOG_TAG, "You clicked Notifications");
-
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
+                                touched = false;
+                                scaleRadius = 0;
+                                invalidate();   //TODO remove this and add intent to notifications
+                            }
+                        }, 1000);
+                        break;
                     default:
                         // do nothing
 
