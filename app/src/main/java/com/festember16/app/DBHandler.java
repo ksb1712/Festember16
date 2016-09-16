@@ -108,9 +108,10 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public Events getEvent(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM Data WHERE id = " + id, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM Events WHERE id = " + id, null);
 
         Events event = new Events();
+        cursor.moveToFirst();
         if(cursor != null) {
             event.setId(cursor.getInt(0));
             event.setName(cursor.getString(1));

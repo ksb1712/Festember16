@@ -305,8 +305,8 @@ public class MenuCanvas extends View
                         touchEffect(c);
                         DBHandler db;
                         db = new DBHandler(context);
-                        String s = db.getCluster();
-                        Log.e("Cluster ",s);
+                        //String s = db.getCluster();
+                        //Log.e("Cluster ",s);
                         Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         Intent i1 = new Intent(context, ClusterPage.class);
                         context.startActivity(i1);

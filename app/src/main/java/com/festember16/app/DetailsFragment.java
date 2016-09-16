@@ -121,10 +121,10 @@ public class DetailsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        eventVenue.setText(events.getVenue());
-        eventStartTime.setText(events.getStartTime());
+        eventVenue.setText("Venue: " + events.getVenue());
+        eventStartTime.setText("Starts at: " + EventsAdapter.parseEventTime(events.getStartTime()));
        // eventCluster.setText(events.getCluster());
-        //Todo: set eventPoster
+
 
         final SharedPreferences preferences = getActivity().getSharedPreferences(
                 REGISTERED_EVENTS,
