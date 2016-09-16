@@ -110,6 +110,7 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM Events WHERE id is " + id, null);
 
         Events event = new Events();
+        cursor.moveToFirst();
         if(cursor != null) {
             event.setId(cursor.getInt(0));
             event.setName(cursor.getString(1));
@@ -142,6 +143,7 @@ public class DBHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Events events = new Events();
+                Log.e("test", cursor.toString());
 
                 events.setId(cursor.getInt(0));
                 events.setName(cursor.getString(1));
@@ -169,14 +171,17 @@ public class DBHandler extends SQLiteOpenHelper {
     public String[] getClusters() {
         String[] clusters = new String[100];
         int i = 0;
+
         SQLiteDatabase db = this.getReadableDatabase();
 
         String select = "SELECT DISTINCT " + KEY_CLUSTER + " FROM " + TABLE_EVENTS;
         Cursor cursor = db.rawQuery(select, null);
-        do {
-            clusters[i] = cursor.getString(i);
-            i++;
-        } while (cursor.getString(i)!=null);
+        if(cursor.moveToFirst()) {
+            do {
+                clusters[i] = cursor.getString(0);
+                i++;
+            } while (cursor.moveToNext());
+        }
 
         db.close();
         cursor.close();

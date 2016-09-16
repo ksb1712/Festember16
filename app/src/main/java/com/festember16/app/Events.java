@@ -1,7 +1,13 @@
 package com.festember16.app;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Events {
+
+    Map<String, LatLng> locations = MainMapsActivity.allLocations;
 
     @SerializedName("event_id")
     public int id;
@@ -96,6 +102,7 @@ public class Events {
     }
 
     public String getLocationX() {
+        setLocationXAndY();
         return locationX;
     }
 
@@ -104,6 +111,7 @@ public class Events {
     }
 
     public String getLocationY() {
+        setLocationXAndY();
         return locationY;
     }
 
@@ -133,6 +141,80 @@ public class Events {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public void setLocationXAndY(){
+
+        String location;
+
+        //if(venue!=null) default takes care of that
+        {
+            switch (venue.toUpperCase()){
+                case "GJCC": //OAT
+                    location = MainMapsActivity.BARN_HALL;
+                    break;
+
+                case "EEE AUDI":
+                    location = MainMapsActivity.EEE_AUDI;
+                    break;
+
+                case "BARN HALL":case "INFORMALS STAGE": //BARN
+                    location = MainMapsActivity.BARN_HALL;
+                    break;
+
+                case "ORION":case "ORION-CHEMICAL WALL"://Orion
+                    location = MainMapsActivity.ORION;
+                    break;
+
+                case "A2 HALL":
+                    location = MainMapsActivity.A2_HALL;
+                    break;
+
+                case "A13 HALL":case "A13":
+                    location = MainMapsActivity.A13_HALL;
+                    break;
+
+                case "PR DESK":
+                    location = MainMapsActivity.ADMIN;
+                    break;
+
+                case "SAC":
+                    location = MainMapsActivity.SAC;
+                    break;
+
+                case "INDIE STAGE"://LHC
+                    location = MainMapsActivity.LHC;
+                    break;
+
+                case "PIXELBUG STALL"://Might change; CEESAT
+                    location = MainMapsActivity.CEESAT;
+                    break;
+
+                case "BADMINTON COURT":case "NEW INDOOR STADIUM"://sports center
+                    location = MainMapsActivity.SPORTS_CENTER;
+                    break;
+
+
+                case "NSO GREEN WALL"://NSO ground
+                    location = MainMapsActivity.NSO_GROUND;
+                    break;
+
+                case "CEESAT":
+                    location = MainMapsActivity.CEESAT;
+                    break;
+
+                default: //Todo: redirect to PR desk;
+                    location = MainMapsActivity.ADMIN;
+                    break;
+            }
+
+            assignLocations(location);
+        }
+    }
+
+    private void assignLocations(String location) {
+        locationX = String.valueOf(locations.get(location).longitude);
+        locationY = String.valueOf(locations.get(location).latitude);
     }
 
 
