@@ -3,37 +3,40 @@ import com.google.gson.annotations.SerializedName;
 
 public class Events {
 
-    @SerializedName("eventId")
+    @SerializedName("event_id")
     public int id;
 
-    @SerializedName("eventName")
+    @SerializedName("event_name")
     public String name;
 
-    @SerializedName("eventStartTime")
+    @SerializedName("event_start_time")
     public String startTime;
 
-    @SerializedName("eventEndTime")
+    @SerializedName("event_end_time")
     public String endTime;
 
-    @SerializedName("eventVenue")
+    @SerializedName("event_venue")
     public String venue;
 
-    @SerializedName("eventLastUpdateTime")
+    @SerializedName("event_desc")
+    private String description;
+
+    @SerializedName("event_last_update_time")
     public String lastUpdateTime;
 
-    @SerializedName("eventLocX")
+    @SerializedName("event_loc_x")
     public String locationX;
 
-    @SerializedName("eventLocY")
+    @SerializedName("event_loc_y")
     public String locationY;
 
-    @SerializedName("eventMaxLimit")
+    @SerializedName("event_max_limit")
     public String maxLimit;
 
-    @SerializedName("eventCluster")
+    @SerializedName("event_cluster")
     public String cluster;
 
-    @SerializedName("eventDate")
+    @SerializedName("event_date")
     public String date;
 
     public int getId() {
@@ -74,6 +77,14 @@ public class Events {
 
     public void setVenue(String venue) {
         this.venue = venue;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getLastUpdateTime() {
