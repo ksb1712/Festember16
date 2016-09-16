@@ -3,6 +3,7 @@ package com.festember16.app;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -30,6 +31,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 /**
  * Created by vishnu on 14/9/16.
  */
@@ -50,23 +58,39 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
 
     private boolean isLocationEnabled = true;
     private boolean isPermissionGiven = true;
+    public static boolean isFirstTime = false;
+
 
     public MapsTabFragment(){
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.d(LOG_TAG, "Inside onAttach");
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(LOG_TAG, "Inside onCreate");
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-       if(view==null) {
+       if(view==null)
+       {
            view = inflater.inflate(R.layout.mapsfragmentlayout, container, false);
 
            FragmentManager fm = getChildFragmentManager();
            mapFragment = (SupportMapFragment)
                    fm.findFragmentById(R.id.mapPreview);
 
-           if(mapFragment == null){
+           if(mapFragment == null)
+           {
                mapFragment = SupportMapFragment.newInstance();
                fm.beginTransaction().replace(R.id.mapContainer, mapFragment);
 
@@ -79,43 +103,70 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
                layoutParams.width = (int) (displayMetrics.widthPixels * 0.9);
 
                mapFragment.getView().setLayoutParams(layoutParams);
-           }
 
+           }
        }
+
+        SharedPreferences preferences = getActivity().getSharedPreferences(MainMapsActivity.FIRST_TIME, Context.MODE_PRIVATE);
+
+        isFirstTime = preferences.getBoolean(MainMapsActivity.IS_FIRST_TIME, true);
+
         return view;
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
-
-
+        Log.d(LOG_TAG, "Inside onActivityCreated");
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(LOG_TAG, "Inside onResume");
+    }
 
-        mapFragment.getMapAsync(this);
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(LOG_TAG, "Inside onPause");
+    }
 
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+
+        if(menuVisible){
+            hasInternet();
+
+            mapFragment.getMapAsync(this);
+
+            if(!hasPermission()){
+                callPermissionRequest();
+            }
+
+            else if (checkLocationEnabled())
+                isLocationEnabled = true;
+
+            else {
+                isLocationEnabled = false;
+                enableLocationDialog();
+            }
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        view = null;
+        mapFragment = null;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
-
-        if(!hasPermission()){
-            callPermissionRequest();
-        }
-
-        else if (checkLocationEnabled())
-            isLocationEnabled = true;
-        else {
-            isLocationEnabled = false;
-            enableLocationDialog();
-        }
 
         if (isPermissionGiven && isLocationEnabled) {
             if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -129,43 +180,49 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
             }
             mMap.setMyLocationEnabled(true);
             mMap.setOnMyLocationButtonClickListener(
-                    new GoogleMap.OnMyLocationButtonClickListener() {
-                        @Override
-                        public boolean onMyLocationButtonClick() {
+                    () -> {
 
-                            Toast.makeText(getActivity(), "Loading...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Loading...", Toast.LENGTH_SHORT).show();
 
-                            return false;
-                        }
+                        return false;
                     }
             );
         }
 
+        try {
 
-//        LatLng eventLocationLatLng = new LatLng(
-//                Double.parseDouble(DetailsFragment.events.getLocationY()),
-//                Double.parseDouble(DetailsFragment.events.getLocationX())
-//        );
+            if(DetailsFragment.events!=null) {
+                LatLng eventLocationLatLng = new LatLng(
+                        Double.parseDouble(DetailsFragment.events.getLocationY()),
+                        Double.parseDouble(DetailsFragment.events.getLocationX())
+                );
 
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.locator_icon);
-        Bitmap bitmap =  bitmapDrawable.getBitmap();
-        bitmap = Bitmap.createScaledBitmap(bitmap, 90, 135, false);
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.locator_icon);
+                Bitmap bitmap = bitmapDrawable.getBitmap();
+                bitmap = Bitmap.createScaledBitmap(bitmap, 90, 135, false);
 
-        mMap.addMarker(
-                new MarkerOptions()
-                        .position(
-                                MainMapsActivity.allLocations.get("BARN")
-                                //eventLocationLatLng
-                        )
-                        .title( "BARN")//EventsAdapter.parseEventName(DetailsFragment.events.getName()) +
-//                                " at " + DetailsFragment.events.getVenue())
-                        .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
-        );
+                mMap.addMarker(
+                        new MarkerOptions()
+                                .position(
+                                        //MainMapsActivity.allLocations.get("BARN")
+                                        eventLocationLatLng
+                                )
+                                .title(EventsAdapter.parseEventName(DetailsFragment.events.getName()) +
+                                        " at " + DetailsFragment.events.getVenue())
+                                .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+                );
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                MainMapsActivity.allLocations.get("BARN"), //eventLocationLatLng,
-                16
-        ));
+                if(eventLocationLatLng!=null)
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                        eventLocationLatLng,
+                        16
+                    ));
+
+            }
+        }
+        catch (NullPointerException e){
+            Log.e(LOG_TAG, e.getMessage());
+        }
 
 
 
@@ -239,6 +296,54 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
         }
     }
 
+    private void hasInternet() {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(GooglePing.ENDPOINT)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        GooglePing ping = retrofit.create(GooglePing.class);
+
+        Observable<Void> results = ping.ping();
+
+        Subscriber<Void> subscriber = new Subscriber<Void>() {
+            @Override
+            public void onCompleted() {
+                Log.d(LOG_TAG, "Completed!");
+                if(isFirstTime)
+                {
+                    SharedPreferences preferences = getActivity().getSharedPreferences(MainMapsActivity.FIRST_TIME, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean(MainMapsActivity.IS_FIRST_TIME, false);
+                    editor.apply();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(LOG_TAG, "Error!");
+
+                if(isFirstTime){
+                    Toast.makeText(
+                            getActivity(),
+                            "Check internet connection to load map",
+                            Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onNext(Void o) {
+                Log.d(LOG_TAG, "onNext");
+            }
+        };
+
+        results.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
     public boolean checkLocationEnabled() {
 
         LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -249,6 +354,7 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
         ));
 
     }
+
     private void enableLocationDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())

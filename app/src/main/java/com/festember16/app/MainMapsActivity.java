@@ -3,6 +3,7 @@ package com.festember16.app;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -29,16 +30,26 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 public class MainMapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     public static final int PERMISSION_REQUEST_CODE = 1000;
     public static final int LOCATION_ENABLE_REQUEST_CODE = 1002;
     public static final String LOG_TAG = "MainMapsActivity";
+    public static final String FIRST_TIME = "First time";
+    public static final String IS_FIRST_TIME = "IS FIRST TIME";
 
     private GoogleMap mMap;
 
     private boolean isLocationEnabled = false;
     private boolean isPermissionGiven = true;
+    public static boolean isFirstTime = false;
 
     private static final String[] PERMISSIONS = {
             android.Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -46,32 +57,81 @@ public class MainMapsActivity extends FragmentActivity implements OnMapReadyCall
     };
 
     public static final Map<String, LatLng> allLocations;
+
+    public static final String BARN_HALL = "BARN HALL";
+
+    public static final String OAT = "OAT";
+
+    public static final String LHC = "LHC";
+
+    public static final String A2_HALL = "A2 HALL";
+
+    public static final String A13_HALL = "A13 HALL";
+
+    public static final String CEESAT = "CEESAT";
+
+    public static final String SAC = "SAC";
+
+    public static final String SPORTS_CENTER = "SPORTS CENTER";
+
+    public static final String NSO_GROUND = "NSO GROUND";
+
+    public static final String ORION = "ORION";
+
+    public static final String EEE_AUDI = "EEE AUDI";
+
+    public static final String ADMIN = "ADMIN";
+
+    public static final String ARCHI_DEPT = "ARCHI DEPT";
+
     static{
         allLocations = new HashMap<>();
 
-        allLocations.put("BARN", new LatLng(
+        allLocations.put(BARN_HALL, new LatLng(
                 10.7592931, 78.8132237
         ));
-        allLocations.put("OAT", new LatLng(
+        allLocations.put(OAT, new LatLng(
                 10.7614920, 78.8106944
         ));
-        allLocations.put("LHC", new LatLng(
+        allLocations.put(LHC, new LatLng(
                 10.7611251, 78.8139496
         ));
-        allLocations.put("ORION", new LatLng(
+
+        allLocations.put(A2_HALL, new LatLng(
+                10.7589327, 78.8128636
+        ));
+
+        allLocations.put(A13_HALL, new LatLng(
+                10.758962, 78.813679
+        ));
+
+        allLocations.put(CEESAT, new LatLng(
+                10.7610447, 78.8127074
+        ));
+
+        allLocations.put(SAC, new LatLng(
+                10.7560068, 78.8156323
+        ));
+
+        allLocations.put(SPORTS_CENTER, new LatLng(
+                10.7579340, 78.8167008
+        ));
+
+        allLocations.put(NSO_GROUND, new LatLng(
+                10.7578639, 78.8147455
+        ));
+
+        allLocations.put(ORION, new LatLng(
                 10.7596952, 78.8111098
         ));
-        allLocations.put("EEE AUDI", new LatLng(
+        allLocations.put(EEE_AUDI, new LatLng(
                 10.758921, 78.814679
         ));
-        allLocations.put("ADMIN", new LatLng(
+        allLocations.put(ADMIN, new LatLng(
                 10.757987, 78.813314
         ));
-        allLocations.put("ARCHI DEPT", new LatLng(
+        allLocations.put(ARCHI_DEPT, new LatLng(
                 10.7601962, 78.8099749
-        ));
-        allLocations.put("SAC", new LatLng(
-                10.760196, 78.809975
         ));
     }
 
@@ -80,6 +140,10 @@ public class MainMapsActivity extends FragmentActivity implements OnMapReadyCall
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+        SharedPreferences preferences = getSharedPreferences(FIRST_TIME, MODE_PRIVATE);
+
+        isFirstTime = preferences.getBoolean(IS_FIRST_TIME, true);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -98,6 +162,9 @@ public class MainMapsActivity extends FragmentActivity implements OnMapReadyCall
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+        hasInternet();
+
         mMap = googleMap;
 
         if(!hasPermission()){
@@ -167,6 +234,59 @@ public class MainMapsActivity extends FragmentActivity implements OnMapReadyCall
         }
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(allLocations.get("ADMIN"), 16));
+
+
+    }
+
+    private void hasInternet() {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(GooglePing.ENDPOINT)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        GooglePing ping = retrofit.create(GooglePing.class);
+
+        Observable<Void> results = ping.ping();
+
+        Subscriber<Void> subscriber = new Subscriber<Void>() {
+            @Override
+            public void onCompleted() {
+                Log.d(LOG_TAG, "Completed!");
+                if(isFirstTime)
+                {
+                    SharedPreferences preferences = getSharedPreferences(FIRST_TIME, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean(IS_FIRST_TIME, false);
+                    editor.apply();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(LOG_TAG, "Error!");
+
+                if(isFirstTime){
+                    Toast.makeText(
+                        MainMapsActivity.this,
+                        "Check internet connection to load map",
+                        Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onNext(Void o) {
+                Log.d(LOG_TAG, "onNext");
+            }
+        };
+
+        results.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+
+
+
     }
 
     public boolean hasPermission(){

@@ -328,7 +328,7 @@ public class UpcomingActivity extends AppCompatActivity {
         else{
             texx.setText(null);
         }
-   }
+    }
 
     //to deal with flag updations when spinner list changes
     public void handlerecycle(){
@@ -471,7 +471,7 @@ public class UpcomingActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-     //   getMenuInflater().inflate(R.menu.menu_main, menu);
+        //   getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 

@@ -5,8 +5,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -38,7 +37,6 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".ClusterPage" />
-        <activity android:name=".UpcomingActivity" />
         <activity
             android:name=".SplashScreen"
             android:screenOrientation="portrait">
@@ -55,7 +53,6 @@
         <activity
             android:name=".DetailsActivity"
             android:label="@string/title_activity_details"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainMapsActivity"
@@ -68,27 +65,27 @@
             android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".PlaceChooser"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"></activity>
         <activity
             android:name=".MainMenu"
             android:screenOrientation="portrait"
-            android:theme="@style/CustomNoActionBarTheme">
+            android:theme="@style/CustomNoActionBarTheme"></activity>
+        <activity android:name="com.festember16.app.UpcomingActivity" />
+
+
+<<<<<<< HEAD
+        </activity>
+=======
+
+        <activity
+            android:name="com.festember16.app.AndroidLauncher"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
 
         </activity>
 
-        <!--<activity-->
-            <!--android:name="com.festember16.app.AndroidLauncher"-->
-            <!--android:label="@string/app_name"-->
-            <!--android:screenOrientation="landscape"-->
-            <!--android:configChanges="keyboard|keyboardHidden|orientation|screenSize">-->
-
-        <!--</activity>-->
-
-        <activity android:name=".Events_list" />
-        <activity android:name=".QR" />
-        <activity android:name=".Scoreboard" />
-        <activity android:name=".FeedbackActivity"></activity>
-
+>>>>>>> 6ec215c3c37b5370b63696aed9e0f581c76df7a1
     </application>
 
 </manifest>

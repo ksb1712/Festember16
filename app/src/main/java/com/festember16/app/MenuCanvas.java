@@ -37,7 +37,8 @@ public class MenuCanvas extends View
     List<Circle> mainCircles =  new ArrayList<>();
     Circle clickedCircle;
 
-    String titles[] = {"Events", "Map", "Game"  , "Profile" , "Schedule" , "Contacts" , "Notifications"};
+    String titles[] = {"Events", "Map", "Game"  , "Pr" +
+            "ofile" , "Schedule" , "Scoreboard" , "Notifications"};
     Paint textPaint = new Paint();
     Paint backgroundPaint = new Paint();
     Paint titlePaint = new Paint();
@@ -302,8 +303,14 @@ public class MenuCanvas extends View
                         break;
                     case "Events":
                         // goto events Page
-                        Log.d(LOG_TAG, "You clicked Events");
+                        Log.e(LOG_TAG, "You click Events");
                         touchEffect(c);
+                        DBHandler db;
+                        db = new DBHandler(context);
+
+
+                        //String s = db.getCluster();
+                        //Log.e("Cluster ",s);
                         Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         Intent i1 = new Intent(context, ClusterPage.class);
                         context.startActivity(i1);
@@ -330,11 +337,15 @@ public class MenuCanvas extends View
                     case "Schedule":
                         touchEffect(c);
                         Log.d(LOG_TAG, "You clicked Schedule");
+                        Intent i4 = new Intent(context,UpcomingActivity.class);
+                        context.startActivity(i4);
                         break;
 
-                    case "Contacts":
+                    case "Scoreboard":
                         touchEffect(c);
-                        Log.d(LOG_TAG, "You clicked Contacts");
+                        Log.d(LOG_TAG, "You clicked ScoreBoard");
+                        Intent i5 = new Intent(context,Scoreboard.class);
+                        context.startActivity(i5);
                         break;
 
                     case "Notifications":
