@@ -40,7 +40,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
-                + KEY_START_TIME + " TEXT," + KEY_END_TIME + " INTEGER,"
+                + KEY_START_TIME + " TEXT," + KEY_END_TIME + " TEXT,"
                 + KEY_VENUE + " TEXT," + KEY_DESCRIPTION + " TEXT,"
                 + KEY_LAST_UPDATE_TIME + " TEXT," + KEY_LOCATION_X + " TEXT,"
                 + KEY_LOCATION_Y + " TEXT," + KEY_MAX_LIMIT + " TEXT,"
@@ -77,13 +77,12 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public List<Events> getAllEvents() {
         List<Events> eventsList = new ArrayList<>();
-
         SQLiteDatabase db = this.getWritableDatabase();
+
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_EVENTS, null);
         if (cursor.moveToFirst()) {
             do {
                 Events events = new Events();
-                Log.e("test", cursor.toString());
 
                 events.setId(cursor.getInt(0));
                 events.setName(cursor.getString(1));
@@ -107,8 +106,8 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public Events getEvent(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM Data WHERE id = " + id, null);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM Events WHERE id is " + id, null);
 
         Events event = new Events();
         if(cursor != null) {
@@ -133,15 +132,54 @@ public class DBHandler extends SQLiteOpenHelper {
         return event;
     }
 
-    public String getCluster() {
+    public List<Events> getEventsByCluster(String cluster) {
+        List<Events> eventsList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selectQuery = "SELECT * FROM Events WHERE cluster is " + "\""+ cluster + "\"";
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Events events = new Events();
+
+                events.setId(cursor.getInt(0));
+                events.setName(cursor.getString(1));
+                events.setStartTime(cursor.getString(2));
+                events.setEndTime(cursor.getString(3));
+                events.setVenue(cursor.getString(4));
+                events.setDescription(cursor.getString(5));
+                events.setLastUpdateTime(cursor.getString(6));
+                events.setLocationX(cursor.getString(7));
+                events.setLocationY(cursor.getString(8));
+                events.setMaxLimit(cursor.getString(9));
+                events.setCluster(cursor.getString(10));
+                events.setDate(cursor.getString(11));
+
+                eventsList.add(events);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        cursor.close();
+
+        return eventsList;
+    }
+
+    public String[] getClusters() {
+        String[] clusters = new String[100];
+        int i = 0;
         SQLiteDatabase db = this.getReadableDatabase();
 
         String select = "SELECT DISTINCT " + KEY_CLUSTER + " FROM " + TABLE_EVENTS;
-        Cursor c = db.rawQuery(select, null);
+        Cursor cursor = db.rawQuery(select, null);
+        do {
+            clusters[i] = cursor.getString(i);
+            i++;
+        } while (cursor.getString(i)!=null);
 
-        String s = c.toString();
         db.close();
-        c.close();
-        return s;       
+        cursor.close();
+        return clusters;
     }
 }
