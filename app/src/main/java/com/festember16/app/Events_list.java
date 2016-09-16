@@ -4,38 +4,33 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClusterPage extends AppCompatActivity {
-
+public class Events_list extends AppCompatActivity {
     private GridLayoutManager lLayout;
-    DBHandler db;
+    String s[] = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().hide();
-        setContentView(R.layout.activity_cluster_page);
+        setContentView(R.layout.activity_events_list);
         setTitle(null);
-        Log.e("In cluster"," cluster");
-        db = new DBHandler(this);
-        String s = db.getCluster();
-        Log.e("clusters ",s);
+        s = getIntent().getExtras().getStringArray("events");
+
         List<ItemObject> rowListItem = getAllItemList();
-        lLayout = new GridLayoutManager(ClusterPage.this, 2);
+        lLayout = new GridLayoutManager(Events_list.this, 2);
 
         RecyclerView rView = (RecyclerView)findViewById(R.id.recycler_view);
         rView.setHasFixedSize(true);
         rView.setLayoutManager(lLayout);
 
-        RecyclerViewAdapter rcAdapter = new RecyclerViewAdapter(ClusterPage.this, rowListItem);
+        RecyclerViewAdapter2 rcAdapter = new RecyclerViewAdapter2(Events_list.this, rowListItem);
         rView.setAdapter(rcAdapter);
     }
 
@@ -61,14 +56,12 @@ public class ClusterPage extends AppCompatActivity {
 
     private List<ItemObject> getAllItemList(){
 
-
         List<ItemObject> allItems = new ArrayList<ItemObject>();
-        allItems.add(new ItemObject("Dance"));
-        allItems.add(new ItemObject("Danc3"));
-        allItems.add(new ItemObject("Danc1"));
-        allItems.add(new ItemObject("Dance2"));
+        for(int i = 0; i < s.length;i++)
+            allItems.add(new ItemObject(s[i]));
 
 
         return allItems;
     }
+
 }

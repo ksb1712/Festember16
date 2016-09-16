@@ -171,6 +171,8 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        hasInternet();
+
         mMap = googleMap;
 
         if(!hasPermission()){

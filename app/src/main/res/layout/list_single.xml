@@ -29,8 +29,7 @@
         android:text="ccccjj"
         android:background="@drawable/upcoming_cate_back"
         android:backgroundTint="#d41414"
-        android:paddingStart="2dp"
-        android:paddingEnd="5dp" />
+        />
 
     <TextView
         android:layout_width="wrap_content"

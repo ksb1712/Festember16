@@ -35,11 +35,15 @@ public class MenuCanvas extends View
     List<Paint> colours = new ArrayList<>();
     List<Circle> circles = new ArrayList<>();
     List<Circle> mainCircles =  new ArrayList<>();
+    Circle clickedCircle;
 
     String titles[] = {"Events", "Map", "Game"  , "Profile" , "Schedule" , "Contacts" , "Notifications"};
     Paint textPaint = new Paint();
+    Paint backgroundPaint = new Paint();
+    Paint titlePaint = new Paint();
+    Paint clickedPaint = new Paint();
 
-    boolean draw = true;
+    boolean draw = true, touched = false;
 
 
 
@@ -78,11 +82,19 @@ public class MenuCanvas extends View
         p.setColor(Color.LTGRAY);
         colours.add(p);
 
+        backgroundPaint.setColor(Color.rgb(100,0,100));
         textPaint.setColor(Color.BLACK);
         AssetManager am = context.getApplicationContext().getAssets();
         Typeface custom_font = Typeface.createFromAsset(am , String.format(Locale.US, "fonts/%s" , "HARLOWSI.TTF"));
         textPaint.setTypeface(custom_font);
         textPaint.setTextSize((maxRadius/3));
+
+        titlePaint.setColor(Color.WHITE);
+        titlePaint.setTypeface(custom_font);
+        titlePaint.setTextSize(maxRadius);
+
+        clickedPaint.setColor(Color.GRAY);
+
         initCircles();
 
     }
@@ -95,7 +107,7 @@ public class MenuCanvas extends View
 
     private void initCircles()
     {
-        float x , y , c = 0;
+        float x , y , c;
         Circle circle;
         circles.clear();
         Random random = new Random();
@@ -229,6 +241,11 @@ public class MenuCanvas extends View
             }
 
         }
+        if( touched )
+        {
+            canvas.drawCircle( clickedCircle.cx , clickedCircle.cy , clickedCircle.radius , clickedPaint);
+            touched = false;
+        }
         float div = 4;
         if( draw )
         {
@@ -263,7 +280,7 @@ public class MenuCanvas extends View
     }
 
 
-    //Call other sctivities
+    //Call other activities
     public boolean tapped( float x , float y)
     {
 
@@ -277,13 +294,19 @@ public class MenuCanvas extends View
                     case "Map":
                         // Call Intents
                         Log.d(LOG_TAG, "You clicked Map");
+                        touchEffect(c);
                         Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, MainMapsActivity.class);
                         context.startActivity(intent);
                         break;
                     case "Events":
                         // goto events Page
-                        Log.d(LOG_TAG, "You clicked Events");
+                        Log.e(LOG_TAG, "You click Events");
+                        touchEffect(c);
+                        DBHandler db;
+                        db = new DBHandler(context);
+                        String s = db.getCluster();
+                        Log.e("Cluster ",s);
                         Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         Intent i1 = new Intent(context, ClusterPage.class);
                         context.startActivity(i1);
@@ -291,6 +314,7 @@ public class MenuCanvas extends View
                     case "Game":
                         // goto events Page
                         Log.d(LOG_TAG, "You clicked Game");
+                        touchEffect(c);
                         Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         Intent i2 = new Intent(context, DetailsActivity.class);
                         context.startActivity(i2);
@@ -298,6 +322,7 @@ public class MenuCanvas extends View
                         break;
                     case "Profile":
                         Log.d(LOG_TAG, "You clicked Profile");
+                        touchEffect(c);
                         Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         Intent i3 = new Intent(context,MyProfile.class);
                         context.startActivity(i3);
@@ -306,16 +331,19 @@ public class MenuCanvas extends View
                     // Add other cases
 
                     case "Schedule":
+                        touchEffect(c);
                         Log.d(LOG_TAG, "You clicked Schedule");
                         Intent i4 = new Intent(context,UpcomingActivity.class);
                         context.startActivity(i4);
                         break;
 
                     case "Contacts":
+                        touchEffect(c);
                         Log.d(LOG_TAG, "You clicked Contacts");
                         break;
 
                     case "Notifications":
+                        touchEffect(c);
                         Log.d(LOG_TAG, "You clicked Notifications");
 
                     default:
@@ -327,9 +355,12 @@ public class MenuCanvas extends View
         return true;
     }
 
-
-
-
+    void touchEffect(Circle c)
+    {
+        clickedCircle = c;
+        touched = true;
+        invalidate();
+    }
 
     public void fling(float distanceX, float distanceY)
     {

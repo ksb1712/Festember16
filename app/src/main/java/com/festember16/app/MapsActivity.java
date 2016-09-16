@@ -153,7 +153,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onCompleted() {
                 Log.d(LOG_TAG, "Completed!");
-
                 if(isFirstTime)
                 {
                     SharedPreferences preferences = getSharedPreferences(MainMapsActivity.FIRST_TIME, MODE_PRIVATE);

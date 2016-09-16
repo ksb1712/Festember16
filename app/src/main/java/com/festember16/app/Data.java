@@ -1,20 +1,26 @@
 
 package com.festember16.app;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Data {
 
-    public Integer status;
+    @SerializedName("status_code")
+    public Integer statusCode;
+
+    @SerializedName("message")
     public List<Events> events = new ArrayList<>();
 
-    public Integer getStatus() {
-        return status;
+    public Integer getStatusCode() {
+        return statusCode;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
     }
 
     public List<Events> getEvents() {
@@ -24,4 +30,5 @@ public class Data {
     public void setEvents(List<Events> events) {
         this.events = events;
     }
+
 }
