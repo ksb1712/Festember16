@@ -1,22 +1,21 @@
 package com.festember16.app;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -45,6 +44,10 @@ public class VirtualLayer extends View
     private static final String UTILS = "UTILS";
     private static final String EVENTS = "EVENTS";
 
+    Paint pt = new Paint();
+    Paint paint = new Paint();
+    Paint p1 = new Paint();
+    Paint p = new Paint();
 
 
     public VirtualLayer(Context context, String poi_type)
@@ -62,41 +65,36 @@ public class VirtualLayer extends View
         green = BitmapFactory.decodeResource(context.getResources(), R.drawable.green);
         blue = BitmapFactory.decodeResource(context.getResources(), R.drawable.blue);
 
+        pt.setColor( Color.argb( 100 , 100 , 100  , 100) );
         switch (poi_type)
         {
             case HOSTEL:
                 allPOIs = PointOfInterestManager.getHostels();
+                Collections.sort(allPOIs);
                 break;
             case UTILS:
                 allPOIs = PointOfInterestManager.getUtils();
+                Collections.sort(allPOIs);
                 break;
             case EVENTS:
-                getEvents();
+                allPOIs = PointOfInterestManager.getEvents();
+                Collections.sort(allPOIs);
                 break;
         }
 
+        AssetManager am = context.getApplicationContext().getAssets();
+        Typeface custom_font = Typeface.createFromAsset(am , String.format(Locale.US, "fonts/%s" , "BuxtonSketch.ttf"));
+
+        paint.setColor(Color.GREEN);
+        paint.setTextSize(70);
+        paint.setAlpha(60);
+        p.setColor(Color.WHITE);
+        p.setTypeface(custom_font);
+        p1.setColor(Color.rgb( 0, 255, 255));
+        p1.setTextSize(dp(12));
+        p.setTextSize(dp(18));
     }
 
-    private void getEvents()
-    {
-        DBHandler handler = new DBHandler(context);
-        List<Events> allEvents;
-        PointOfInterest poi;
-        allEvents = handler.getAllEvents();
-        String  lat , lon;
-        Double _lat, _lon;
-
-        for( Events e: allEvents)
-        {
-            lat = e.getLocationX();
-            lon = e.getLocationY();
-            _lat = Double.parseDouble(lat);
-            _lon = Double.parseDouble(lon);
-            poi = new PointOfInterest( e.getName() ,_lat, _lon );
-            allPOIs.add(poi);
-
-        }
-    }
     public void shiftScroll( float distY)
     {
         Log.wtf("wtf", distY + "");
@@ -104,7 +102,7 @@ public class VirtualLayer extends View
         {
             shiftBy += distY;
         }
-
+        invalidate();
     }
 
     public void touch( float x , float y )
@@ -151,48 +149,25 @@ public class VirtualLayer extends View
         maxH = dpHeight - dp(100);
         //minH = 0;
         // Change top of POIs in View so that they dont overlap
-        for ( i = 0 ; i < poisInView.size(); i++)
+        for( i = 1; i < poisInView.size() ; i++)
         {
             PointOfInterest poi = poisInView.get(i);
-
-            for (j = 0; j < poisInView.size(); j++)
+            for( j = 0; j < i; j++)
             {
                 PointOfInterest _poi = poisInView.get(j);
-                if ( Math.abs(poi.left - _poi.left) < dp(100) && Math.abs(poi.top - _poi.top) < dp(100) && (poi.location != _poi.location))
+
+                if( Math.abs(_poi.left - poi.left) < dp(110) && Math.abs( _poi.top - poi.top) < dp(110))
                 {
-
-
-                    double dist1 = LocationData.getDistance(currentLocation, poi.location);
-                    double dist2 = LocationData.getDistance(currentLocation, _poi.location);
-
-                    if( dist2 < dist1 )
-                    {
-                        _poi.top += dp(110);
-                        if( _poi.top > maxH )
-                        {
-                            maxH = _poi.top;
-                        }
-                        poisInView.set(j , _poi);
-                    }
-                    else
-                    {
-                        _poi.top -= dp(110);
-                        if( minH > _poi.top)
-                        {
-                            minH = _poi.top;
-                        }
-                        poisInView.set(j, _poi);
-                        if( _poi.top < minH )
-                        {
-                            minH = _poi.top;
-                        }
-                    }
-
-
+                    poi.top -= dp(110);
+                    poisInView.set( i , poi);
                     j = 0;
                 }
-            }
+                if( poi.top < minH )
+                {
+                    minH = poi.top;
+                }
 
+            }
         }
 
         if(isLoc)
@@ -227,7 +202,7 @@ public class VirtualLayer extends View
             }
         }
 
-        Collections.sort(poisInView);
+        //Collections.sort(poisInView);
 
     }
 
@@ -265,28 +240,19 @@ public class VirtualLayer extends View
     protected void onDraw(Canvas canvas)
     {
         super.onDraw(canvas);
-        Paint paint = new Paint();
-        paint.setColor(Color.GREEN);
-        paint.setTextSize(70);
-        paint.setAlpha(60);
-        Paint p = new Paint();
-        p.setColor(Color.WHITE);
-        Paint p1 = new Paint();
-        p1.setColor(Color.RED);
-        p1.setTextSize(dp(12));
-        p.setTextSize(dp(18));
 
         double maxHeight = canvas.getHeight(), maxWidth = canvas.getWidth();
 
 
-        if(isLoc && ! isTouch)
+        if(isLoc)
         {
 
             canvas.drawColor(Color.TRANSPARENT);
             for( PointOfInterest poi: poisInView)
             {
 
-                canvas.drawBitmap( green , (float)poi.left, (float)poi.top + (float)(shiftBy), paint);
+                canvas.drawBitmap( blue , (float)poi.left, (float)poi.top + (float)(shiftBy), paint);
+                //canvas.drawRect( (float) poi.left , (float) poi.top + (float)shiftBy, (float)poi.left + dp(100) , (float)poi.top + dp(100)  + (float)shiftBy, pt );
                 String title[] = poi.Title.split(" ");
                 int top = dp(18);
                 for ( String str: title)
@@ -298,11 +264,6 @@ public class VirtualLayer extends View
 
                 canvas.drawText( poi.eta ,(float)poi.left + dp(10) , (float)poi.top + dp(100) - dp(18) +(float)(shiftBy) , p1);
             }
-        }
-        else if( isLoc && isTouch)
-        {
-            canvas.drawColor(Color.BLUE);
-            canvas.drawText(touched.Title , (float) maxWidth/2 - 100 , (float) maxHeight/2 , p);
         }
         else
         {
