@@ -82,7 +82,7 @@ public class MyProfile extends AppCompatActivity {
         ));
 
 
-        registerForContextMenu(listView);
+      //  registerForContextMenu(listView);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -94,51 +94,51 @@ public class MyProfile extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-        if(v.getId()==R.id.listView2){
-            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-
-            //Get the contact that was LongClicked.
-            eventMenuPosBuf = info.position;
-            eventMenuBuf = eventses.get(info.position);
-
-            //populate menu
-           menu.add("Unregister");
-        }
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        switch (id){
-            case 0:
-                //Todo: Call api and ask it to unregiser
-                //Todo: if(response==true)
-
-                eventses.remove(eventMenuPosBuf);
-                listView.setAdapter(new EventsAdapter(
-                        this, 0, eventses
-                ));
-
-                SharedPreferences preferences = getSharedPreferences(
-                        DetailsFragment.REGISTERED_EVENTS,
-                        MODE_PRIVATE
-                );
-
-                SharedPreferences.Editor editor = preferences.edit();
-
-                editor.remove(String.valueOf(eventMenuBuf.getId()));
-
-                editor.apply();
-        }
-
-        return super.onContextItemSelected(item);
-    }
+//    @Override
+//    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+//        super.onCreateContextMenu(menu, v, menuInfo);
+//
+//        if(v.getId()==R.id.listView2){
+//            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+//
+//            //Get the contact that was LongClicked.
+//            eventMenuPosBuf = info.position;
+//            eventMenuBuf = eventses.get(info.position);
+//
+//            //populate menu
+//           menu.add("Unregister");
+//        }
+//    }
+//
+//    @Override
+//    public boolean onContextItemSelected(MenuItem item) {
+//
+//        int id = item.getItemId();
+//
+//        switch (id){
+//            case 0:
+//                //Todo: Call api and ask it to unregiser
+//                //Todo: if(response==true)
+//
+//                eventses.remove(eventMenuPosBuf);
+//                listView.setAdapter(new EventsAdapter(
+//                        this, 0, eventses
+//                ));
+//
+//                SharedPreferences preferences = getSharedPreferences(
+//                        DetailsFragment.REGISTERED_EVENTS,
+//                        MODE_PRIVATE
+//                );
+//
+//                SharedPreferences.Editor editor = preferences.edit();
+//
+//                editor.remove(String.valueOf(eventMenuBuf.getId()));
+//
+//                editor.apply();
+//        }
+//
+//        return super.onContextItemSelected(item);
+//    }
 
     @Override
     protected void onStop() {

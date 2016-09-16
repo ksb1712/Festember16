@@ -22,7 +22,7 @@ public class DetailsActivity extends AppCompatActivity {
     public static final String ID = "ID";
     int eventId = 2;
 
-   // public static DBHandler db;
+    //public static DBHandler db;
     public static Events detailedEvent;
 
     @InjectView(R.id.pager)
@@ -75,43 +75,43 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-    //    db.close();
+        //db.close();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_event_details, menu);
+//        getMenuInflater().inflate(R.menu.menu_event_details, menu);
 
         return true;
     }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        switch (item.getItemId()){
+//
+//            case R.id.linkToMap:
+//                Intent intent = new Intent(
+//                        DetailsActivity.this,
+//                        MapsActivity.class
+//                );
+//
+//               intent.putExtra(ID, eventId);
+//
+//                startActivityForResult(intent, MAP_REQUEST_CODE);
+//
+//                break;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()){
-
-            case R.id.linkToMap:
-                Intent intent = new Intent(
-                        DetailsActivity.this,
-                        MapsActivity.class
-                );
-
-               intent.putExtra(ID, eventId);
-
-                startActivityForResult(intent, MAP_REQUEST_CODE);
-
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch(requestCode){
-            case MAP_REQUEST_CODE:
-                //Handle some action if necessary
-                break;
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        switch(requestCode){
+//            case MAP_REQUEST_CODE:
+//                //Handle some action if necessary
+//                break;
+//        }
+//    }
 }

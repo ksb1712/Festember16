@@ -101,13 +101,13 @@ public class DetailsFragment extends Fragment {
         if (bundle != null) {
             int id = bundle.getInt(ID);
             //Todo: test out if db works here
-            events = DetailsActivity.detailedEvent;
+            //events = DetailsActivity.detailedEvent;
             //Just in case
             if(events == null){
                 //events = DetailsActivity.db.getEvent(id);
             }
 
-            //Hardcoded data for testing
+//            //Hardcoded data for testing
             events = new Gson().fromJson("{\"event_id\":\"2\",\"event_name\":\"choreo_nite_eastern\",\"event_start_time\":\"16:30:00\",\"event_end_time\":\"21:30:00\",\"event_venue\":\"OAT\",\"event_last_update_time\":\"03:16:16\",\"event_loc_x\":\"78.817\",\"event_loc_y\":\"10.7646\",\"event_max_limit\":\"0\",\"event_cluster\":\"dance\",\"event_date\":\"2015-09-25\"}",
                     Events.class);
 
@@ -159,53 +159,53 @@ public class DetailsFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-                        if(!hasRegistered) {
-                            //Todo: Send a post request to api and set ProgressBar to visible
-                            //ProgressBar not in current layout
-                            //Todo: if(response == true)
-                            registerButton.setText("REGISTERED");
-                            if (Build.VERSION.SDK_INT >= 23) {
-                                registerButton.setBackgroundColor(getResources().getColor(
-                                        R.color.aluminum, null
-                                ));
-                            }
-                            else {
-                                registerButton.setBackgroundColor(getResources().getColor(R.color.aluminum));
-                            }
-                            registerButton.setTextColor(Color.BLACK);
-                            hasRegistered = true;
-
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putBoolean("" + events.getId(), true);
-                            editor.commit();
-
+                        //Todo: Send a post request to api and set ProgressBar to visible
+                        //ProgressBar not in current layout
+                        //Todo: if(response == true)
+                        registerButton.setText("REGISTERED");
+                        if (Build.VERSION.SDK_INT >= 23) {
+                            registerButton.setBackgroundColor(getResources().getColor(
+                                    R.color.aluminum, null
+                            ));
                         }
-
-                        //User wants to unregister
-
-                        else
-                        {
-                            //Todo: Send a post request to api and set ProgressBar to visible
-                            //ProgressBar not in current layout
-                            //Todo: if(response == true)
-                            registerButton.setText("REGISTER");
-                            if (Build.VERSION.SDK_INT >= 23) {
-                                registerButton.setBackgroundColor(getResources().getColor(
-                                        R.color.buttonBackground, null
-                                ));
-                            } else {
-                                registerButton.setBackgroundColor(getResources().
-                                        getColor(R.color.buttonBackground));
-                            }
-                            registerButton.setTextColor(ContextCompat.getColor
-                                    (getActivity(), R.color.textColorLight));
-                            hasRegistered = false;
-
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.remove(String.valueOf(events.getId()));
-                            editor.commit();
+                        else {
+                            registerButton.setBackgroundColor(getResources().getColor(R.color.aluminum));
                         }
+                        registerButton.setTextColor(Color.BLACK);
+                        hasRegistered = true;
+
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putBoolean("" + events.getId(), true);
+                        editor.commit();
+
+//                        if(!hasRegistered) {
+//
+//                        }
+//
+//                        //User wants to unregister
+//
+//                        else
+//                        {
+//                            //Todo: Send a post request to api and set ProgressBar to visible
+//                            //ProgressBar not in current layout
+//                            //Todo: if(response == true)
+//                            registerButton.setText("REGISTER");
+//                            if (Build.VERSION.SDK_INT >= 23) {
+//                                registerButton.setBackgroundColor(getResources().getColor(
+//                                        R.color.buttonBackground, null
+//                                ));
+//                            } else {
+//                                registerButton.setBackgroundColor(getResources().
+//                                        getColor(R.color.buttonBackground));
+//                            }
+//                            registerButton.setTextColor(ContextCompat.getColor
+//                                    (getActivity(), R.color.textColorLight));
+//                            hasRegistered = false;
+//
+//                            SharedPreferences.Editor editor = preferences.edit();
+//                            editor.remove(String.valueOf(events.getId()));
+//                            editor.commit();
+//                        }
 
                     }
 
