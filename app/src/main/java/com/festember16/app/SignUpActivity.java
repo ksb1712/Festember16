@@ -2,6 +2,8 @@ package com.festember16.app;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,11 +27,23 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
-public class SignUpActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class SignUpActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = "SignupActivity";
 
     EditText _nameText;
@@ -49,6 +63,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     TextView _cityText;
     Button _signupButton;
 
+    int id;
     private RadioGroup radioSexGroup;
     private RadioButton radioSexButton;
     int status = 0;
@@ -629,6 +644,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     String branchName[] = {
 
             "CSE",
+            "Chem",
             "IT",
             "ECE",
             "EEE",
@@ -641,6 +657,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             "Arch",
             "Aero",
             "Bio",
+            "Meta",
             "Arts",
             "Science",
             "Others",
@@ -651,6 +668,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             "MBA",
             "MSc",
             "MS",
+            "BTech",
             "BSc",
             "BCA",
             "BA",
@@ -688,6 +706,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     int textlength=0;
     AlertDialog myalertDialog=null;
 
+    String value[] = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -697,8 +716,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         _emailText = (EditText)findViewById(R.id.input_email);
         _collegeText = (TextView) findViewById(R.id.input_college);
         _yearText = (TextView) findViewById(R.id.input_year);
-        _degreeText = (TextView) findViewById(R.id.input_fegree);
-        _collegeText = (TextView) findViewById(R.id.input_college);
+        _degreeText = (TextView) findViewById(R.id.input_degree);
+        _cityText = (TextView) findViewById(R.id.input_city);
+        _countryText = (TextView) findViewById(R.id.input_country);
+        _stateText = (TextView) findViewById(R.id.input_state);
+        _branchText = (TextView) findViewById(R.id.input_branch);
         _passwordText = (EditText)findViewById(R.id.input_password);
         _re_passwordText = (EditText)findViewById(R.id.input_re_password);
         _fullnameText = (EditText)findViewById(R.id.input_name);
@@ -712,34 +734,92 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 signup();
             }
         });
-        _collegeText.setOnClickListener(this);
+        _collegeText.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                       id = view.getId();
+                        callAlert(view,CollegeName);
+                    }
+                });
+        _stateText.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        id = view.getId();
+                        callAlert(view,stateName);
+                    }
+                }
+        );
+        _degreeText.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        id = view.getId();
+                        callAlert(view,degreeName);
+                    }
+                }
+        );
+       _cityText.setOnClickListener(
+               new View.OnClickListener() {
+                   @Override
+                   public void onClick(View view) {
+
+                       id = view.getId();
+                       callAlert(view,cityName);
+                   }
+               }
+       );
+        _countryText.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        id = view.getId();
+                        callAlert(view,countryName);
+                    }
+                }
+        );
+
+       _branchText.setOnClickListener(
+               new View.OnClickListener() {
+                   @Override
+                   public void onClick(View view) {
+
+                       id = view.getId();
+                       callAlert(view,branchName);
+                   }
+               }
+       );
+      _yearText.setOnClickListener(
+        new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                id = view.getId();
+                callAlert(view,yearName);
+            }
+        }
+        );
+
         radioSexGroup = (RadioGroup) findViewById(R.id.radioGender);
 
 
-        _collegeText.setOnTouchListener(new View.OnTouchListener(){
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                // your code here....
-                if(status == 0)
-                {
-                    onClick(view);
-                    status = 1;
-                }
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                return false;
-            }
-        });
-
     }
+
+
 
     public void signup() {
         Log.d(TAG, "Signup");
 
-        if (!validate()) {
+   /*     if (!validate()) {
             onSignupFailed();
             return;
         }
-
-        _signupButton.setEnabled(false);
+*/
+        _signupButton.setEnabled(true);
 
         final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -747,24 +827,28 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String name = _nameText.getText().toString();
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
-        String rePassword = _passwordText.getText().toString();
-        String fullName = _passwordText.getText().toString();
-        String college_other = _passwordText.getText().toString();
-        String phone = _passwordText.getText().toString();
-        String Address = _passwordText.getText().toString();
+        final String name = _nameText.getText().toString();
+        Log.d(TAG, "Signup2");
 
-        String college;
-        String  branch;
-        String year;
-        String dept;
-        String city;
-        String state;
-        String country;
+        final String email = _emailText.getText().toString();
+        final String password = _passwordText.getText().toString();
+        String rePassword = _re_passwordText.getText().toString();
+      final   String fullName = _fullnameText.getText().toString();
+        final String college_other = _college_Text.getText().toString();
+       final String phone = _phoneText.getText().toString();
+        final String address = _addressText.getText().toString();
 
+         String college = _collegeText.getText().toString();
+        final String  branch = _branchText.getText().toString();
+        final String year = _yearText.getText().toString();
+        final String degree = _degreeText.getText().toString();
+       final String city = _cityText.getText().toString();
+        final String state = _stateText.getText().toString();
+        final String country = _countryText.getText().toString();
 
+        if(college.equals("Others"))
+            college = college_other;
+        final String college_name = college;
         // get selected radio button from radioGroup
         int selectedId = radioSexGroup.getCheckedRadioButtonId();
 
@@ -773,22 +857,107 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         Toast.makeText(SignUpActivity.this,
                 radioSexButton.getText(), Toast.LENGTH_SHORT).show();
+        final String gender = radioSexButton.getText().toString();
+        Log.d(TAG, "Signup3");
 
         // TODO: Implement your own signup logic here.
-
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
-                        onSignupSuccess();
-                        // onSignupFailed();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Utilities.user_register_url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("TAG ",response);
                         progressDialog.dismiss();
+                        JSONObject jsonResponse = null;
+                        try {
+                            jsonResponse = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        int status = 0;
+                        try {
+                            status = jsonResponse.getInt("status_code");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        String message = null;
+                        try {
+                            message = jsonResponse.getString("message");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        /*
+                        switch (status) {
+
+                            case 200:
+
+                                SharedPreferences.Editor editor = pref.edit();
+                                Utilities.status = 1;
+                                editor.putInt("Logged_in", Utilities.status);
+                                editor.putString("user_email", email);
+                                Utilities.username = email;
+                                editor.putString("user_pass", password);
+                                Utilities.password = password;
+                                editor.putString("token", message);
+                                Utilities.token = message;
+                                editor.apply();
+
+
+                                Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
+                                Intent i = new Intent(LoginActivity.this, MainMenu.class);
+                                startActivity(i);
+
+                                break;
+
+                            default:
+                                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                                _emailText.setText("");
+                                _passwordText.setText("");
+                                onLoginFailed();
+                                break;
+                        }*/
                     }
-                }, 3000);
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+                        Toast.makeText(SignUpActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                        onSignupFailed();
+                    }
+                })
+        {
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+
+
+                params.put("user_name",name);
+                params.put("user_password",password);
+                params.put("user_email",email);
+                params.put("user_fullname",fullName);
+                params.put("user_gender",gender);
+                params.put("user_course",degree);
+                params.put("user_year",year);
+                params.put("user_other_college",college_other);
+                params.put("user_branch",branch);
+                params.put("user_college",college_name);
+                params.put("user_country",country);
+                params.put("user_city",city);
+                params.put("user_state",state);
+                params.put("user_phone",phone);
+                params.put("user_address",address);
+
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
-    @Override
-    public void onClick(View view)
+
+    public void callAlert(View view, final String TitleName[])
     {
         AlertDialog.Builder myDialog = new AlertDialog.Builder(SignUpActivity.this);
 
@@ -841,8 +1010,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         });
 
         myalertDialog=myDialog.show();
-
     }
+
 
 
     @Override
@@ -850,8 +1019,32 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         myalertDialog.dismiss();
         String strName=array_sort.get(position);
-        _collegeText.setText(strName);
+        switch(id)
+        {
+            case R.id.input_college:
+                _collegeText.setText(strName);
+                break;
+            case R.id.input_state:
+                _stateText.setText(strName);
+                break;
+            case R.id.input_city:
+                _cityText.setText(strName);
+                break;
+            case R.id.input_country:
+                _countryText.setText(strName);
+                break;
+            case R.id.input_branch:
+                _branchText.setText(strName);
+                break;
+            case R.id.input_year:
+                _yearText.setText(strName);
+                break;
+            case R.id.input_degree:
+                _degreeText.setText(strName);
+                break;
+        }
     }
+
 
 
 
@@ -873,6 +1066,19 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         String name = _nameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
+        String rePassword = _passwordText.getText().toString();
+        String fullName = _passwordText.getText().toString();
+        String college_other = _passwordText.getText().toString();
+        String phone = _passwordText.getText().toString();
+        String Address = _passwordText.getText().toString();
+
+        String college = _collegeText.getText().toString();
+        String  branch = _branchText.getText().toString();
+        String year = _yearText.getText().toString();
+        String dept = _branchText.getText().toString();
+        String city = _cityText.getText().toString();
+        String state = _stateText.getText().toString();
+        String country = _countryText.getText().toString();
 
         if (name.isEmpty() || name.length() < 3) {
             _nameText.setError("at least 3 characters");
@@ -888,12 +1094,20 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             _emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+        if (password.isEmpty()) {
+            _passwordText.setError("Must be filled");
             valid = false;
         } else {
             _passwordText.setError(null);
         }
+        if(rePassword.isEmpty() || !rePassword.equals(password))
+        {
+            _re_passwordText.setError("Must be same as password");
+            valid = false;
+        } else {
+            _passwordText.setError(null);
+        }
+        //TODO remaining validate
 
         return valid;
     }
