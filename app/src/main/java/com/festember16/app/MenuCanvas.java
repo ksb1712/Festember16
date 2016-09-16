@@ -39,7 +39,7 @@ public class MenuCanvas extends View
     Paint textPaint = new Paint();
     Paint backgroundPaint = new Paint();
     Paint titlePaint = new Paint();
-
+    Paint menuPaint = new Paint();
     float scaleRadius;
 
     Intent callIntent;
@@ -93,6 +93,13 @@ public class MenuCanvas extends View
         titlePaint.setColor(Color.WHITE);
         titlePaint.setTypeface(custom_font);
         titlePaint.setTextSize(maxRadius);
+
+        // TODO change menu paint as needed
+        menuPaint.setColor(Color.WHITE);
+        menuPaint.setTypeface(custom_font);
+        menuPaint.setTextSize(maxRadius);
+        menuPaint.setAntiAlias(true);
+        menuPaint.setTextAlign(Paint.Align.CENTER);
 
         initCircles();
 
@@ -262,13 +269,20 @@ public class MenuCanvas extends View
             if(scaleRadius == 0){
                 scaleRadius = clickedCircle.radius;
                 invalidate();
-            } else if(scaleRadius <= dpHeight) {
-                canvas.drawCircle( clickedCircle.cx , clickedCircle.cy , scaleRadius , clickedCircle.colour);
-                scaleRadius += dpHeight / 50;
-                invalidate();
             } else {
-                canvas.drawCircle( clickedCircle.cx , clickedCircle.cy , scaleRadius , clickedCircle.colour);
-//                Log.d(LOG_TAG,"hey" + callIntent.toString());
+                if ((dist(clickedCircle.cx,clickedCircle.cy,0,0) > scaleRadius)
+                        || (dist(clickedCircle.cx,clickedCircle.cy,0,dpHeight) > scaleRadius)
+                        || (dist(clickedCircle.cx,clickedCircle.cy,dpWidth,dpHeight) > scaleRadius)
+                        || (dist(clickedCircle.cx,clickedCircle.cy,dpWidth,0) > scaleRadius) ) {
+                    canvas.drawCircle(clickedCircle.cx, clickedCircle.cy, scaleRadius, clickedCircle.colour);
+//                    canvas.drawText("Festember 2016", maxRadius * 0.1f, maxRadius, titlePaint);
+                    scaleRadius += dpHeight / 50;
+                    invalidate();
+                } else {
+                    canvas.drawCircle(clickedCircle.cx, clickedCircle.cy, scaleRadius, clickedCircle.colour);
+//                    canvas.drawText("Festember 2016", maxRadius * 0.1f, maxRadius, titlePaint);
+                    canvas.drawText(clickedCircle.text,dpWidth/2,dpHeight/2,menuPaint);
+                }
             }
         }
     }
