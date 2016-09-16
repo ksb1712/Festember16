@@ -18,7 +18,7 @@ public class Utilities {
     public static int status;
 
     public static SharedPreferences prefs;
-    public static String base_url = "https://api.festember.com/";
+    public static String base_url = "http://api.festember.com";
     public static String auth_url = base_url + "/auth/app";
     public static String user_register_url = base_url + "/user/register";
     public static String event_details_url = base_url + "/events/details";

@@ -1,1 +1,1 @@
-include ':app', ':fest_game'
+include ':app'
