@@ -135,66 +135,38 @@ public class DetailsFragment extends Fragment {
         registerButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                v -> {
+                    public void onClick(View view) {
+                        if (!hasRegistered) {
+                            //Todo: Send a post request to api and set ProgressBar to visible
+                            //ProgressBar not in current layout
+                            //Todo: if(response == true)
+                            registerButton.setText("REGISTERED");
+                            if (Build.VERSION.SDK_INT >= 23) {
+                                registerButton.setBackgroundColor(getResources().getColor(
+                                        R.color.aluminum, null
+                                ));
+                            } else {
+                                registerButton.setBackgroundColor(getResources().getColor(R.color.aluminum));
+                            }
+                            registerButton.setTextColor(Color.BLACK);
+                            hasRegistered = true;
 
-                    if(!hasRegistered) {
-                        //Todo: Send a post request to api and set ProgressBar to visible
-                        //ProgressBar not in current layout
-                        //Todo: if(response == true)
-                        registerButton.setText("REGISTERED");
-                        if (Build.VERSION.SDK_INT >= 23) {
-                            registerButton.setBackgroundColor(getResources().getColor(
-                                    R.color.aluminum, null
-                            ));
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putBoolean("" + events.getId(), true);
+                            editor.commit();
                         }
-                        else {
-                            registerButton.setBackgroundColor(getResources().getColor(R.color.aluminum));
-                        }
-                        registerButton.setTextColor(Color.BLACK);
-                        hasRegistered = true;
-
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putBoolean("" + events.getId(), true);
-                        editor.commit();
-
-//                        if(!hasRegistered) {
-//
-//                        }
-//
-//                        //User wants to unregister
-//
-//                        else
-//                        {
-//                            //Todo: Send a post request to api and set ProgressBar to visible
-//                            //ProgressBar not in current layout
-//                            //Todo: if(response == true)
-//                            registerButton.setText("REGISTER");
-//                            if (Build.VERSION.SDK_INT >= 23) {
-//                                registerButton.setBackgroundColor(getResources().getColor(
-//                                        R.color.buttonBackground, null
-//                                ));
-//                            } else {
-//                                registerButton.setBackgroundColor(getResources().
-//                                        getColor(R.color.buttonBackground));
-//                            }
-//                            registerButton.setTextColor(ContextCompat.getColor
-//                                    (getActivity(), R.color.textColorLight));
-//                            hasRegistered = false;
-//
-//                            SharedPreferences.Editor editor = preferences.edit();
-//                            editor.remove(String.valueOf(events.getId()));
-//                            editor.commit();
-//                        }
-
                     }
+//
 
-                    }
-
-                }
-        );
-
+                });
     }
+
+
+             //   )
+
+
+
+
 
     @Override
     public void onDetach() {
