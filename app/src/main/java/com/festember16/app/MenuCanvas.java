@@ -8,13 +8,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.location.LocationManager;
 import android.os.Handler;
-import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -238,7 +235,7 @@ public class MenuCanvas extends View
             }
 
         }
-        float div = 4;
+        float div;
         if (draw) {
             for (int i = 0; i < mainCircles.size(); i++) {
                 Circle c = mainCircles.get(i);
@@ -294,14 +291,6 @@ public class MenuCanvas extends View
 //                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         callIntent = new Intent(context, MainMapsActivity.class);
                         touchEffect(c);
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                touched = false;
-                                scaleRadius = 0;
-                                context.startActivity(callIntent);
-                            }
-                        }, waitTime);
                         break;
                     case "Events":
                         // goto events Page
@@ -310,14 +299,6 @@ public class MenuCanvas extends View
                         touchEffect(c);
 //                        DBHandler db;
 //                        db = new DBHandler(context);
-                        new Handler().postDelayed(new Runnable() {
-                            public void run() {
-                                touched = false;
-                                scaleRadius = 0;
-                                context.startActivity(callIntent);
-                            }
-                        }, waitTime);
-
                         //String s = db.getCluster();
                         //Log.e("Cluster ",s);
 //                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
@@ -328,27 +309,12 @@ public class MenuCanvas extends View
                         touchEffect(c);
 //                        Log.d(LOG_TAG, "You clicked Game");
 //                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
-                        new Handler().postDelayed(new Runnable() {
-                            public void run() {
-                                touched = false;
-                                scaleRadius = 0;
-                                context.startActivity(callIntent);
-                            }
-                        }, waitTime);
                         break;
                     case "Profile":
                         callIntent = new Intent(context,MyProfile.class);
                         touchEffect(c);
 //                        Log.d(LOG_TAG, "You clicked Profile");
 //                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
-                        new Handler().postDelayed(new Runnable() {
-                            public void run() {
-                                touched = false;
-                                scaleRadius = 0;
-                                context.startActivity(callIntent);
-                            }
-                        }, waitTime);
-
                         break;
 
                     // Add other cases
@@ -357,43 +323,29 @@ public class MenuCanvas extends View
                         Log.d(LOG_TAG, "You clicked Schedule");
                         callIntent = new Intent(context,UpcomingActivity.class);
                         touchEffect(c);
-                        new Handler().postDelayed(new Runnable() {
-                            public void run() {
-                                touched = false;
-                                scaleRadius = 0;
-                                context.startActivity(callIntent);
-                            }
-                        }, waitTime);
                         break;
 
                     case "Scoreboard":
                         callIntent = new Intent(context,Scoreboard.class);
                         touchEffect(c);
 //                        Log.d(LOG_TAG, "You clicked ScoreBoard");
-                        new Handler().postDelayed(new Runnable() {
-                            public void run() {
-                                touched = false;
-                                scaleRadius = 0;
-                                context.startActivity(callIntent);
-                            }
-                        }, waitTime);
                         break;
 
                     case "Notifications":
+                        // TODO add callIntent intent to notifications
                         touchEffect(c);
-                        Log.d(LOG_TAG, "You clicked Notifications");
-                        new Handler().postDelayed(new Runnable() {
-                            public void run() {
-                                touched = false;
-                                scaleRadius = 0;
-                                invalidate();   //TODO remove this and add intent to notifications
-                            }
-                        }, waitTime);
                         break;
                     default:
                         // do nothing
-
                 }
+                new Handler().postDelayed(() -> {
+                    touched = false;
+                    scaleRadius = 0;
+                    if(callIntent != null)
+                        context.startActivity(callIntent);
+                    else
+                        invalidate();
+                }, waitTime);
             }
         }
         return true;
@@ -480,7 +432,7 @@ public class MenuCanvas extends View
             for( i = 0 ; i < mainCircles.size() ; i++)
             {
                 c = mainCircles.get(i);
-                if( c.text == "")
+                if( c.text.isEmpty() )
                 {
                     c.text = s;
                     mainCircles.set( i , c);
