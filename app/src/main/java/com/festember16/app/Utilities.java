@@ -1,6 +1,8 @@
 package com.festember16.app;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 
 /**
  * Created by app on 1/8/16.
@@ -26,6 +28,7 @@ public class Utilities {
     public static String user_profile = base_url + "/events/user/details";
     public static String user_qr = base_url + "/tshirt/qr";
     public static String scoreboard_url = "https://festember.com/scoreboard/getScoreBoard";
-
+    public static Context context;
+   // public static Typeface typeface = Typeface.createFromAsset(getAss)
 
 }

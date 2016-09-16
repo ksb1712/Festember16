@@ -1,6 +1,7 @@
 package com.festember16.app;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
 
+
         TextView college;
         TextView score;
         // You need to retrieve the container (ie the root ViewGroup from your custom_item_layout)
@@ -32,11 +34,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         public ViewHolder(View itemView)
         {
             super(itemView);
+           // Typeface typeface = Typeface.createFromAsset(itemView.getContext().getAssets(),"Sansation-Regular.ttf");
 
             container = (RelativeLayout) itemView.findViewById(R.id.relative_layout);
 
             college = (TextView) itemView.findViewById(R.id.college_name);
             score = (TextView)itemView.findViewById(R.id.score);
+          //  college.setTypeface(typeface);
+            //score.setTypeface(typeface);
         }
     }
 

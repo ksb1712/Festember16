@@ -1,6 +1,7 @@
 package com.festember16.app;
 
 import android.app.ProgressDialog;
+import android.graphics.Typeface;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,7 +39,6 @@ public class Scoreboard   extends AppCompatActivity{
             getSupportActionBar().hide();
             setContentView(R.layout.activity_scoreboard);
             setTitle(null);
-
 
             rView = (RecyclerView)findViewById(R.id.RecyclerView);
             mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);

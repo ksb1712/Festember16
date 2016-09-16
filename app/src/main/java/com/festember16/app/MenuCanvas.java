@@ -37,7 +37,8 @@ public class MenuCanvas extends View
     List<Circle> mainCircles =  new ArrayList<>();
     Circle clickedCircle;
 
-    String titles[] = {"Events", "Map", "Game"  , "Profile" , "Schedule" , "Contacts" , "Notifications"};
+    String titles[] = {"Events", "Map", "Game"  , "Pr" +
+            "ofile" , "Schedule" , "Scoreboard" , "Notifications"};
     Paint textPaint = new Paint();
     Paint backgroundPaint = new Paint();
     Paint titlePaint = new Paint();
@@ -340,9 +341,9 @@ public class MenuCanvas extends View
                         context.startActivity(i4);
                         break;
 
-                    case "Contacts":
+                    case "Scoreboard":
                         touchEffect(c);
-                        Log.d(LOG_TAG, "You clicked Contacts");
+                        Log.d(LOG_TAG, "You clicked ScoreBoard");
                         Intent i5 = new Intent(context,Scoreboard.class);
                         context.startActivity(i5);
                         break;
