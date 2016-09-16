@@ -26,9 +26,10 @@ public class Utilities {
     public static String event_details_url = base_url + "/events/details";
     public static String event_register = base_url + "/event/register";
     public static String user_profile = base_url + "/events/user/details";
-    public static String user_qr = base_url + "/tshirt/qr";
+    public static String user_qr = "http://10.1.54.58:8000/tshirt/qr";//base_url + "/tshirt/qr";
     public static String scoreboard_url = "https://festember.com/scoreboard/getScoreBoard";
     public static Context context;
+    public static String user_id;
    // public static Typeface typeface = Typeface.createFromAsset(getAss)
 
 }

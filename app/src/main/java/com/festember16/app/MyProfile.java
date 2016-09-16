@@ -37,6 +37,7 @@ public class MyProfile extends AppCompatActivity {
     TextView hello;
 
     @InjectView(R.id.listView2)
+
     ListView listView;
 
     @Override
