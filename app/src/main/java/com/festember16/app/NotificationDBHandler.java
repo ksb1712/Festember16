@@ -41,6 +41,7 @@ public class NotificationDBHandler extends SQLiteOpenHelper{
         onCreate(db);
     }
 
+    /*
     public void addNotification(NotificationDetails notifs) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -106,4 +107,5 @@ public class NotificationDBHandler extends SQLiteOpenHelper{
         db.close();
         return notificationsList;
     }
+    */
 }

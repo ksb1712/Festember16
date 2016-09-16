@@ -305,8 +305,8 @@ public class MenuCanvas extends View
                         touchEffect(c);
                         DBHandler db;
                         db = new DBHandler(context);
-                        String s = db.getCluster();
-                        Log.e("Cluster ",s);
+
+
                         Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         Intent i1 = new Intent(context, ClusterPage.class);
                         context.startActivity(i1);
@@ -340,6 +340,8 @@ public class MenuCanvas extends View
                     case "Contacts":
                         touchEffect(c);
                         Log.d(LOG_TAG, "You clicked Contacts");
+                        Intent i5 = new Intent(context,Scoreboard.class);
+                        context.startActivity(i5);
                         break;
 
                     case "Notifications":

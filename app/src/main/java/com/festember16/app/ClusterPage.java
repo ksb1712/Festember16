@@ -26,8 +26,8 @@ public class ClusterPage extends AppCompatActivity {
         setTitle(null);
         Log.e("In cluster"," cluster");
         db = new DBHandler(this);
-        String s = db.getCluster();
-        Log.e("clusters ",s);
+
+
         List<ItemObject> rowListItem = getAllItemList();
         lLayout = new GridLayoutManager(ClusterPage.this, 2);
 
