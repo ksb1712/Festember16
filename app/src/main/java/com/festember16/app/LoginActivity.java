@@ -111,10 +111,6 @@ public class LoginActivity extends AppCompatActivity {
         if(time.equals(defaultValue)) {
             callDB(this);
         }
-        loginWithRetrofit(email, password);
-    }
-
-    private void loginWithRetrofit(String email, String password){
 
         retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -148,7 +144,6 @@ public class LoginActivity extends AppCompatActivity {
                         Intent i = new Intent(LoginActivity.this, MainMenu.class);
                         startActivity(i);
                     }
-                    progressDialog.dismiss();
                 });
     }
 

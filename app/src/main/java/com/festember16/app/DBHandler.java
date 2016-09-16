@@ -133,7 +133,6 @@ public class DBHandler extends SQLiteOpenHelper {
         return event;
     }
 
-<<<<<<< HEAD
     public List<Events> getEventsByCluster(String cluster) {
         List<Events> eventsList = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
@@ -144,6 +143,7 @@ public class DBHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Events events = new Events();
+                Log.e("test", cursor.toString());
 
                 events.setId(cursor.getInt(0));
                 events.setName(cursor.getString(1));
@@ -171,27 +171,20 @@ public class DBHandler extends SQLiteOpenHelper {
     public String[] getClusters() {
         String[] clusters = new String[100];
         int i = 0;
-=======
-    public void getCluster() {
->>>>>>> 2cc3b6cf5cc9a1fccef0994ea8354e12f6e899b9
+
         SQLiteDatabase db = this.getReadableDatabase();
 
         String select = "SELECT DISTINCT " + KEY_CLUSTER + " FROM " + TABLE_EVENTS;
         Cursor cursor = db.rawQuery(select, null);
-        do {
-            clusters[i] = cursor.getString(i);
-            i++;
-        } while (cursor.getString(i)!=null);
+        if(cursor.moveToFirst()) {
+            do {
+                clusters[i] = cursor.getString(0);
+                i++;
+            } while (cursor.moveToNext());
+        }
 
-<<<<<<< HEAD
         db.close();
         cursor.close();
         return clusters;
-=======
-
-        db.close();
-        c.close();
-
->>>>>>> 2cc3b6cf5cc9a1fccef0994ea8354e12f6e899b9
     }
 }
