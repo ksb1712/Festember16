@@ -29,7 +29,7 @@ public class MenuCanvas extends View
     public static final String LOG_TAG = "MenuCanvas";
     private Context context;
 
-    float dpHeight, dpWidth, maxRadius, m;
+    public float dpHeight, dpWidth, maxRadius, m;
 
     //List of colours to choose random colours
     List<Paint> colours = new ArrayList<>();
@@ -275,7 +275,8 @@ public class MenuCanvas extends View
                 canvas.drawText( c.text , c.cx - c.text.length()/2.0f*maxRadius/div  , c.cy , textPaint );
             }
         }
-
+        canvas.drawRect( 0 , 0 , dpWidth , maxRadius*1.4f, backgroundPaint );
+        canvas.drawText("Festember 2016" , maxRadius*0.1f, maxRadius, titlePaint);
 
     }
 
