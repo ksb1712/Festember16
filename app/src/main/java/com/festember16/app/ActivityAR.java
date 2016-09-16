@@ -64,6 +64,8 @@ public class ActivityAR extends AppCompatActivity implements SensorEventListener
             new LocationListener(LocationManager.NETWORK_PROVIDER)
     };
 
+    private double prevBearing = 999;
+
     private static final String POI_TYPE = "POI_TYPE";
     private static final String LAT = "LAT";
     private static final String LON = "LON";
@@ -71,7 +73,8 @@ public class ActivityAR extends AppCompatActivity implements SensorEventListener
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -80,7 +83,8 @@ public class ActivityAR extends AppCompatActivity implements SensorEventListener
         setContentView(R.layout.activity_ar);
 
         Bundle poi_data = getIntent().getExtras();
-        if (poi_data == null) {
+        if (poi_data == null)
+        {
             return;
         }
 
@@ -113,20 +117,30 @@ public class ActivityAR extends AppCompatActivity implements SensorEventListener
 
         initializeLocationManager();
 
-        try {
+        try
+        {
             mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE, mLocationListeners[1]);
-        } catch (SecurityException ex) {
+        }
+        catch (SecurityException ex)
+        {
             Log.e(TAG, "fail to request location update, ignore", ex);
-        } catch (IllegalArgumentException ex) {
+        }
+        catch (IllegalArgumentException ex)
+        {
             Log.e(TAG, "network provider does not exist, " + ex.getMessage());
         }
 
 
-        try {
+        try
+        {
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE, mLocationListeners[0]);
-        } catch (SecurityException ex) {
+        }
+        catch (SecurityException ex)
+        {
             Log.e(TAG, "fail to request location update, ignore", ex);
-        } catch (IllegalArgumentException ex) {
+        }
+        catch (IllegalArgumentException ex)
+        {
             Log.e(TAG, "gps provider does not exist " + ex.getMessage());
         }
 
@@ -134,14 +148,16 @@ public class ActivityAR extends AppCompatActivity implements SensorEventListener
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(MotionEvent event)
+    {
         this.mDetector.onTouchEvent(event);
         // Be sure to call the superclass implementation
         return super.onTouchEvent(event);
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         sensorManager.registerListener(this, sensorGravity, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(this, sensorMagnetic, SensorManager.SENSOR_DELAY_NORMAL);
@@ -150,135 +166,152 @@ public class ActivityAR extends AppCompatActivity implements SensorEventListener
 
 
     @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        try {
+    public void surfaceCreated(SurfaceHolder holder)
+    {
+        try
+        {
             camera = Camera.open();
             camera.setPreviewDisplay(holder);
             camera.startPreview();
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
+    {
 
 
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
+    public void surfaceDestroyed(SurfaceHolder holder)
+    {
         camera.stopPreview();
         camera.release();
     }
 
     @Override
-    public boolean onSingleTapConfirmed(MotionEvent e) {
+    public boolean onSingleTapConfirmed(MotionEvent e)
+    {
         virtualLayer.touch(e.getX(), e.getY());
         return true;
     }
 
     @Override
-    public boolean onDoubleTap(MotionEvent e) {
+    public boolean onDoubleTap(MotionEvent e)
+    {
         return false;
     }
 
     @Override
-    public boolean onDoubleTapEvent(MotionEvent e) {
+    public boolean onDoubleTapEvent(MotionEvent e)
+    {
         return false;
     }
 
     @Override
-    public boolean onDown(MotionEvent e) {
+    public boolean onDown(MotionEvent e)
+    {
         return false;
     }
 
     @Override
-    public void onShowPress(MotionEvent e) {
+    public void onShowPress(MotionEvent e)
+    {
 
     }
 
     @Override
-    public boolean onSingleTapUp(MotionEvent e) {
+    public boolean onSingleTapUp(MotionEvent e)
+    {
         return false;
     }
 
     @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
+    {
         virtualLayer.shiftScroll(-distanceY);
         return false;
     }
 
     @Override
-    public void onLongPress(MotionEvent e) {
+    public void onLongPress(MotionEvent e)
+    {
 
     }
 
     @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
+    {
         return false;
     }
 
-    private class LocationListener implements android.location.LocationListener {
+    private class LocationListener implements android.location.LocationListener
+    {
 
-        public LocationListener(String provider) {
+        public LocationListener(String provider)
+        {
             Log.e(TAG, "LocationListener: " + provider);
             mLastLocation = new Location(provider);
         }
 
         @Override
-        public void onLocationChanged(Location location) {
+        public void onLocationChanged(Location location)
+        {
             Log.e(TAG, "onLocationChanged: " + location);
             mLastLocation.set(location);
             // Update UI Only if Location is Accurate
-            //if (location.getAccuracy() < 400)
+            if (location.getAccuracy() < 400)
             {
                 virtualLayer.setCurrentLocation(location);
             }
         }
 
         @Override
-        public void onProviderDisabled(String provider) {
+        public void onProviderDisabled(String provider)
+        {
             Log.e(TAG, "onProviderDisabled: " + provider);
         }
 
         @Override
-        public void onProviderEnabled(String provider) {
+        public void onProviderEnabled(String provider)
+        {
             Log.e(TAG, "onProviderEnabled: " + provider);
         }
 
         @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
+        public void onStatusChanged(String provider, int status, Bundle extras)
+        {
             Log.e(TAG, "onStatusChanged: " + provider);
         }
     }
 
-    private void initializeLocationManager() {
+    private void initializeLocationManager()
+    {
         Log.e(TAG, "initializeLocationManager");
-        if (mLocationManager == null) {
+        if (mLocationManager == null)
+        {
             mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         }
     }
 
-    public static Camera getCameraInstance() {
-        Camera c = null;
-        try {
-            c = Camera.open();
-        } catch (Exception e) {
-            Log.d("Test", "Cant open Camera");
-        }
-        return c;
-    }
+    public void onSensorChanged(SensorEvent event)
+    {
 
-    public void onSensorChanged(SensorEvent event) {
-
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+        {
             smoothed = LowPassFilter(event.values, gravity);
             gravity[0] = smoothed[0];
             gravity[1] = smoothed[1];
             gravity[2] = smoothed[2];
 
-        } else if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+        }
+        else if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD)
+        {
             smoothed = LowPassFilter(event.values, geomagnetic);
             geomagnetic[0] = smoothed[0];
             geomagnetic[1] = smoothed[1];
@@ -289,19 +322,27 @@ public class ActivityAR extends AppCompatActivity implements SensorEventListener
             bearing = orientation[0];
             bearing = Math.toDegrees(bearing);
 
-            if (bearing < 0) {
+            if (bearing < 0)
+            {
                 bearing += 360;
             }
-            if (bearing < 270) {
+            if (bearing < 270)
+            {
                 bearing += 90;
-            } else {
+            }
+            else
+            {
                 bearing += 90;
                 bearing %= 360;
             }
             //Log.wtf(TAG, "" + bearing);
+            if( Math.abs( prevBearing - bearing) > 1)
+            {
+                // Set Compass Bearing
 
-            // Set Compass Bearing
-            virtualLayer.setCompassBearing(bearing);
+                virtualLayer.setCompassBearing(bearing);
+                prevBearing = bearing;
+            }
 
         }
 
@@ -312,29 +353,37 @@ public class ActivityAR extends AppCompatActivity implements SensorEventListener
     public void onAccuracyChanged(Sensor sensor, int i) {
     }
 
-    protected float[] LowPassFilter(float[] input, float[] output) {
+    protected float[] LowPassFilter(float[] input, float[] output)
+    {
         if (output == null) return input;
 
-        for (int i = 0; i < input.length; i++) {
+        for (int i = 0; i < input.length; i++)
+        {
             output[i] = output[i] + ALPHA * (input[i] - output[i]);
         }
         return output;
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroy()
+    {
         Log.e(TAG, "onDestroy");
         super.onDestroy();
-        if (mLocationManager != null) {
+        if (mLocationManager != null)
+        {
             for (LocationListener mLocationListener : mLocationListeners) {
-                try {
+                try
+                {
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                             != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                    {
                         return;
                     }
                     mLocationManager.removeUpdates(mLocationListener);
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     Log.e(TAG, "fail to remove location listeners, ignore", e);
                 }
             }
