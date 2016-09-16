@@ -37,6 +37,7 @@ public class MyProfile extends AppCompatActivity {
     TextView hello;
 
     @InjectView(R.id.listView2)
+
     ListView listView;
 
     @Override
@@ -164,7 +165,8 @@ public class MyProfile extends AppCompatActivity {
 
         switch(id){
             case R.id.qr_code:
-                Toast.makeText(MyProfile.this, "Coming Soon!", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(this,QR.class);
+                startActivity(i);
 
                 break;
 

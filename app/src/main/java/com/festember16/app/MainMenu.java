@@ -85,7 +85,10 @@ public class MainMenu extends AppCompatActivity implements GestureDetector.OnGes
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
     {
-        c.fling( distanceX, distanceY);
+        if( e1.getY() > c.maxRadius*1.4)
+        {
+            c.fling( distanceX, distanceY);
+        }
         return false;
     }
 

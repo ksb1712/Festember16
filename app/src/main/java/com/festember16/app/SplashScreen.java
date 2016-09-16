@@ -44,7 +44,7 @@ public class SplashScreen extends Activity {
 
         setContentView(R.layout.activity_splash_screen);
 
-        TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "fonts/Sansation-Regular.ttf");
+       // TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "fonts/Sansation-Regular.ttf");
         //TODO shared prefs time stamp
         prefs = getSharedPreferences(
                "Time_stamp", Context.MODE_PRIVATE);
