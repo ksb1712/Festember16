@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -15,7 +16,7 @@ import java.util.List;
 public class ClusterPage extends AppCompatActivity {
 
     private GridLayoutManager lLayout;
-
+    DBHandler db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,8 +24,10 @@ public class ClusterPage extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_cluster_page);
         setTitle(null);
-
-
+        Log.e("In cluster"," cluster");
+        db = new DBHandler(this);
+        String s = db.getCluster();
+        Log.e("clusters ",s);
         List<ItemObject> rowListItem = getAllItemList();
         lLayout = new GridLayoutManager(ClusterPage.this, 2);
 
@@ -57,6 +60,7 @@ public class ClusterPage extends AppCompatActivity {
     }
 
     private List<ItemObject> getAllItemList(){
+
 
         List<ItemObject> allItems = new ArrayList<ItemObject>();
         allItems.add(new ItemObject("Dance"));
