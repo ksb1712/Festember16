@@ -12,16 +12,20 @@ public class PointOfInterestManager
     {
         List<PointOfInterest> pois = new ArrayList<>();
         pois.add( new PointOfInterest("Orion", 10.759723, 78.810776));
-
-        pois.add( new PointOfInterest("Architecture Department", 10.760128, 78.809806));
-        pois.add( new PointOfInterest("Ojas", 10.760912, 78.808698));
-        pois.add( new PointOfInterest("Lecture Hall Complex", 10.761005, 78.814123));
         pois.add( new PointOfInterest("Barn Hall", 10.759274, 78.813343));
         pois.add( new PointOfInterest("EEE Auditorium", 10.759012, 78.814704));
-        pois.add( new PointOfInterest("A Halls", 10.759031, 78.813237));
-        //10.760543, 78.812714
-        pois.add( new PointOfInterest("Informal\'s Stage", 10.759031, 78.813237));
-        pois.add( new PointOfInterest("CEESAT", 10.759828, 78.812521));
+        pois.add( new PointOfInterest("A13 Hall", 10.758994, 78.813629));
+        pois.add( new PointOfInterest("A2 Hall", 10.758977, 78.812899));
+        pois.add( new PointOfInterest("Informal\'s Stage", 10.759597, 78.813574));
+        pois.add( new PointOfInterest("CEESAT Ground", 10.760900, 78.812702));
+        pois.add( new PointOfInterest("GJCC", 10.761548, 78.811584));
+        pois.add( new PointOfInterest("SAC", 10.756136, 78.815626));
+        pois.add( new PointOfInterest("Orion Chemical Wall", 10.759545, 78.810211));
+        pois.add( new PointOfInterest("Pixelbug Stall", 10.759772, 78.812368));
+        pois.add( new PointOfInterest("Badminton Court", 10.757776, 78.816631));
+        pois.add( new PointOfInterest("NSO Green Wall", 10.756935, 78.814305));
+        pois.add( new PointOfInterest("Indie Stage", 10.761060, 78.814041));
+        pois.add( new PointOfInterest("New Indoor Stadium", 10.757109, 78.816499));
         return  pois;
     }
 
