@@ -97,8 +97,6 @@ public class MenuCanvas extends View
         titlePaint.setTypeface(custom_font);
         titlePaint.setTextSize(maxRadius);
 
-//        clickedPaint.setColor(Color.GRAY);
-
         initCircles();
 
     }
@@ -262,10 +260,8 @@ public class MenuCanvas extends View
         }
         canvas.drawRect(0, 0, dpWidth, maxRadius * 1.4f, backgroundPaint);
         canvas.drawText("Festember 2016", maxRadius * 0.1f, maxRadius, titlePaint);
-        canvas.save();
         if( touched )
         {
-//            canvas.drawCircle( clickedCircle.cx , clickedCircle.cy , clickedCircle.radius , clickedPaint);
             if(scaleRadius == 0){
                 scaleRadius = clickedCircle.radius;
                 invalidate();
@@ -275,8 +271,7 @@ public class MenuCanvas extends View
                 invalidate();
             } else {
                 canvas.drawCircle( clickedCircle.cx , clickedCircle.cy , scaleRadius , clickedCircle.colour);
-                Log.d(LOG_TAG,"hey" + callIntent.toString());
-//                context.startActivity(callIntent);
+//                Log.d(LOG_TAG,"hey" + callIntent.toString());
             }
         }
     }
@@ -285,7 +280,7 @@ public class MenuCanvas extends View
     //Call other activities
     public boolean tapped( float x , float y)
     {
-
+        int waitTime = 1000;
         for(int i = 0; i < circles.size() ; i++)
         {
             Circle c = circles.get(i);
@@ -306,7 +301,7 @@ public class MenuCanvas extends View
                                 scaleRadius = 0;
                                 context.startActivity(callIntent);
                             }
-                        }, 1000);
+                        }, waitTime);
                         break;
                     case "Events":
                         // goto events Page
@@ -321,7 +316,7 @@ public class MenuCanvas extends View
                                 scaleRadius = 0;
                                 context.startActivity(callIntent);
                             }
-                        }, 1000);
+                        }, waitTime);
 
                         //String s = db.getCluster();
                         //Log.e("Cluster ",s);
@@ -339,7 +334,7 @@ public class MenuCanvas extends View
                                 scaleRadius = 0;
                                 context.startActivity(callIntent);
                             }
-                        }, 1000);
+                        }, waitTime);
                         break;
                     case "Profile":
                         callIntent = new Intent(context,MyProfile.class);
@@ -352,7 +347,7 @@ public class MenuCanvas extends View
                                 scaleRadius = 0;
                                 context.startActivity(callIntent);
                             }
-                        }, 1000);
+                        }, waitTime);
 
                         break;
 
@@ -368,7 +363,7 @@ public class MenuCanvas extends View
                                 scaleRadius = 0;
                                 context.startActivity(callIntent);
                             }
-                        }, 1000);
+                        }, waitTime);
                         break;
 
                     case "Scoreboard":
@@ -381,7 +376,7 @@ public class MenuCanvas extends View
                                 scaleRadius = 0;
                                 context.startActivity(callIntent);
                             }
-                        }, 1000);
+                        }, waitTime);
                         break;
 
                     case "Notifications":
@@ -393,7 +388,7 @@ public class MenuCanvas extends View
                                 scaleRadius = 0;
                                 invalidate();   //TODO remove this and add intent to notifications
                             }
-                        }, 1000);
+                        }, waitTime);
                         break;
                     default:
                         // do nothing

@@ -54,6 +54,7 @@ public class MainMenu extends AppCompatActivity implements GestureDetector.OnGes
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e)
     {
+        c.callIntent = null;
         c.tapped( e.getX() , e.getY());
         return true;
     }
