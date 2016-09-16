@@ -107,5 +107,5 @@ public class NotificationDBHandler extends SQLiteOpenHelper{
         db.close();
         return notificationsList;
     }
-    */
+    */  
 }
