@@ -5,11 +5,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+
+import java.util.List;
 
 public class MainMenu extends AppCompatActivity implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener
 {
@@ -27,6 +30,10 @@ public class MainMenu extends AppCompatActivity implements GestureDetector.OnGes
     {
         super.onCreate(savedInstanceState);
 
+        DBHandler db = new DBHandler(this);
+        String[] clusters = db.getClusters();
+        List<Events> e = db.getEventsByCluster("english_lits");
+        Log.e("test" , clusters[5]);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 

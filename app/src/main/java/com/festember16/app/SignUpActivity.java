@@ -1,22 +1,15 @@
 package com.festember16.app;
 
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.app.ProgressDialog;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,20 +20,17 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 public class SignUpActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -67,6 +57,10 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
     private RadioGroup radioSexGroup;
     private RadioButton radioSexButton;
     int status = 0;
+    Map<String,String> params = new HashMap<>();
+    Retrofit retrofit;
+    Observable<LoginRegister> signUpObservable;
+    ProgressDialog progressDialog;
     String CollegeName[]={
 
             "A.C. College of Engineering and Technology","A.M.S College of Engineering", "Aalim Muhammed Salegh College Of Engineering", "Aarupadai Veedu Institute of Technology", "Vinayaka Mission University", "ABES Engineering College , Ghaziabad", "ABV-IIITM, Gwalior", "ACCET Karaikudi", "Acharaya Nagarjuna University", "Achariya Bala Siksha Mandir",
@@ -712,6 +706,7 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
         _nameText = (EditText)findViewById(R.id.input_user_name);
         _emailText = (EditText)findViewById(R.id.input_email);
         _collegeText = (TextView) findViewById(R.id.input_college);
@@ -728,85 +723,62 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         _phoneText = (EditText)findViewById(R.id.input_phone);
         _addressText = (EditText)findViewById(R.id.input_address);
         _signupButton = (Button)findViewById(R.id.btn_signup);
-        _signupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signup();
-            }
-        });
+
+        _signupButton.setOnClickListener(v -> signup());
+
         _collegeText.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                       id = view.getId();
-                        callAlert(view,CollegeName);
-                    }
-                });
+                view -> {
+                   id = view.getId();
+                    callAlert(view,CollegeName);
+                }
+        );
+
         _stateText.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                view -> {
 
-                        id = view.getId();
-                        callAlert(view,stateName);
-                    }
+                    id = view.getId();
+                    callAlert(view,stateName);
                 }
         );
+
         _degreeText.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                view -> {
 
-                        id = view.getId();
-                        callAlert(view,degreeName);
-                    }
+                    id = view.getId();
+                    callAlert(view,degreeName);
                 }
         );
-       _cityText.setOnClickListener(
-               new View.OnClickListener() {
-                   @Override
-                   public void onClick(View view) {
 
-                       id = view.getId();
-                       callAlert(view,cityName);
-                   }
+       _cityText.setOnClickListener(
+               view -> {
+
+                   id = view.getId();
+                   callAlert(view,cityName);
                }
        );
-        _countryText.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
 
-                        id = view.getId();
-                        callAlert(view,countryName);
-                    }
+        _countryText.setOnClickListener(
+                view -> {
+
+                    id = view.getId();
+                    callAlert(view,countryName);
                 }
         );
 
        _branchText.setOnClickListener(
-               new View.OnClickListener() {
-                   @Override
-                   public void onClick(View view) {
+               view -> {
 
-                       id = view.getId();
-                       callAlert(view,branchName);
-                   }
+                   id = view.getId();
+                   callAlert(view,branchName);
                }
        );
       _yearText.setOnClickListener(
-        new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                id = view.getId();
-                callAlert(view,yearName);
-            }
-        }
-        );
-
-        radioSexGroup = (RadioGroup) findViewById(R.id.radioGender);
-
-
+              view -> {
+                    id = view.getId();
+                  callAlert(view,yearName);
+              }
+      );
+      radioSexGroup = (RadioGroup) findViewById(R.id.radioGender);
     }
 
 
@@ -814,11 +786,11 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
     public void signup() {
         Log.d(TAG, "Signup");
 
-   /*     if (!validate()) {
-            onSignupFailed();
+        if (!validate()) {
+            onSignUpFailed();
             return;
         }
-*/
+
         _signupButton.setEnabled(true);
 
         final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this,
@@ -833,16 +805,16 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         final String email = _emailText.getText().toString();
         final String password = _passwordText.getText().toString();
         String rePassword = _re_passwordText.getText().toString();
-      final   String fullName = _fullnameText.getText().toString();
+        final String fullName = _fullnameText.getText().toString();
         final String college_other = _college_Text.getText().toString();
-       final String phone = _phoneText.getText().toString();
+        final String phone = _phoneText.getText().toString();
         final String address = _addressText.getText().toString();
 
-         String college = _collegeText.getText().toString();
+        String college = _collegeText.getText().toString();
         final String  branch = _branchText.getText().toString();
         final String year = _yearText.getText().toString();
         final String degree = _degreeText.getText().toString();
-       final String city = _cityText.getText().toString();
+        final String city = _cityText.getText().toString();
         final String state = _stateText.getText().toString();
         final String country = _countryText.getText().toString();
 
@@ -860,105 +832,49 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         final String gender = radioSexButton.getText().toString();
         Log.d(TAG, "Signup3");
 
-        // TODO: Implement your own signup logic here.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Utilities.user_register_url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.e("TAG ",response);
-                        progressDialog.dismiss();
-                        JSONObject jsonResponse = null;
-                        try {
-                            jsonResponse = new JSONObject(response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        int status = 0;
-                        try {
-                            status = jsonResponse.getInt("status_code");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        String message = null;
-                        try {
-                            message = jsonResponse.getString("message");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+        params.put("user_name",name);
+        params.put("user_password",password);
+        params.put("user_email",email);
+        params.put("user_fullname",fullName);
+        params.put("user_gender",gender);
+        params.put("user_course",degree);
+        params.put("user_year",year);
+        params.put("user_other_college",college_other);
+        params.put("user_branch",branch);
+        params.put("user_college",college_name);
+        params.put("user_country",country);
+        params.put("user_city",city);
+        params.put("user_state",state);
+        params.put("user_phone",phone);
+        params.put("user_address",address);
 
-                        /*
-                        switch (status) {
-
-                            case 200:
-
-                                SharedPreferences.Editor editor = pref.edit();
-                                Utilities.status = 1;
-                                editor.putInt("Logged_in", Utilities.status);
-                                editor.putString("user_email", email);
-                                Utilities.username = email;
-                                editor.putString("user_pass", password);
-                                Utilities.password = password;
-                                editor.putString("token", message);
-                                Utilities.token = message;
-                                editor.apply();
-
-
-                                Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
-                                Intent i = new Intent(LoginActivity.this, MainMenu.class);
-                                startActivity(i);
-
-                                break;
-
-                            default:
-                                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-                                _emailText.setText("");
-                                _passwordText.setText("");
-                                onLoginFailed();
-                                break;
-                        }*/
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        progressDialog.dismiss();
-                        Toast.makeText(SignUpActivity.this,error.toString(),Toast.LENGTH_LONG).show();
-                        onSignupFailed();
-                    }
-                })
-        {
-            @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-
-
-                params.put("user_name",name);
-                params.put("user_password",password);
-                params.put("user_email",email);
-                params.put("user_fullname",fullName);
-                params.put("user_gender",gender);
-                params.put("user_course",degree);
-                params.put("user_year",year);
-                params.put("user_other_college",college_other);
-                params.put("user_branch",branch);
-                params.put("user_college",college_name);
-                params.put("user_country",country);
-                params.put("user_city",city);
-                params.put("user_state",state);
-                params.put("user_phone",phone);
-                params.put("user_address",address);
-
-                return params;
-            }
-
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+        registerWithRetrofit();
     }
 
-    public void callAlert(View view, final String TitleName[])
-    {
+    private void registerWithRetrofit() {
+
+        retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(Utilities.base_url)
+                .build();
+
+        LoginService loginService = retrofit.create(LoginService.class);
+
+        signUpObservable = loginService.register(params);
+
+        signUpObservable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(login -> {
+                    if(login.getStatusCode()==200) {
+                        onSignUpSuccess();
+                        finish();
+                    }
+                    progressDialog.dismiss();
+                });
+    }
+
+    public void callAlert(View view, final String TitleName[]) {
         AlertDialog.Builder myDialog = new AlertDialog.Builder(SignUpActivity.this);
 
         final EditText editText = new EditText(SignUpActivity.this);
@@ -1001,18 +917,12 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
                 listview.setAdapter(new CustomAlertAdapter(SignUpActivity.this, array_sort));
             }
         });
-        myDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
+        myDialog.setNegativeButton("cancel", (dialog, which) -> {
+            dialog.dismiss();
         });
 
         myalertDialog=myDialog.show();
     }
-
-
 
     @Override
     public void onItemClick(AdapterView arg0, View arg1, int position, long arg3) {
@@ -1045,16 +955,14 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         }
     }
 
-
-
-
-    public void onSignupSuccess() {
+    public void onSignUpSuccess() {
         _signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
+        getIntent().putExtra("username" , params.get("user_name"));
         finish();
     }
 
-    public void onSignupFailed() {
+    public void onSignUpFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
         _signupButton.setEnabled(true);
@@ -1073,7 +981,7 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         String Address = _passwordText.getText().toString();
 
         String college = _collegeText.getText().toString();
-        String  branch = _branchText.getText().toString();
+        String branch = _branchText.getText().toString();
         String year = _yearText.getText().toString();
         String dept = _branchText.getText().toString();
         String city = _cityText.getText().toString();

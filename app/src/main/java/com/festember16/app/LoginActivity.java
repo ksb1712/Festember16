@@ -39,6 +39,12 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.internal.Util;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -54,6 +60,10 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences pref,prefs;
 
     TextView _signupLink;
+    Retrofit retrofit, retrofit1;
+    Observable<LoginRegister> loginObservable;
+    Observable<Data> eventsObservable;
+    ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,42 +72,30 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
+        DBHandler db = new DBHandler(this);
         pref = getSharedPreferences("user_auth", Context.MODE_PRIVATE);
         prefs = getSharedPreferences("Time_stamp", Context.MODE_PRIVATE);
         _emailText = (EditText)findViewById(R.id.input_email);
         _passwordText = (EditText)findViewById(R.id.input_password);
         _loginButton = (Button)findViewById(R.id.btn_login);
         _signupLink = (TextView)findViewById(R.id.link_signup);
-        _loginButton.setOnClickListener(new View.OnClickListener() {
+        _loginButton.setOnClickListener(v -> login());
 
-            @Override
-            public void onClick(View v) {
-                login();
-            }
-        });
-
-        _signupLink.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // Start the Signup activity
-                Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
-                startActivityForResult(intent, REQUEST_SIGNUP);
-            }
+        _signupLink.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+            startActivityForResult(intent, REQUEST_SIGNUP);
         });
     }
 
     public void login() {
-        /*
+
         Log.d(TAG, "Login");
 
         if (!validate()) {
             onLoginFailed();
             return;
         }
-
         _loginButton.setEnabled(false);
-
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -106,107 +104,13 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.show();
 
         final String email = _emailText.getText().toString();
-      final   String password = _passwordText.getText().toString();
+        final String password = _passwordText.getText().toString();
 
-        // TODO: Implement your own authentication logic here.
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Utilities.auth_url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progressDialog.dismiss();
-                        JSONObject jsonResponse = null;
-                        try {
-                            jsonResponse = new JSONObject(response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        int status = 0;
-                        try {
-                            status = jsonResponse.getInt("status_code");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        String message = null;
-                        try {
-                            message = jsonResponse.getString("message");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        switch (status) {
-
-                            case 200:
-
-                                SharedPreferences.Editor editor = pref.edit();
-                                Utilities.status = 1;
-                                editor.putInt("Logged_in", Utilities.status);
-                                editor.putString("user_email", email);
-                                Utilities.username = email;
-                                editor.putString("user_pass", password);
-                                Utilities.password = password;
-                                editor.putString("token", message);
-                                Utilities.token = message;
-                                editor.apply();
-
-
-                                Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
-                                Intent i = new Intent(LoginActivity.this, MainMenu.class);
-                                startActivity(i);
-
-                                break;
-
-                            default:
-                                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-                                _emailText.setText("");
-                                _passwordText.setText("");
-                                onLoginFailed();
-                                break;
-                        }
-
-                        String defaultValue = "Not yet updated";
-                        String time = prefs.getString("time", defaultValue);
-                        if(time == null || time.equals("Not yet updated")
-                            callDB();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        progressDialog.dismiss();
-                        Toast.makeText(LoginActivity.this,error.toString(),Toast.LENGTH_LONG).show();
-                        onLoginFailed();
-                    }
-                })
-        {
-            @Override
-            protected Map<String,String> getParams(){
-            Map<String,String> params = new HashMap<String, String>();
-            params.put("user_email",email);
-            params.put("user_pass",password);
-            return params;
+        String defaultValue = "Not yet updated";
+        String time = prefs.getString("time", defaultValue);
+        if(time.equals(defaultValue)) {
+            callDB(this);
         }
-
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-        */
-        Intent i = new Intent(LoginActivity.this,MainMenu.class);
-        startActivity(i);
-
-    }
-
-    public void callDB()
-    {
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching data...");
-        progressDialog.show();
-
-        //TODO Retrofit for Events dB, remove volley and uncomment
-        /*db = new DBHandler(this);
 
         retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -214,7 +118,51 @@ public class LoginActivity extends AppCompatActivity {
                 .baseUrl(Utilities.base_url)
                 .build();
 
-        EventsInterface eventsInterface = retrofit.create(EventsInterface.class);
+        LoginService loginService = retrofit.create(LoginService.class);
+
+        loginObservable = loginService.authenticate(email, password);
+
+        loginObservable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(login -> {
+                    if(login.getStatusCode()==200) {
+                        SharedPreferences.Editor editor = pref.edit();
+                        Utilities.status = 1;
+                        editor.putInt("Logged_in", Utilities.status);
+                        editor.putString("user_email", email);
+                        Utilities.username = email;
+                        editor.putString("user_pass", password);
+                        Utilities.password = password;
+                        editor.putString("token", login.getMessage());
+                        Utilities.token = login.getMessage();
+                        editor.putString("user_id", login.getUserId());
+                        Utilities.password = login.getUserId();
+                        editor.apply();
+
+
+                        Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(LoginActivity.this, MainMenu.class);
+                        startActivity(i);
+                    }
+                });
+    }
+
+    public void callDB(Context context) {
+        DBHandler db = new DBHandler(this);
+        new DBHandler(context);
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
+                R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Fetching data...");
+        progressDialog.show();
+
+        retrofit1 = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(Utilities.base_url)
+                .build();
+
+        EventsInterface eventsInterface = retrofit1.create(EventsInterface.class);
 
         eventsObservable = eventsInterface.getEvents();
 
@@ -224,45 +172,29 @@ public class LoginActivity extends AppCompatActivity {
                     if (data.getStatusCode()== 200) {
                         for (Events event : data.getEvents()) {
                             db.addEvent(event);
+
                         }
+                        SharedPreferences.Editor editor = prefs.edit();
+                        Date date = new Date();
+                        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
+                        String formattedDate = sdf.format(date);
+                        //System.out.println(formattedDate);
+                        editor.putString("time",""+formattedDate);
+                        editor.apply();
                         progressDialog.dismiss();
-                    } else Log.e("fest", "RetroError"
+                    } else {
+                        String defaultValue = "Not yet updated";
+                        String time = prefs.getString("time", defaultValue);
+                        Toast.makeText(LoginActivity.this," Events Last updated at "+ time,Toast.LENGTH_LONG).show();
+                    }
         });
-        */
-
-        //TODO called volley
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, Utilities.event_details_url,
-                response -> {
-
-                    JSONObject jsonResponse = null;
-                    Log.e("Response ",response);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    Date date = new Date();
-                    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
-                    String formattedDate = sdf.format(date);
-                    System.out.println(formattedDate);
-                    editor.putString("time",""+formattedDate);
-                    editor.apply();
-                },
-                error -> {
-
-                    String defaultValue = "Not yet updated";
-                    String time = prefs.getString("time", defaultValue);
-                    Toast.makeText(LoginActivity.this," Events Last updated at "+ time,Toast.LENGTH_LONG).show();
-                });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
-
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
-                this.finish();
+                _emailText.setText(data.getExtras().getString("username"));
             }
         }
     }
