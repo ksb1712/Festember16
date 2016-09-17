@@ -136,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("token", login.getMessage());
                         Utilities.token = login.getMessage();
                         editor.putString("user_id", login.getUserId());
-                        Utilities.password = login.getUserId();
+                        Utilities.user_id = login.getUserId();
                         editor.apply();
 
 

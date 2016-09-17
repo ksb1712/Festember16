@@ -1,22 +1,42 @@
 package com.festember16.app;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Field;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -136,26 +156,76 @@ public class DetailsFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (!hasRegistered) {
-                            //Todo: Send a post request to api and set ProgressBar to visible
-                            //ProgressBar not in current layout
-                            //Todo: if(response == true)
-                            registerButton.setText("REGISTERED");
-                            if (Build.VERSION.SDK_INT >= 23) {
-                                registerButton.setBackgroundColor(getResources().getColor(
-                                        R.color.aluminum, null
-                                ));
-                            } else {
-                                registerButton.setBackgroundColor(getResources().getColor(R.color.aluminum));
-                            }
-                            registerButton.setTextColor(Color.BLACK);
-                            hasRegistered = true;
 
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putBoolean("" + events.getId(), true);
-                            editor.commit();
-                        }
+                        final ProgressDialog pDialog = new ProgressDialog(getContext(),
+                                R.style.AppTheme_Dark_Dialog);
+                        pDialog.setMessage("Loading...");
+                        pDialog.setCancelable(false);
+                        pDialog.setCanceledOnTouchOutside(false);
+                        pDialog.show();
+
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, Utilities.event_register, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                pDialog.dismiss();
+                                JSONObject jsonResponse = null;
+                                try {
+                                    jsonResponse = new JSONObject(response);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                int status = 0;
+                                try {
+                                    status = jsonResponse.getInt("status_code");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                String message = null;
+                                try {
+                                    message = jsonResponse.getString("message");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                Log.e("QR ", message);
+                                if(status == 200) {
+
+                                    Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+                                    pDialog.dismiss();
+                                }
+                                else{
+                                    Toast.makeText(getContext(),"Try again ",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                pDialog.dismiss();
+                                error.printStackTrace();
+                                Toast.makeText(getContext(), "Please check your internet and try again", Toast.LENGTH_LONG).show();
+
+                            }
+                        }) {
+                            @Override
+                            protected Map<String, String> getParams() {
+                                Map<String, String> params = new HashMap<>();
+                                // the POST parameters:
+                                int pid = 2;
+                                params.put("token",Utilities.token);
+                                params.put("user_id",Utilities.user_id);
+                                params.put("event_id",""+events.getId());
+                                return params;
+                            }
+
+                        };
+
+                        int socketTimeout = 10000;//10 seconds
+                        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                        stringRequest.setRetryPolicy(policy);
+                        Volley.newRequestQueue(getContext()).add(stringRequest);
+
                     }
+
+
 //
 
                 });
