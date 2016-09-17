@@ -10,6 +10,9 @@
     <color name="violet">#640064</color>
     <color name="UpcomingColor1">#0ccfa9</color>
     <color name="UpcomingNotifications">#32b999</color>
+    <color name="lightgrey">#3d3d3d</color>
+    <color name="titleBarColour">#3F51B5</color>
+
 
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
@@ -32,6 +35,14 @@
     <color name="back_g">#FF48629C</color>
 
     <color name="splash_background">#7CBDFF</color>
+
+    <color name="Blue">#FF4081</color>
+    <color name="Transparent">#00FFF0FF</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="events_color">#BB50Fd</color>
+    <color name="util_color">#689</color>
+    <color name = "festember_orange">#c7ff6600</color>
+    <color name = "festember_orange_deep">#ffff4400</color>
 
 
 </resources>

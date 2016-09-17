@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,6 +24,9 @@ public class ClusterPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_cluster_page);
@@ -32,7 +37,7 @@ public class ClusterPage extends AppCompatActivity {
       clusters = db.getClusters();
       //  Log.e("clusters ",s);
         List<ItemObject> rowListItem = getAllItemList();
-        lLayout = new GridLayoutManager(ClusterPage.this, 2);
+        lLayout = new GridLayoutManager(ClusterPage.this, 1);
 
         RecyclerView rView = (RecyclerView)findViewById(R.id.recycler_view);
         rView.setHasFixedSize(true);

@@ -34,7 +34,7 @@ public class MenuCanvas extends View
     List<Circle> mainCircles =  new ArrayList<>();
     Circle clickedCircle;
 
-    String titles[] = {"Events", "Map", "Game"  , "Pr" +
+    String titles[] = {"Events", "Map", "Upcoming"  , "Pr" +
             "ofile" , "Schedule" , "Scoreboard" , "Notifications"};
     Paint textPaint = new Paint();
     Paint backgroundPaint = new Paint();
@@ -251,10 +251,10 @@ public class MenuCanvas extends View
                     div = 3.5f;
                 } else if (c.text.length() < 6) {
                     textPaint.setTextSize(maxRadius / 2.5f);
-                    div = 4;
+                    div = 4.3f;
                 } else if (c.text.length() < 9) {
                     textPaint.setTextSize(maxRadius / 2.5f);
-                    div = 6;
+                    div = 5.3f;
                 } else {
                     div = 7;
                     textPaint.setTextSize(maxRadius / 3);
@@ -317,15 +317,15 @@ public class MenuCanvas extends View
                         //Log.e("Cluster ",s);
 //                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         break;
-                    case "Game":
+                    case "Upcoming":
                         // goto events Page
-                        callIntent = new Intent(context, DetailsActivity.class);
+                        callIntent = new Intent(context, UpcomingActivity.class);
                         touchEffect(c);
 //                        Log.d(LOG_TAG, "You clicked Game");
 //                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         break;
                     case "Profile":
-                        callIntent = new Intent(context,MyProfile.class);
+                        callIntent = new Intent(context,QR.class);
                         touchEffect(c);
 //                        Log.d(LOG_TAG, "You clicked Profile");
 //                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
@@ -335,7 +335,8 @@ public class MenuCanvas extends View
 
                     case "Schedule":
                         Log.d(LOG_TAG, "You clicked Schedule");
-                        callIntent = new Intent(context,UpcomingActivity.class);
+                        //callIntent = new Intent(context,UpcomingActivity.class);
+                        callIntent = new Intent(context , ScheduleActivity.class);
                         touchEffect(c);
                         break;
 
@@ -346,7 +347,9 @@ public class MenuCanvas extends View
                         break;
 
                     case "Notifications":
-                        // TODO add callIntent intent to notifications
+
+                        Log.d(LOG_TAG,"You clicked Notifications");
+                        callIntent = new Intent(context,Notification.class);
                         touchEffect(c);
                         break;
                     default:

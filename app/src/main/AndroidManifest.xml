@@ -16,6 +16,7 @@
         android:allowBackup="true"
         android:icon="@drawable/festember_logo"
         android:label="@string/app_name"
+        android:name=".MyApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -51,9 +52,15 @@
         <activity
             android:name=".MyProfile"
             android:label="@string/title_activity_my_profile"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainMenu"
+                />
+
+        </activity>
         <activity
-            android:name=".DetailsActivity"
+            android:name="com.festember16.app.DetailsActivity"
             android:label="@string/title_activity_details"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -68,11 +75,28 @@
             android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".PlaceChooser"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:theme="@style/CustomNoActionBarTheme"/>
         <activity
             android:name=".MainMenu"
             android:screenOrientation="portrait"
             android:theme="@style/CustomNoActionBarTheme">
+
+        </activity>
+
+        <service android:name=".MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"></action>
+            </intent-filter>
+        </service>
+        <service android:name=".MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"></action>
+            </intent-filter>
+        </service>
+
+        <activity android:name=".Notification"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
 
         </activity>
 
@@ -87,7 +111,11 @@
         <activity android:name=".Events_list" />
         <activity android:name=".QR" />
         <activity android:name=".Scoreboard" />
+
         <activity android:name=".FeedbackActivity"></activity>
+        <activity android:name=".ScheduleActivity"
+            android:theme="@style/CustomNoActionBarTheme">
+        </activity>
 
     </application>
 
