@@ -88,6 +88,9 @@
         <activity android:name=".QR" />
         <activity android:name=".Scoreboard" />
         <activity android:name=".FeedbackActivity"></activity>
+        <activity android:name=".ScheduleActivity"
+            android:theme="@style/CustomNoActionBarTheme">
+        </activity>
 
     </application>
 

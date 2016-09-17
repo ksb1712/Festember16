@@ -17,6 +17,7 @@ import android.util.Log;
 import android.content.Intent;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -69,8 +70,14 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         // this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().hide();
+
+
         setContentView(R.layout.activity_login);
         DBHandler db = new DBHandler(this);
         pref = getSharedPreferences("user_auth", Context.MODE_PRIVATE);
