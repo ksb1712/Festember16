@@ -112,7 +112,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         Events event = new Events();
         cursor.moveToFirst();
-        if(cursor != null) {
+        if(cursor != null && cursor.getCount()!=0) {
             event.setId(cursor.getInt(0));
             event.setName(cursor.getString(1));
             event.setStartTime(cursor.getString(2));

@@ -24,7 +24,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
         eventId = id;
 
-        rulesFragment = RulesFragment.getInstance(eventId);
+//        rulesFragment = RulesFragment.getInstance(eventId);
         mapsTabFragment = new MapsTabFragment();
         detailsFragment = DetailsFragment.getInstance(eventId);
 
@@ -35,10 +35,10 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
         switch(position){
 
-            case 0:
-                return rulesFragment;
+//            case 0:
+//                return rulesFragment;
 
-            case 2:
+            case 1:
                 return mapsTabFragment;
 
             default:
@@ -49,18 +49,18 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
 
         switch (position){
+//
+//            case 0:
+//                return "Rules";
 
-            case 0:
-                return "Rules";
-
-            case 2: return "Map";
+            case 1: return "Map";
 
             default:
                 return "Details";
