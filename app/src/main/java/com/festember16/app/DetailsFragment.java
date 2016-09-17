@@ -142,28 +142,31 @@ public class DetailsFragment extends Fragment {
                 Context.MODE_PRIVATE
         );
 
-        //Storage format in shared preferences is going to be of type: eventId ---> true/false
+//        //Storage format in shared preferences is going to be of type: eventId ---> true/false
+//
+//        Map<String, Boolean> map = (Map<String, Boolean>) preferences.getAll();
+//
+//        Iterator iterator = map.entrySet().iterator();
+//
+//        while(iterator.hasNext()){
+//            Map.Entry<String, Boolean> pair = (Map.Entry) iterator.next();
+//
+//            if(events.getId() == Integer.parseInt(pair.getKey()))
+//                hasRegistered = pair.getValue();
+//        }
 
-        Map<String, Boolean> map = (Map<String, Boolean>) preferences.getAll();
-
-        Iterator iterator = map.entrySet().iterator();
-
-        while(iterator.hasNext()){
-            Map.Entry<String, Boolean> pair = (Map.Entry) iterator.next();
-
-            if(events.getId() == Integer.parseInt(pair.getKey()))
-                hasRegistered = pair.getValue();
-        }
+        //Todo: make API call to get list of registered events and see if user hasRegistered for current event
 
         if(hasRegistered){
             registerButton.setText("REGISTERED");
-            if(Build.VERSION.SDK_INT>=23){
-            registerButton.setBackgroundColor(getResources().getColor(R.color.aluminum, null));
-            }
-            else{
-                registerButton.setBackgroundColor(getResources().getColor(R.color.aluminum));
-            }
-            registerButton.setTextColor(Color.BLACK);
+            registerButton.setClickable(false);
+//            if(Build.VERSION.SDK_INT>=23){
+//            registerButton.setBackgroundColor(getResources().getColor(R.color.aluminum, null));
+//            }
+//            else{
+//                registerButton.setBackgroundColor(getResources().getColor(R.color.aluminum));
+//            }
+//            registerButton.setTextColor(Color.BLACK);
         }
 
         registerButton.setOnClickListener(
@@ -202,7 +205,9 @@ public class DetailsFragment extends Fragment {
                                 }
                                 Log.e("QR ", message);
                                 if(status == 200) {
-
+                                    registerButton.setText("REGISTERED");
+                                    registerButton.setClickable(false);
+                                    hasRegistered = true;
                                     Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
                                     registerButton.setEnabled(false);
                                     pDialog.dismiss();

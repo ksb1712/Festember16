@@ -47,41 +47,66 @@ public class MyProfile extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+<<<<<<< HEAD
       //  getSupportActionBar().setTitle("Welcome " + name + "!");
         hello = (TextView)findViewById(R.id.hello);
         hello.setText("Welcome " + Utilities.user_profile_name);
+=======
+        getSupportActionBar().setTitle("Welcome!");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+
+>>>>>>> d2d07bf0c4dec889bcc060341783a9f0bcca5100
         ButterKnife.inject(this);
 
         db = new DBHandler(this);
 
+<<<<<<< HEAD
 
+=======
+        //Todo: Parse email from login activity to get the name of user
+        SharedPreferences preferences = getSharedPreferences(LoginActivity.USER_AUTH, MODE_PRIVATE);
+
+        name = preferences.getString(LoginActivity.USER_EMAIL, "there");
+        if(name!=null)
+        {
+            name.trim();
+        }
+        if(name.equals(""))
+            name = "there";
+
+        hello.setText("Hey " + name + "!");
+>>>>>>> d2d07bf0c4dec889bcc060341783a9f0bcca5100
 
         eventses = new ArrayList<>();
+//
+//        SharedPreferences preferences = getSharedPreferences(
+//                DetailsFragment.REGISTERED_EVENTS,
+//                MODE_PRIVATE
+//        );
 
-        SharedPreferences preferences = getSharedPreferences(
-                DetailsFragment.REGISTERED_EVENTS,
-                MODE_PRIVATE
-        );
+//        Map<String, Boolean> map = (Map<String, Boolean>) preferences.getAll();
+//
+//        Iterator iterator = map.entrySet().iterator();
+//
+//        while(iterator.hasNext()){
+//            Map.Entry<String, Boolean> entry = (Map.Entry<String, Boolean>) iterator.next();
+//
+//            int id = Integer.parseInt(entry.getKey());
+//            eventses.add(db.getEvent(id));
+//        }
 
-        Map<String, Boolean> map = (Map<String, Boolean>) preferences.getAll();
+        //Todo: API call for getting user registered events
 
-        Iterator iterator = map.entrySet().iterator();
+        if(eventses.size()>0) {
 
-        while(iterator.hasNext()){
-            Map.Entry<String, Boolean> entry = (Map.Entry<String, Boolean>) iterator.next();
+            listView.setAdapter(new EventsAdapter(
+                    MyProfile.this,
+                    0,
+                    eventses
+            ));
 
-            int id = Integer.parseInt(entry.getKey());
-            //Todo: test if call to database works
-            eventses.add(db.getEvent(id));
         }
-
-        listView.setAdapter(new EventsAdapter(
-                MyProfile.this,
-                0,
-                eventses
-        ));
-
-
       //  registerForContextMenu(listView);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -117,8 +142,6 @@ public class MyProfile extends AppCompatActivity {
 //
 //        switch (id){
 //            case 0:
-//                //Todo: Call api and ask it to unregiser
-//                //Todo: if(response==true)
 //
 //                eventses.remove(eventMenuPosBuf);
 //                listView.setAdapter(new EventsAdapter(
@@ -174,12 +197,15 @@ public class MyProfile extends AppCompatActivity {
                 //Todo: Call api for logout
                 //Todo: if(response==true)
 
-                SharedPreferences preferences = getSharedPreferences
-                        (DetailsFragment.REGISTERED_EVENTS, MODE_PRIVATE);
+                Intent intent = new Intent(MyProfile.this, LoginActivity.class);
+                startActivity(intent);
 
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.clear();
-                editor.apply();
+//                SharedPreferences preferences = getSharedPreferences
+//                        (DetailsFragment.REGISTERED_EVENTS, MODE_PRIVATE);
+//
+//                SharedPreferences.Editor editor = preferences.edit();
+//                editor.clear();
+//                editor.apply();
 
         }
 
