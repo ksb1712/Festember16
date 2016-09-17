@@ -27,61 +27,13 @@ public class UpcomingActivity extends AppCompatActivity {
 
     String[] Number;
     String[][] present;
-    String[][] tempeve={{"rat","barn","rodent"}
-            ,{"cow","barn","mammal"}
-            ,{"horse","barn","brown"}
-            ,{"sheep","pen","mammal"}
-            ,{"rooster","coop","bird"}
-            ,{"tiger","den","stripe"}
-            ,{"dog","kennel","nose"}
-            ,{"snake","hole","twist"}
-            ,{"monkey","tree","brown"}
-            ,{"boar","field","tusk"}
-            ,{"dragon","sky","scales"}
-            ,{"rabbit","burrow","carrot"}};
+    String[][] tempeve;
     int[][] prtime;
     int[][] temptime;
     int[] id;
-    String[] evstarttime={"10:30:00"
-            ,"21:30:00"
-            ,"22:30:00"
-            ,"22:30:00"
-            ,"15:30:00"
-            ,"17:30:00"
-            ,"18:30:00"
-            ,"19:30:00"
-            ,"20:30:00"
-            ,"21:30:00"
-            ,"14:30:00"
-            ,"16:30:00"
-    }; //array of start times off all events
-    String[] evendtime={"11:30:00"
-            ,"22:30:00"
-            ,"23:30:00"
-            ,"23:30:00"
-            ,"16:30:00"
-            ,"18:30:00"
-            ,"19:30:00"
-            ,"20:30:00"
-            ,"21:30:00"
-            ,"22:30:00"
-            ,"15:30:00"
-            ,"17:30:00"
-    };  //array of end times off all events
-    String fakedate="2016-09-10";
-    String[] evdate={fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-    };   //array of dates off all events
+    String[] evstarttime; //array of start times off all events
+    String[] evendtime;  //array of end times off all events
+    String[] evdate;   //array of dates off all events
     String[] evlastupdate;    //array of last updates off all events
 
     //flag variables
@@ -218,9 +170,6 @@ public class UpcomingActivity extends AppCompatActivity {
         evendtime=new String[no];
         evdate=new String[no];
         evlastupdate=new String[no];
-        /*String[] temp1=new String[no];
-        String[] temp2=new String[no];
-        */
         co1=0;
         co2=0;
 
@@ -295,22 +244,6 @@ public class UpcomingActivity extends AppCompatActivity {
         handlerecycle();
         optsel();
         optsel();
-        String[][] temps=tempeve;
-        int[][] temt=temptime;
-       /*POPCORN
-       StorePresent.storepresent=temps ;
-        StorePresent.storetime=temt;
-        StorePresent.si=no;
-        */
-        //prepare Alarm Service to trigger Widget
-       /*POPCORN Intent intenttime = new Intent(UpcomingWidget.MY_WIDGET_UPDATE);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intenttime, 0);
-        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.add(Calendar.SECOND, 10);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 60 * 1000, pendingIntent);
-        */
         swipeContainer.setRefreshing(false);
     }
 
@@ -319,14 +252,6 @@ public class UpcomingActivity extends AppCompatActivity {
         if(tempeve!=null) {
             sort(tempeve, temptime, no);
         }
-/*POPCORN
-        Intent intent = new Intent(this, UpcomingWidget.class);
-        intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-        int ids[] = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), UpcomingWidget.class));
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-        sendBroadcast(intent);
-
-*/
         RecycleList adapter = new
                 RecycleList(UpcomingActivity.this, present,prtime,t,Number,cates,co2);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclelist);
