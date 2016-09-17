@@ -3,8 +3,6 @@ package com.festember16.app;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,10 +11,16 @@ import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import java.util.List;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainMenu extends AppCompatActivity implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener
 {
@@ -27,11 +31,14 @@ public class MainMenu extends AppCompatActivity implements GestureDetector.OnGes
     private static final String TAG = "FCM";
     private GestureDetectorCompat mDetector;
 
-
+    Retrofit retrofit;
+    Observable<LoginRegister> registeredObservable;
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {    MyFirebaseInstanceIDService.context=this;
+    protected void onCreate(Bundle savedInstanceState) {
+        MyFirebaseInstanceIDService.context=this;
         super.onCreate(savedInstanceState);
         if (getIntent().getExtras() != null) {
             for (String key : getIntent().getExtras().keySet()) {
@@ -63,9 +70,6 @@ public class MainMenu extends AppCompatActivity implements GestureDetector.OnGes
             Utilities.user_id = pref.getString("user_id","");
             Utilities.username = pref.getString("user_email","");
 
-
-
-
         }
         Log.e("status ",""+status );
         LayoutRoot = (RelativeLayout) findViewById(R.id.LayoutRoot);
@@ -73,25 +77,43 @@ public class MainMenu extends AppCompatActivity implements GestureDetector.OnGes
         LayoutRoot.addView(c);
         mDetector = new GestureDetectorCompat(this,this);
 
-
-
-
-
+        sharedPref = getPreferences(Context.MODE_PRIVATE);
+        checkForRegisteredEvents();
     }
 
+    public void checkForRegisteredEvents (){
+
+        retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(Utilities.base_url)
+                .build();
+
+        RegisterEventService registerEventService = retrofit.create(RegisterEventService.class);
+
+        registeredObservable = registerEventService.getRegistered(Utilities.user_id, Utilities.token);
+
+        registeredObservable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(registeredEvent -> {
+                    if(registeredEvent.getStatusCode() == 200) {
+                        editor = sharedPref.edit();
+                        editor.putString("registered_events", registeredEvent.getMessage());
+                    }
+                    else{
+                    }
+                    editor.commit();
+                });
+    }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
+    public boolean onTouchEvent(MotionEvent event) {
         this.mDetector.onTouchEvent(event);
-
-
         return true;
     }
 
     @Override
-    public boolean onSingleTapConfirmed(MotionEvent e)
-    {
+    public boolean onSingleTapConfirmed(MotionEvent e) {
         c.callIntent = null;
         c.tapped( e.getX() , e.getY());
         return true;

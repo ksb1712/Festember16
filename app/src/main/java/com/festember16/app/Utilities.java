@@ -19,8 +19,6 @@ public class Utilities {
     public static String token;
     public static String password;
 
-    //TODO Load all values from Shared Prefs if any
-
     public static int status;
     public static String registered_events;
     public static SharedPreferences prefs;
