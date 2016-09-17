@@ -39,6 +39,10 @@ public class Utilities {
     public static int global_index = 0;
     public static String user_profile_name;
     public static Events single_event;
+    public FragmentDay0 fragmentDay0;
+    public FragmentDay1 fragmentDay1;
+    public FragmentDay2 fragmentDay2;
+    public FragmentDay3 fragmentDay3;
    // public static Typeface typeface = Typeface.createFromAsset(getAss)
 
 }
