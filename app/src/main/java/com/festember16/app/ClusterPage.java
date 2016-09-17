@@ -17,6 +17,7 @@ public class ClusterPage extends AppCompatActivity {
 
     private GridLayoutManager lLayout;
     DBHandler db;
+    String clusters[] = new String[15];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +29,8 @@ public class ClusterPage extends AppCompatActivity {
         db = new DBHandler(this);
 
 
-//        String s = db.getCluster();
-//        Log.e("clusters ",s);
+      clusters = db.getClusters();
+      //  Log.e("clusters ",s);
         List<ItemObject> rowListItem = getAllItemList();
         lLayout = new GridLayoutManager(ClusterPage.this, 2);
 
@@ -65,11 +66,12 @@ public class ClusterPage extends AppCompatActivity {
 
 
         List<ItemObject> allItems = new ArrayList<ItemObject>();
-        allItems.add(new ItemObject("Dance"));
-        allItems.add(new ItemObject("Danc3"));
-        allItems.add(new ItemObject("Danc1"));
-        allItems.add(new ItemObject("Dance2"));
-
+        for(int i = 0; i < clusters.length; i++)
+        {
+            if(clusters[i].equals("workshops") || clusters[i].equals("informals")||(clusters[i].equals("pro_shows")));
+            else
+                allItems.add(new ItemObject(clusters[i]));
+        }
 
         return allItems;
     }
