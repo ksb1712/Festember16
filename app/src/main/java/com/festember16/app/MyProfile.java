@@ -47,14 +47,25 @@ public class MyProfile extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Welcome " + rollNo + "!");
+        getSupportActionBar().setTitle("Welcome!");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
         ButterKnife.inject(this);
 
         db = new DBHandler(this);
 
-        //Todo: Set actual name and rollno of user from shared pref
-        name = "John Doe";
+        //Todo: Parse email from login activity to get the name of user
+        SharedPreferences preferences = getSharedPreferences(LoginActivity.USER_AUTH, MODE_PRIVATE);
+
+        name = preferences.getString(LoginActivity.USER_EMAIL, "there");
+        if(name!=null)
+        {
+            name.trim();
+        }
+        if(name.equals(""))
+            name = "there";
+
         hello.setText("Hey " + name + "!");
 
         eventses = new ArrayList<>();
@@ -121,8 +132,6 @@ public class MyProfile extends AppCompatActivity {
 //
 //        switch (id){
 //            case 0:
-//                //Todo: Call api and ask it to unregiser
-//                //Todo: if(response==true)
 //
 //                eventses.remove(eventMenuPosBuf);
 //                listView.setAdapter(new EventsAdapter(
@@ -178,12 +187,15 @@ public class MyProfile extends AppCompatActivity {
                 //Todo: Call api for logout
                 //Todo: if(response==true)
 
-                SharedPreferences preferences = getSharedPreferences
-                        (DetailsFragment.REGISTERED_EVENTS, MODE_PRIVATE);
+                Intent intent = new Intent(MyProfile.this, LoginActivity.class);
+                startActivity(intent);
 
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.clear();
-                editor.apply();
+//                SharedPreferences preferences = getSharedPreferences
+//                        (DetailsFragment.REGISTERED_EVENTS, MODE_PRIVATE);
+//
+//                SharedPreferences.Editor editor = preferences.edit();
+//                editor.clear();
+//                editor.apply();
 
         }
 

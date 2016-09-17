@@ -56,7 +56,7 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
     SupportMapFragment mapFragment = null;
     private static View view = null;
 
-    private boolean isLocationEnabled = true;
+    private boolean isLocationEnabled = false;
     private boolean isPermissionGiven = true;
     public static boolean isFirstTime = false;
 
@@ -81,8 +81,17 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        Log.d(LOG_TAG, "Inside onCreateView");
+
         if(!hasPermission()){
             callPermissionRequest();
+        }
+
+        else if (checkLocationEnabled())
+            isLocationEnabled = true;
+
+        else {
+            isLocationEnabled = false;
         }
 
         if(view==null)
@@ -128,20 +137,11 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(LOG_TAG, "Inside onResume");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(LOG_TAG, "Inside onPause");
-    }
-
-    @Override
     public void setMenuVisibility(boolean menuVisible) {
         super.setMenuVisibility(menuVisible);
+
+        Log.d(LOG_TAG, "Inside setMenuVisibility\nmenuVisible = " + menuVisible);
+
 
         if(menuVisible){
             hasInternet();
@@ -151,12 +151,16 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
             }
 
             else if (checkLocationEnabled())
+            {
                 isLocationEnabled = true;
+            }
 
             else {
                 isLocationEnabled = false;
                 enableLocationDialog();
             }
+
+            enableLocationButtonListener();
         }
     }
 
@@ -265,38 +269,50 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
                     isLocationEnabled = false;
                     Log.d(LOG_TAG, "Location not enabled");
                 }
-
-                if (
-                        ActivityCompat.checkSelfPermission(getActivity(),
-                                android.Manifest.permission.ACCESS_FINE_LOCATION) !=
-                                PackageManager.PERMISSION_GRANTED &&
-                                ActivityCompat.checkSelfPermission(getActivity(),
-                                        android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                                        != PackageManager.PERMISSION_GRANTED) {
-                    isPermissionGiven = false;
-                    isLocationEnabled = false;
-                    return;
-                }
-
-                if (isPermissionGiven && isLocationEnabled && mMap != null)
-                {
-                    mMap.setMyLocationEnabled(true);
-                    mMap.setOnMyLocationButtonClickListener(
-                            new GoogleMap.OnMyLocationButtonClickListener() {
-                                @Override
-                                public boolean onMyLocationButtonClick() {
-
-                                    Toast.makeText(getActivity(), "Loading...", Toast.LENGTH_SHORT).show();
-
-                                    return false;
-                                }
-                            }
-                    );
-                }
-
-
+                enableLocationButtonListener();
                 break;
 
+        }
+    }
+
+    private void enableLocationButtonListener() {
+        if (
+                ActivityCompat.checkSelfPermission(getActivity(),
+                        android.Manifest.permission.ACCESS_FINE_LOCATION) !=
+                        PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(getActivity(),
+                                android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                                != PackageManager.PERMISSION_GRANTED) {
+            isPermissionGiven = false;
+            isLocationEnabled = false;
+            return;
+        }
+
+        if (isPermissionGiven && isLocationEnabled)
+        {
+            if (mMap != null) {
+                mMap.setMyLocationEnabled(true);
+                mMap.setOnMyLocationButtonClickListener(
+                        new GoogleMap.OnMyLocationButtonClickListener() {
+                            @Override
+                            public boolean onMyLocationButtonClick() {
+
+                                Toast.makeText(getActivity(), "Loading...", Toast.LENGTH_SHORT).show();
+
+                                return false;
+                            }
+                        }
+                );
+            }
+            else{
+                Log.d(LOG_TAG, "mMap is null inside onActivityResult");
+            }
+
+        }
+        else{
+            if(mMap !=null){
+                mMap.setMyLocationEnabled(false);
+            }
         }
     }
 

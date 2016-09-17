@@ -50,6 +50,12 @@ import rx.schedulers.Schedulers;
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
+    public static final String USER_AUTH = "user_auth";
+    public static final String TIME_STAMP = "Time_stamp";
+    public static final String USER_EMAIL = "user_email";
+    public static final String USER_PASS = "user_pass";
+    public static final String TOKEN = "token";
+    public static final String USER_ID = "user_id";
 
 
     EditText _emailText;
@@ -73,8 +79,8 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
         DBHandler db = new DBHandler(this);
-        pref = getSharedPreferences("user_auth", Context.MODE_PRIVATE);
-        prefs = getSharedPreferences("Time_stamp", Context.MODE_PRIVATE);
+        pref = getSharedPreferences(USER_AUTH, Context.MODE_PRIVATE);
+        prefs = getSharedPreferences(TIME_STAMP, Context.MODE_PRIVATE);
         _emailText = (EditText)findViewById(R.id.input_email);
         _passwordText = (EditText)findViewById(R.id.input_password);
         _loginButton = (Button)findViewById(R.id.btn_login);
@@ -129,13 +135,13 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = pref.edit();
                         Utilities.status = 1;
                         editor.putInt("Logged_in", Utilities.status);
-                        editor.putString("user_email", email);
+                        editor.putString(USER_EMAIL, email);
                         Utilities.username = email;
-                        editor.putString("user_pass", password);
+                        editor.putString(USER_PASS, password);
                         Utilities.password = password;
-                        editor.putString("token", login.getMessage());
+                        editor.putString(TOKEN, login.getMessage());
                         Utilities.token = login.getMessage();
-                        editor.putString("user_id", login.getUserId());
+                        editor.putString(USER_ID, login.getUserId());
                         Utilities.user_id = login.getUserId();
                         editor.apply();
 
