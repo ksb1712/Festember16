@@ -975,10 +975,10 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
         String rePassword = _passwordText.getText().toString();
-        String fullName = _passwordText.getText().toString();
-        String college_other = _passwordText.getText().toString();
-        String phone = _passwordText.getText().toString();
-        String Address = _passwordText.getText().toString();
+        String fullName = _fullnameText.getText().toString();
+        String college_other = _college_Text.getText().toString();
+        String phone = _phoneText.getText().toString();
+        String Address = _addressText.getText().toString();
 
         String college = _collegeText.getText().toString();
         String branch = _branchText.getText().toString();
@@ -1016,6 +1016,19 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
             _passwordText.setError(null);
         }
         //TODO remaining validate
+        if (fullName.isEmpty()) {
+            _fullnameText.setError("Enter full name");
+            valid = false;
+        } else {
+            _fullnameText.setError(null);
+        }
+        if (college_other.isEmpty() && college.equals("Others")) {
+            _fullnameText.setError(" Enter college");
+            valid = false;
+        } else {
+            _fullnameText.setError(null);
+        }
+
 
         return valid;
     }
