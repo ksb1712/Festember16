@@ -14,6 +14,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import java.util.List;
 
 public class MainMenu extends AppCompatActivity implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener
@@ -22,15 +24,27 @@ public class MainMenu extends AppCompatActivity implements GestureDetector.OnGes
     MenuCanvas c;
 
     RelativeLayout LayoutRoot;
-
+    private static final String TAG = "FCM";
     private GestureDetectorCompat mDetector;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
-    {
+    {    MyFirebaseInstanceIDService.context=this;
         super.onCreate(savedInstanceState);
+        if (getIntent().getExtras() != null) {
+            for (String key : getIntent().getExtras().keySet()) {
+                String value = getIntent().getExtras().getString(key);
+                Log.d(TAG, "Key: " + key + " Value: " + value);
+            }
+        }
+        String token = FirebaseInstanceId.getInstance().getToken();
+
+
+        String msg = getString(R.string.msg_token_fmt, token);
+        Log.d(TAG, msg);
+
 
 //        DBHandler db = new DBHandler(this);
 //        String[] clusters = db.getClusters();
@@ -58,6 +72,9 @@ public class MainMenu extends AppCompatActivity implements GestureDetector.OnGes
         c = new MenuCanvas(this);
         LayoutRoot.addView(c);
         mDetector = new GestureDetectorCompat(this,this);
+
+
+
 
 
     }
