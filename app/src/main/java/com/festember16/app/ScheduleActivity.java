@@ -94,7 +94,8 @@ public class ScheduleActivity extends AppCompatActivity
         ClusterList.setAdapter(clusterAdapter);
         populateLists(0);
 
-        ClusterList.setItemChecked( 0 , true);
+
+        //ClusterList.setItemChecked( 0 , true);
         ClusterList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -111,6 +112,7 @@ public class ScheduleActivity extends AppCompatActivity
                 DrawerLayoutRoot.closeDrawers();
             }
         });
+
 
         //End of List View Stuff
         drawerToggle = new ActionBarDrawerToggle( this, DrawerLayoutRoot, toolbar , R.string.app_name, R.string.app_name)
