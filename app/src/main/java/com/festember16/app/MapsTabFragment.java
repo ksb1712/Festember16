@@ -53,7 +53,7 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
     };
 
     public GoogleMap mMap;
-    SupportMapFragment mapFragment;
+    SupportMapFragment mapFragment = null;
     private static View view = null;
 
     private boolean isLocationEnabled = true;
@@ -119,6 +119,8 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.d(LOG_TAG, "Inside onActivityCreated");
+
+        mapFragment.getMapAsync(this);
     }
 
     @Override
@@ -139,8 +141,6 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
 
         if(menuVisible){
             hasInternet();
-
-            mapFragment.getMapAsync(this);
 
             if(!hasPermission()){
                 callPermissionRequest();

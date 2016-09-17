@@ -53,35 +53,39 @@ public class MyProfile extends AppCompatActivity {
 
         db = new DBHandler(this);
 
+        //Todo: Set actual name and rollno of user from shared pref
         name = "John Doe";
         hello.setText("Hey " + name + "!");
 
         eventses = new ArrayList<>();
+//
+//        SharedPreferences preferences = getSharedPreferences(
+//                DetailsFragment.REGISTERED_EVENTS,
+//                MODE_PRIVATE
+//        );
 
-        SharedPreferences preferences = getSharedPreferences(
-                DetailsFragment.REGISTERED_EVENTS,
-                MODE_PRIVATE
-        );
+//        Map<String, Boolean> map = (Map<String, Boolean>) preferences.getAll();
+//
+//        Iterator iterator = map.entrySet().iterator();
+//
+//        while(iterator.hasNext()){
+//            Map.Entry<String, Boolean> entry = (Map.Entry<String, Boolean>) iterator.next();
+//
+//            int id = Integer.parseInt(entry.getKey());
+//            eventses.add(db.getEvent(id));
+//        }
 
-        Map<String, Boolean> map = (Map<String, Boolean>) preferences.getAll();
+        //Todo: API call for getting user registered events
 
-        Iterator iterator = map.entrySet().iterator();
+        if(eventses.size()>0) {
 
-        while(iterator.hasNext()){
-            Map.Entry<String, Boolean> entry = (Map.Entry<String, Boolean>) iterator.next();
+            listView.setAdapter(new EventsAdapter(
+                    MyProfile.this,
+                    0,
+                    eventses
+            ));
 
-            int id = Integer.parseInt(entry.getKey());
-            //Todo: test if call to database works
-            eventses.add(db.getEvent(id));
         }
-
-        listView.setAdapter(new EventsAdapter(
-                MyProfile.this,
-                0,
-                eventses
-        ));
-
-
       //  registerForContextMenu(listView);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
