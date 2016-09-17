@@ -16,6 +16,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.logging.Handler;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -55,7 +57,6 @@ public class UpcomingActivity extends AppCompatActivity {
     Spinner spinner ;
     Spinner spinnertime;
     Spinner spinnercate;
-    String[] items,itemscate;
     ArrayAdapter<String> spadapter;
     ArrayAdapter<String> caadapter;
 
@@ -161,8 +162,6 @@ public class UpcomingActivity extends AppCompatActivity {
         db = new DBHandler(this);
         E=db.getAllEvents();
         no=E.size();
-        String a=(no!=0)?"Not Empty":"Empty";
-        Toast.makeText(this,a,Toast.LENGTH_LONG).show();
         tempeve=new String[no][3];
         temptime=new int[no][6];
         id=new int[no];
@@ -182,10 +181,14 @@ public class UpcomingActivity extends AppCompatActivity {
         //event information entered one by one
         for (int i = 0; i < no; i++) {
         tempeve[i][0] = E.get(i).getName();
+            if(tempeve[i][0].equals("shruthilaya"))
+                tempeve[i][0]="shrutilaya";
             evstarttime[i] =E.get(i).getStartTime();
             evendtime[i] = E.get(i).getEndTime();
             tempeve[i][1] = E.get(i).getVenue();
             tempeve[i][2] =E.get(i).getCluster();
+            if(tempeve[i][2].equals("shruthilaya"))
+                tempeve[i][2]="shrutilaya";
             evdate[i] = E.get(i).getDate();
             id[i] =  E.get(i).getId();
             evlastupdate[i]=E.get(i).getLastUpdateTime();
@@ -241,10 +244,28 @@ public class UpcomingActivity extends AppCompatActivity {
         for(int j=0;j<co2;j++){
             cates[j]=temp2[j];
         }
-        handlerecycle();
-        optsel();
-        optsel();
-        swipeContainer.setRefreshing(false);
+        if(!swipeContainer.isRefreshing()) {
+            handlerecycle();
+
+            optsel();
+            optsel();
+            swipeContainer.setRefreshing(false);
+        }
+        else {
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    handlerecycle();
+
+                    optsel();
+                    optsel();
+                    swipeContainer.setRefreshing(false);
+                }
+            };
+            android.os.Handler h = new android.os.Handler();
+            h.postDelayed(r, 4000);
+        }
+
     }
 
     //updating list when spinner option is changed
@@ -275,7 +296,8 @@ public class UpcomingActivity extends AppCompatActivity {
         int c=1;
         if(venues!=null) {
             for (int i = 0; i < co1; i++) {
-                items[i + 1] = propergram(venues[i]);
+               items[i + 1] = propergram(venues[i]);
+               // items[i + 1] = venues[i];
             }
         }
         //spinner for venues
@@ -330,16 +352,15 @@ public class UpcomingActivity extends AppCompatActivity {
         if(cates!=null) {
             for (int i = 0; i < co2; i++) {
                 itemscate[i + 1] = propergram(cates[i]);
+               // itemscate[i + 1] = cates[i];
             }
         }
-        caadapter = new ArrayAdapter<String>(
-                this, R.layout.spinnerstyle, itemscate);
+        caadapter = new ArrayAdapter<String>(this, R.layout.spinnerstyle, itemscate);
         spinnercate.setAdapter(caadapter);
         spinnercate.setSelection(catech+1);
         spinnercate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 catech=position-1;
                 optsel();
             }
@@ -350,10 +371,10 @@ public class UpcomingActivity extends AppCompatActivity {
         });
     }
 
-    //to format the text to remove underscores and to make some uppercase
+    //NOT NEEDED SINCE ALREADY FORMATTED IN DB:to format the text to remove underscores and to make some uppercase
     public String propergram(String word){
         // word.toLowerCase();
-      /*  String[] tempstr =word.split("_");
+        String[] tempstr =word.split("_");
         String tempstr2;
         for(int i=0;i<tempstr.length;i++){
             if((tempstr[i].charAt(0))>='A'&&(tempstr[i].charAt(0))<='Z') {
@@ -368,7 +389,7 @@ public class UpcomingActivity extends AppCompatActivity {
             } else {
                 word = tempstr[i];
             }
-        }*/
+        }
         return word;
     }
 
@@ -377,13 +398,7 @@ public class UpcomingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upcoming);
         setTitle("Upcoming Events Schedule");
-     /*   mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
-        //setContentView(R.layout.activity_main);
-
         // Lookup the swipe container view
-
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -400,6 +415,7 @@ public class UpcomingActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
 
         parseevents();
     }

@@ -56,6 +56,7 @@ public class RecycleList extends RecyclerView.Adapter<RecycleList.CustomViewHold
             this.Cate = (TextView) view.findViewById(R.id.Cate);
             this.lay=(RelativeLayout)itemView.findViewById(R.id.singlelistlayout);
             this.line=(ImageView)itemView.findViewById(R.id.line);
+            this.lay=(RelativeLayout)view.findViewById(R.id.singlelistlayout);
             //this.text=(TextView)view.findViewById(R.id.textView);
 
         }
@@ -124,7 +125,7 @@ public class RecycleList extends RecyclerView.Adapter<RecycleList.CustomViewHold
         }
         customViewHolder.Cate.getBackground().setColorFilter(colt[p], PorterDuff.Mode.MULTIPLY );
         customViewHolder.line.getBackground().setColorFilter(colt[p], PorterDuff.Mode.MULTIPLY );
-
+        customViewHolder.lay.getBackground().setColorFilter(colt[p], PorterDuff.Mode.MULTIPLY );
       /*  customViewHolder.Event.setText(temp[0]);
         customViewHolder.Location.setText(temp[1]);
         customViewHolder.Cate.setText(temp[2]);
