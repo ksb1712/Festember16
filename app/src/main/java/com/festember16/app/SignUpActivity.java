@@ -1053,31 +1053,31 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
             _branchText.setError(null);
         }
         if (year.isEmpty()) {
-            _yearText.setError(" Enter College");
+            _yearText.setError(" Enter Year");
             valid = false;
         } else {
             _yearText.setError(null);
         }
         if (degree.isEmpty()) {
-            _degreeText.setError(" Enter College");
+            _degreeText.setError(" Enter Degree");
             valid = false;
         } else {
             _degreeText.setError(null);
         }
         if (city.isEmpty()) {
-            _cityText.setError(" Enter College");
+            _cityText.setError(" Enter City");
             valid = false;
         } else {
             _cityText.setError(null);
         }
         if (state.isEmpty()) {
-            _stateText.setError(" Enter College");
+            _stateText.setError(" Enter State");
             valid = false;
         } else {
             _stateText.setError(null);
         }
         if (country.isEmpty()) {
-            _countryText.setError(" Enter College");
+            _countryText.setError(" Enter Country");
             valid = false;
         } else {
             _countryText.setError(null);
