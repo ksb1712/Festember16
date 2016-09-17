@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 
+import java.util.List;
+
 /**
  * Created by app on 1/8/16.
  * Class to organize commonly used variables
@@ -30,6 +32,8 @@ public class Utilities {
     public static String scoreboard_url = "https://festember.com/scoreboard/getScoreBoard";
     public static Context context;
     public static String user_id;
+    public static String[] clusters = new String[15];
+    public static  List<Events> events;
    // public static Typeface typeface = Typeface.createFromAsset(getAss)
 
 }

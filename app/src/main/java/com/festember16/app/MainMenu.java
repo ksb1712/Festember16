@@ -30,7 +30,7 @@ public class MainMenu extends AppCompatActivity implements GestureDetector.OnGes
     {
         super.onCreate(savedInstanceState);
 
-        DBHandler db = new DBHandler(this);
+//        DBHandler db = new DBHandler(this);
 //        String[] clusters = db.getClusters();
 //        List<Events> e = db.getEventsByCluster("english_lits");
 //        Log.e("test" , clusters[5] + "size " + clusters.length);

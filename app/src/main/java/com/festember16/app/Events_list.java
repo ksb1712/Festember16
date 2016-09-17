@@ -12,7 +12,8 @@ import java.util.List;
 
 public class Events_list extends AppCompatActivity {
     private GridLayoutManager lLayout;
-    String s[] = null;
+    DBHandler db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +22,8 @@ public class Events_list extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_events_list);
         setTitle(null);
-        s = getIntent().getExtras().getStringArray("events");
 
+        db = new DBHandler(this);
         List<ItemObject> rowListItem = getAllItemList();
         lLayout = new GridLayoutManager(Events_list.this, 2);
 
@@ -57,9 +58,22 @@ public class Events_list extends AppCompatActivity {
     private List<ItemObject> getAllItemList(){
 
         List<ItemObject> allItems = new ArrayList<ItemObject>();
-        for(int i = 0; i < s.length;i++)
-            allItems.add(new ItemObject(s[i]));
+        for(int i = 0; i < Utilities.events.size();i++) {
+            String name = Utilities.events.get(i).getName();
+            String temp2="";
+            if (name.contains("_")) {
+                // Split it.
+                String[] temp = name.split("_");
+                for(int j=0;j<temp.length;j++) {
+                    String temp3 = temp[j].substring(0,1).toUpperCase() + temp[j].substring(1);
+                    temp2 = temp2 + temp3 + " ";
+                }
 
+            }else temp2=name.substring(0,1).toUpperCase() + name.substring(1);
+            if(temp2.equals("Live Photography"))
+                temp2 = "Live Photo";
+            allItems.add(new ItemObject(temp2));
+        }
 
         return allItems;
     }
