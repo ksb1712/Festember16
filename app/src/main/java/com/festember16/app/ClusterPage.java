@@ -37,7 +37,7 @@ public class ClusterPage extends AppCompatActivity {
       clusters = db.getClusters();
       //  Log.e("clusters ",s);
         List<ItemObject> rowListItem = getAllItemList();
-        lLayout = new GridLayoutManager(ClusterPage.this, 2);
+        lLayout = new GridLayoutManager(ClusterPage.this, 1);
 
         RecyclerView rView = (RecyclerView)findViewById(R.id.recycler_view);
         rView.setHasFixedSize(true);

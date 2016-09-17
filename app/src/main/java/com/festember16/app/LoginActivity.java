@@ -115,15 +115,12 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
 
         final String email = _emailText.getText().toString();
         final String password = _passwordText.getText().toString();
 
-        String defaultValue = "Not yet updated";
-        String time = prefs.getString("time", defaultValue);
-        if(time.equals(defaultValue)) {
-            callDB(this);
-        }
 
         retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -159,7 +156,12 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString(USER_ID, login.getUserId());
                         Utilities.user_id = login.getUserId();
                         editor.apply();
-
+                        progressDialog.dismiss();
+                        String defaultValue = "Not yet updated";
+                        String time = prefs.getString("time", defaultValue);
+                        if(time.equals(defaultValue)) {
+                            callDB(this);
+                        }
                         callCheck_auth();
                        Log.e("fck ", Utilities.username + " " + Utilities.user_profile_name);
                         Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
@@ -169,7 +171,9 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     else
                     {
-                        onLoginFailed();
+                            progressDialog.dismiss();
+                        Toast.makeText(LoginActivity.this,login.getMessage(),Toast.LENGTH_LONG).show();
+                        _loginButton.setEnabled(true);
                     }
                 });
     }
@@ -182,6 +186,8 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Fetching data...");
         progressDialog.show();
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
 
         retrofit1 = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -238,7 +244,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+
 
         _loginButton.setEnabled(true);
     }

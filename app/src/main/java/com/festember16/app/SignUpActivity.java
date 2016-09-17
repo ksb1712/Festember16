@@ -1,6 +1,7 @@
 package com.festember16.app;
 
 
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,17 +21,24 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 
 public class SignUpActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -791,12 +799,15 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
             return;
         }
 
+        Log.d("fuck", "Signup2");
         _signupButton.setEnabled(true);
 
         final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
         final String name = _nameText.getText().toString();
@@ -818,61 +829,92 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         final String state = _stateText.getText().toString();
         final String country = _countryText.getText().toString();
 
-        if(college.equals("Others"))
-            college = college_other;
-        final String college_name = college;
+
         // get selected radio button from radioGroup
         int selectedId = radioSexGroup.getCheckedRadioButtonId();
 
         // find the radiobutton by returned id
         radioSexButton = (RadioButton) findViewById(selectedId);
 
-        Toast.makeText(SignUpActivity.this,
-                radioSexButton.getText(), Toast.LENGTH_SHORT).show();
+
         final String gender = radioSexButton.getText().toString();
         Log.d(TAG, "Signup3");
 
-        params.put("user_name",name);
-        params.put("user_password",password);
-        params.put("user_email",email);
-        params.put("user_fullname",fullName);
-        params.put("user_gender",gender);
-        params.put("user_course",degree);
-        params.put("user_year",year);
-        params.put("user_other_college",college_other);
-        params.put("user_branch",branch);
-        params.put("user_college",college_name);
-        params.put("user_country",country);
-        params.put("user_city",city);
-        params.put("user_state",state);
-        params.put("user_phone",phone);
-        params.put("user_address",address);
 
-        registerWithRetrofit();
-    }
-
-    private void registerWithRetrofit() {
-
-        retrofit = new Retrofit.Builder()
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(Utilities.base_url)
-                .build();
-
-        LoginService loginService = retrofit.create(LoginService.class);
-
-        signUpObservable = loginService.register(params);
-
-        signUpObservable.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(login -> {
-                    if(login.getStatusCode()==200) {
-                        onSignUpSuccess();
-                        finish();
-                    }
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Utilities.user_register_url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                progressDialog.dismiss();
+                JSONObject jsonResponse = null;
+                try {
+                    jsonResponse = new JSONObject(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                int status = 0;
+                try {
+                    status = jsonResponse.getInt("status_code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String message = null;
+                try {
+                    message = jsonResponse.getString("message");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.e("QR ", message);
+                if(status == 200) {
+                    Toast.makeText(SignUpActivity.this,"Verify Email",Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(SignUpActivity.this,LoginActivity.class);
                     progressDialog.dismiss();
-                });
+                    SignUpActivity.this.startActivity(i);
+                }
+                else{
+                    Toast.makeText(SignUpActivity.this,message,Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                error.printStackTrace();
+                Toast.makeText(SignUpActivity.this, "Please check your internet and try again", Toast.LENGTH_LONG).show();
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                // the POST parameters:
+                params.put("user_name",name);
+                params.put("user_password",password);
+                params.put("user_email",email);
+                params.put("user_fullname",fullName);
+                params.put("user_gender",gender);
+                params.put("user_course",degree);
+                params.put("user_year",year);
+                params.put("user_other_college",college_other);
+                params.put("user_branch",branch);
+                params.put("user_college",college);
+                params.put("user_country",country);
+                params.put("user_city",city);
+                params.put("user_state",state);
+                params.put("user_phone",phone);
+                params.put("user_address",address);
+                return  params;
+            }
+
+        };
+
+        int socketTimeout = 10000;//10 seconds
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        stringRequest.setRetryPolicy(policy);
+        Volley.newRequestQueue(this).add(stringRequest);
+
     }
+
+
 
     public void callAlert(View view, final String TitleName[]) {
         AlertDialog.Builder myDialog = new AlertDialog.Builder(SignUpActivity.this);
@@ -956,10 +998,12 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
     }
 
     public void onSignUpSuccess() {
-        _signupButton.setEnabled(true);
+        _signupButton.setEnabled(false);
+        Toast.makeText(this,"Verify mail",Toast.LENGTH_LONG).show();
+        Intent i = new Intent(this,LoginActivity.class);
+        startActivity(i);
         setResult(RESULT_OK, null);
-        getIntent().putExtra("username" , params.get("user_name"));
-        finish();
+
     }
 
     public void onSignUpFailed() {
@@ -1040,43 +1084,43 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         } else {
             _addressText.setError(null);
         }
-        if (college.isEmpty()) {
+        if (college.equals("College")) {
             _collegeText.setError(" Enter College");
             valid = false;
         } else {
             _collegeText.setError(null);
         }
-        if (dept.isEmpty()) {
+        if (dept.equals("Branch")) {
             _branchText.setError(" Enter Branch");
             valid = false;
         } else {
             _branchText.setError(null);
         }
-        if (year.isEmpty()) {
+        if (year.equals("Year")) {
             _yearText.setError(" Enter Year");
             valid = false;
         } else {
             _yearText.setError(null);
         }
-        if (degree.isEmpty()) {
+        if (degree.equals("Degree")) {
             _degreeText.setError(" Enter Degree");
             valid = false;
         } else {
             _degreeText.setError(null);
         }
-        if (city.isEmpty()) {
+        if (city.equals("City")) {
             _cityText.setError(" Enter City");
             valid = false;
         } else {
             _cityText.setError(null);
         }
-        if (state.isEmpty()) {
+        if (state.equals("State")) {
             _stateText.setError(" Enter State");
             valid = false;
         } else {
             _stateText.setError(null);
         }
-        if (country.isEmpty()) {
+        if (country.equals("Country")) {
             _countryText.setError(" Enter Country");
             valid = false;
         } else {
