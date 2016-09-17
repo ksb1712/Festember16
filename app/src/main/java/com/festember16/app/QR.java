@@ -46,14 +46,16 @@ public class QR extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr);
-        Log.e("profile *", Utilities.user_profile_name);
+       // Log.e("profile *", Utilities.user_profile_name);
 
+        if(Utilities.user_profile_name == null)
+            Utilities.user_profile_name = Utilities.username;
        {
             ImageView qrCodeImage = (ImageView) findViewById(R.id.qr_code_image);
             qrCodeImage.setVisibility(View.VISIBLE);
             Bitmap bitmap = new SaveImage(Utilities.user_profile_name, null).loadFromCacheFile();
-           TextView textView = (TextView)findViewById(R.id.welcomeText);
-           textView.setText("Welcome " + Utilities.user_profile_name);
+
+
             if (bitmap == null) GetQR();
             else {
                 qrCodeImage.setImageBitmap(bitmap);
@@ -76,7 +78,7 @@ public class QR extends AppCompatActivity {
 
     public void GetQR() {
 
-        final ProgressDialog pDialog = new ProgressDialog(this);
+        final ProgressDialog pDialog = new ProgressDialog(this,  R.style.AppTheme_Dark_Dialog);
         pDialog.setMessage("Loading...");
         pDialog.setCancelable(false);
         pDialog.setCanceledOnTouchOutside(false);

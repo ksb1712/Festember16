@@ -29,6 +29,7 @@ public class Utilities {
     public static String event_register = base_url + "/events/register";
     public static String user_profile = base_url + "/events/user/details";
     public static String user_qr = base_url + "/tshirt/qr";
+    public static String user_credits = base_url + "/user/credits";
     public static String scoreboard_url = "https://festember.com/scoreboard/getScoreBoard";
     public static Context context;
     public static String user_id;
@@ -38,6 +39,10 @@ public class Utilities {
     public static int global_index = 0;
     public static String user_profile_name;
     public static Events single_event;
+    public FragmentDay0 fragmentDay0;
+    public FragmentDay1 fragmentDay1;
+    public FragmentDay2 fragmentDay2;
+    public FragmentDay3 fragmentDay3;
    // public static Typeface typeface = Typeface.createFromAsset(getAss)
 
 }

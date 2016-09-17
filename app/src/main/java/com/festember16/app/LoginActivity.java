@@ -17,6 +17,7 @@ import android.util.Log;
 import android.content.Intent;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -50,6 +51,12 @@ import rx.schedulers.Schedulers;
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
+    public static final String USER_AUTH = "user_auth";
+    public static final String TIME_STAMP = "Time_stamp";
+    public static final String USER_EMAIL = "user_email";
+    public static final String USER_PASS = "user_pass";
+    public static final String TOKEN = "token";
+    public static final String USER_ID = "user_id";
 
 
     EditText _emailText;
@@ -69,12 +76,18 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         // this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().hide();
+
+
         setContentView(R.layout.activity_login);
         DBHandler db = new DBHandler(this);
-        pref = getSharedPreferences("user_auth", Context.MODE_PRIVATE);
-        prefs = getSharedPreferences("Time_stamp", Context.MODE_PRIVATE);
+        pref = getSharedPreferences(USER_AUTH, Context.MODE_PRIVATE);
+        prefs = getSharedPreferences(TIME_STAMP, Context.MODE_PRIVATE);
         _emailText = (EditText)findViewById(R.id.input_email);
         _passwordText = (EditText)findViewById(R.id.input_password);
         _loginButton = (Button)findViewById(R.id.btn_login);
@@ -90,12 +103,12 @@ public class LoginActivity extends AppCompatActivity {
     public void login() {
 
         Log.d(TAG, "Login");
-/*
+
         if (!validate()) {
             onLoginFailed();
             return;
         }
-  */     // _loginButton.setEnabled(false);
+       _loginButton.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -120,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
 
         LoginService loginService = retrofit.create(LoginService.class);
 
-        loginObservable = loginService.authenticate("106114073@nitt.edu", "Bsep233566");
+        loginObservable = loginService.authenticate(email,password);
 
         loginObservable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -129,7 +142,7 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = pref.edit();
                         Utilities.status = 2;
                         editor.putInt("Logged_in", Utilities.status);
-                        editor.putString("user_email", email);
+                        editor.putString(USER_EMAIL, email);
                         Utilities.username = email;
                         editor.putString("user_pass", password);
                         editor.putInt("login_status",2);
@@ -139,16 +152,24 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("token", login.getMessage());
                         editor.putString("user_name",part1);
                         Utilities.user_profile_name = part1;
+                        editor.putString(USER_PASS, password);
+                        Utilities.password = password;
+                        editor.putString(TOKEN, login.getMessage());
                         Utilities.token = login.getMessage();
-                        editor.putString("user_id", login.getUserId());
+                        editor.putString(USER_ID, login.getUserId());
                         Utilities.user_id = login.getUserId();
                         editor.apply();
 
-                        Log.e("fck ", Utilities.username + " " );
+                        callCheck_auth();
+                       Log.e("fck ", Utilities.username + " " + Utilities.user_profile_name);
                         Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
                         Intent i = new Intent(LoginActivity.this, MainMenu.class);
                         startActivity(i);
                         finish();
+                    }
+                    else
+                    {
+                        onLoginFailed();
                     }
                 });
     }
@@ -299,6 +320,21 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(Intent.ACTION_VIEW,
                     Uri.parse("https://twitter.com/festember")));
         }
+
+    }
+    public void callCheck_auth()
+    {
+        String temp2 = "";
+        if (Utilities.username.contains("@")) {
+            // Split it.
+            String[] temp = Utilities.username.split("@");
+            temp2 = temp[1];
+
+        }
+        if(temp2.equals("nitt.edu"))
+            Utilities.user_qr = Utilities.base_url + "/tshirt/qr";
+        else
+            Utilities.user_qr = Utilities.base_url + "/pr/qr";
 
     }
 

@@ -975,15 +975,15 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
         String rePassword = _passwordText.getText().toString();
-        String fullName = _passwordText.getText().toString();
-        String college_other = _passwordText.getText().toString();
-        String phone = _passwordText.getText().toString();
-        String Address = _passwordText.getText().toString();
+        String fullName = _fullnameText.getText().toString();
+        String college_other = _college_Text.getText().toString();
+        String phone = _phoneText.getText().toString();
+        String Address = _addressText.getText().toString();
 
         String college = _collegeText.getText().toString();
-        String branch = _branchText.getText().toString();
         String year = _yearText.getText().toString();
         String dept = _branchText.getText().toString();
+        String degree = _degreeText.getText().toString();
         String city = _cityText.getText().toString();
         String state = _stateText.getText().toString();
         String country = _countryText.getText().toString();
@@ -1016,6 +1016,73 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
             _passwordText.setError(null);
         }
         //TODO remaining validate
+        if (fullName.isEmpty()) {
+            _fullnameText.setError("Enter full name");
+            valid = false;
+        } else {
+            _fullnameText.setError(null);
+        }
+        if (college_other.isEmpty() && college.equals("Others")) {
+            _college_Text.setError(" Enter college");
+            valid = false;
+        } else {
+            _college_Text.setError(null);
+        }
+        if (phone.isEmpty() || phone.length() != 10) {
+            _phoneText.setError(" Enter valid phone number");
+            valid = false;
+        } else {
+            _phoneText.setError(null);
+        }
+        if (Address.isEmpty()) {
+            _addressText.setError(" Enter Address");
+            valid = false;
+        } else {
+            _addressText.setError(null);
+        }
+        if (college.isEmpty()) {
+            _collegeText.setError(" Enter College");
+            valid = false;
+        } else {
+            _collegeText.setError(null);
+        }
+        if (dept.isEmpty()) {
+            _branchText.setError(" Enter Branch");
+            valid = false;
+        } else {
+            _branchText.setError(null);
+        }
+        if (year.isEmpty()) {
+            _yearText.setError(" Enter Year");
+            valid = false;
+        } else {
+            _yearText.setError(null);
+        }
+        if (degree.isEmpty()) {
+            _degreeText.setError(" Enter Degree");
+            valid = false;
+        } else {
+            _degreeText.setError(null);
+        }
+        if (city.isEmpty()) {
+            _cityText.setError(" Enter City");
+            valid = false;
+        } else {
+            _cityText.setError(null);
+        }
+        if (state.isEmpty()) {
+            _stateText.setError(" Enter State");
+            valid = false;
+        } else {
+            _stateText.setError(null);
+        }
+        if (country.isEmpty()) {
+            _countryText.setError(" Enter Country");
+            valid = false;
+        } else {
+            _countryText.setError(null);
+        }
+
 
         return valid;
     }
