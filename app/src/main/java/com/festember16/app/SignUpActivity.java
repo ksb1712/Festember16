@@ -981,9 +981,9 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
         String Address = _addressText.getText().toString();
 
         String college = _collegeText.getText().toString();
-        String branch = _branchText.getText().toString();
         String year = _yearText.getText().toString();
         String dept = _branchText.getText().toString();
+        String degree = _degreeText.getText().toString();
         String city = _cityText.getText().toString();
         String state = _stateText.getText().toString();
         String country = _countryText.getText().toString();
@@ -1023,10 +1023,64 @@ public class SignUpActivity extends AppCompatActivity implements AdapterView.OnI
             _fullnameText.setError(null);
         }
         if (college_other.isEmpty() && college.equals("Others")) {
-            _fullnameText.setError(" Enter college");
+            _college_Text.setError(" Enter college");
             valid = false;
         } else {
-            _fullnameText.setError(null);
+            _college_Text.setError(null);
+        }
+        if (phone.isEmpty() || phone.length() != 10) {
+            _phoneText.setError(" Enter valid phone number");
+            valid = false;
+        } else {
+            _phoneText.setError(null);
+        }
+        if (Address.isEmpty()) {
+            _addressText.setError(" Enter Address");
+            valid = false;
+        } else {
+            _addressText.setError(null);
+        }
+        if (college.isEmpty()) {
+            _collegeText.setError(" Enter College");
+            valid = false;
+        } else {
+            _collegeText.setError(null);
+        }
+        if (dept.isEmpty()) {
+            _branchText.setError(" Enter Branch");
+            valid = false;
+        } else {
+            _branchText.setError(null);
+        }
+        if (year.isEmpty()) {
+            _yearText.setError(" Enter College");
+            valid = false;
+        } else {
+            _yearText.setError(null);
+        }
+        if (degree.isEmpty()) {
+            _degreeText.setError(" Enter College");
+            valid = false;
+        } else {
+            _degreeText.setError(null);
+        }
+        if (city.isEmpty()) {
+            _cityText.setError(" Enter College");
+            valid = false;
+        } else {
+            _cityText.setError(null);
+        }
+        if (state.isEmpty()) {
+            _stateText.setError(" Enter College");
+            valid = false;
+        } else {
+            _stateText.setError(null);
+        }
+        if (country.isEmpty()) {
+            _countryText.setError(" Enter College");
+            valid = false;
+        } else {
+            _countryText.setError(null);
         }
 
 
