@@ -33,5 +33,13 @@
     <color name="titleBarColour">#3F51B5</color>
     <color name="splash_background">#7CBDFF</color>
 
+    <color name="Blue">#FF4081</color>
+    <color name="Transparent">#00FFF0FF</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="events_color">#BB50Fd</color>
+    <color name="util_color">#689</color>
+    <color name = "festember_orange">#c7ff6600</color>
+    <color name = "festember_orange_deep">#ffff4400</color>
+
 
 </resources>
