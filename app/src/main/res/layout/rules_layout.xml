@@ -14,7 +14,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/lorem_ipsum"
             android:id="@+id/rules"
             android:padding="10dp"
             android:layout_centerVertical="true"

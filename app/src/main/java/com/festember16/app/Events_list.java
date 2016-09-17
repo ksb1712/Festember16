@@ -8,7 +8,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import okhttp3.internal.Util;
 
 public class Events_list extends AppCompatActivity {
     private GridLayoutManager lLayout;
@@ -22,7 +25,6 @@ public class Events_list extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_events_list);
         setTitle(null);
-
         db = new DBHandler(this);
         List<ItemObject> rowListItem = getAllItemList();
         lLayout = new GridLayoutManager(Events_list.this, 2);
@@ -60,20 +62,35 @@ public class Events_list extends AppCompatActivity {
         List<ItemObject> allItems = new ArrayList<ItemObject>();
         for(int i = 0; i < Utilities.events.size();i++) {
             String name = Utilities.events.get(i).getName();
-            String temp2="";
+            String temp2 = "";
             if (name.contains("_")) {
                 // Split it.
                 String[] temp = name.split("_");
-                for(int j=0;j<temp.length;j++) {
-                    String temp3 = temp[j].substring(0,1).toUpperCase() + temp[j].substring(1);
+                for (int j = 0; j < temp.length; j++) {
+                    String temp3 = temp[j].substring(0, 1).toUpperCase() + temp[j].substring(1);
                     temp2 = temp2 + temp3 + " ";
                 }
 
-            }else temp2=name.substring(0,1).toUpperCase() + name.substring(1);
-            if(temp2.equals("Live Photography"))
-                temp2 = "Live Photo";
+            } else temp2 = name.substring(0, 1).toUpperCase() + name.substring(1);
+            if (temp2.equals("Live Photography"))
+                temp2 = "Live Photo graphy";
+            List valid = Arrays.asList(Utilities.map_events);
+            if (valid.contains(temp2)) {
+                // is valid
+
+            } else {
+                // not valid
+                Utilities.map_events[Utilities.global_index] = temp2;
+                Utilities.global_index++;
+                Utilities.map_events[Utilities.global_index] = ""+Utilities.events.get(i).getId();
+                Utilities.global_index++;
+
+            }
+
+
             allItems.add(new ItemObject(temp2));
         }
+
 
         return allItems;
     }

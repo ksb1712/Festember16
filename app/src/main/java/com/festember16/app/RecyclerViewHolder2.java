@@ -1,6 +1,8 @@
 package com.festember16.app;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +22,18 @@ public class RecyclerViewHolder2 extends RecyclerView.ViewHolder implements View
 
     @Override
     public void onClick(View view) {
-        Toast.makeText(view.getContext(), "Clicked Country Position = " + getPosition(), Toast.LENGTH_SHORT).show();
+       Intent intent = new Intent(view.getContext(),DetailsActivity.class);
+        int id = 0;
+       String s = name.getText().toString();
+        Log.e("name ",s);
+        for(int i = 0; i < Utilities.map_events.length;i++)
+        {
+            if(Utilities.map_events[i].equals(s)){
+                id = Integer.parseInt(Utilities.map_events[i+1]);
+                break;
+            }
+        }
+        intent.putExtra("event_id",id);
+        view.getContext().startActivity(intent);
     }
 }
