@@ -1,42 +1,67 @@
 package com.festember16.app;
 
 
-import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.app.ProgressDialog;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
-public class SignUpActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class SignUpActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = "SignupActivity";
 
     EditText _nameText;
     EditText _emailText;
+    EditText _fullnameText;
+    EditText _re_passwordText;
+    EditText _college_Text;
+    EditText _phoneText;
+    EditText _addressText;
     EditText _passwordText;
-    EditText _collegeText;
+    TextView _collegeText;
+    TextView _degreeText;
+    TextView _yearText;
+    TextView _branchText;
+    TextView _countryText;
+    TextView _stateText;
+    TextView _cityText;
     Button _signupButton;
+
+    int id;
+    private RadioGroup radioSexGroup;
+    private RadioButton radioSexButton;
     int status = 0;
-    String TitleName[]={
+    Map<String,String> params = new HashMap<>();
+    Retrofit retrofit;
+    Observable<LoginRegister> signUpObservable;
+    ProgressDialog progressDialog;
+    String CollegeName[]={
 
             "A.C. College of Engineering and Technology","A.M.S College of Engineering", "Aalim Muhammed Salegh College Of Engineering", "Aarupadai Veedu Institute of Technology", "Vinayaka Mission University", "ABES Engineering College , Ghaziabad", "ABV-IIITM, Gwalior", "ACCET Karaikudi", "Acharaya Nagarjuna University", "Achariya Bala Siksha Mandir",
             "Achariya College of Engineering and Technology",
@@ -610,51 +635,163 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             "Others"
 
     };
+    String branchName[] = {
+
+            "CSE",
+            "Chem",
+            "IT",
+            "ECE",
+            "EEE",
+            "EIE",
+            "ICE",
+            "Mech",
+            "Prod",
+            "Auto",
+            "Civil",
+            "Arch",
+            "Aero",
+            "Bio",
+            "Meta",
+            "Arts",
+            "Science",
+            "Others",
+    };
+    String degreeName[] = {
+            "BArch",
+            "MCA",
+            "MBA",
+            "MSc",
+            "MS",
+            "BTech",
+            "BSc",
+            "BCA",
+            "BA",
+            "MA",
+            "Diploma",
+            "Others",
+    };
+    String yearName[] =
+            {
+                    "1st year",
+                    "2nd year",
+                    "3rd year",
+                    "4th year",
+                    "5th year",
+                    "Others'"
+            };
+    String countryName[] = {
+            "Afghanistan",
+            "Albania",
+            "Algeria",
+            "Andorra","Angola",
+            "Antigua and Barbuda","Argentina",
+            "Armenia","Australia","Austria","Azerbaijan","Bahamas, The","Bahrain",
+            "Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Central African Republic","Chad","Chile","China, People's Republic of","Colombia","Comoros","Congo, (Congo ï¾– Kinshasa)","Congo, (Congo ï¾– Brazzaville)","Costa Rica","Cote d'Ivoire (Ivory Coast)","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia, The","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea, North","Korea, South","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar (Burma)","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","Spain","Sri Lanka","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Tajikistan","Tanzania","Thailand","Timor-Leste (East Timor)","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe","Abkhazia","China, Republic of (Taiwan)","Nagorno-Karabakh","Northern Cyprus","Pridnestrovie (Transnistria)","Somaliland","South Ossetia","Ashmore and Cartier Islands","Christmas Island","Cocos (Keeling) Islands","Coral Sea Islands","Heard Island and McDonald Islands","Norfolk Island","New Caledonia","French Polynesia","Mayotte","Wallis and Futuna","French Southern and Antarctic Lands","Clipperton Island","Bouvet Island","Cook Islands","Niue","Tokelau","Guernsey","Isle of Man","Jersey","Anguilla","Bermuda","British Indian Ocean Territory","British Sovereign Base Areas","British Virgin Islands","Cayman Islands","Falkland Islands (Islas Malvinas)","Gibraltar","Montserrat","Pitcairn Islands","Saint Helena","South Georgia & South Sandwich Islands","Turks and Caicos Islands","Northern Mariana Islands","Puerto Rico","American Samoa","Baker Island","Guam","Howland Island","Jarvis Island","Johnston Atoll","Kingman Reef","Midway Islands","Navassa Island","Palmyra Atoll","U.S. Virgin Islands","Wake Island","Hong Kong","Macau","Faroe Islands","Greenland","French Guiana","Guadeloupe","Martinique","Reunion","Aland","Aruba","Netherlands Antilles","Svalbard","Ascension","Tristan da Cunha","Australian Antarctic Territory","Ross Dependency","Peter I Island","Queen Maud Land","British Antarctic Territory"
+
+    };
+    String cityName[] = {
+            "Agartala","Agra","Ahmedabad","Aizwal","Ajmer","Aligarh","Allahabad","Ambala","Amravati","Amritsar","Anand","Anantapur","Arcot","Aurangabad","Auroville","Ayodhya","Azamgarh","Baharampur","Balasore","Balrampur","Bangalore","Bareilly","Baroda","Belgaum","Bellary","Bhubaneshwar","Bhopal","Bikaner","Bodh Gaya","Bokaro Steel City","Buxar","Chandigarh","Chennai","Coimbatore","Coonoor","Cuddalore","Cuttack","Dadra","Daman","Darjeeling","Davanagere","Dehradun","Delhi","Dharamsala","Dhule","Dispur","Diu","Durgapur","Dwarka","Ernakulam","Erode","Faizabad","Faridabad","Faridkot","Firozabad","Ghaziabad","Hamirpur","Howrah","Haridwar","Hastinapur","Hisar","Hyderabad","Imphal","Indore","Itanagar","Jabalpur","Jaipur","Jaisalmer","Jalandhar","Jalgaon","Jammu","Jamnagar","Jamshedpur","Jhansi","Jodhpur","Jorhat","Junagadh","Kancheepuram","Kanpur","Kanyakumari","Karaikal","Karaikudi","karnal","Karur","Kavaratti","Kharagpur","Kochi","Kohima","Kolhapur","Kolkata","Kollam","Konark","Korba","Kota","Kottayam","Kozhikode","Kumbakonam","kurukshetra","Leh","Lucknow","Ludhiana","Madanapalle","Madgaon","Madikeri","Madurai","Mahabaleswar","Mahe","Mahendragiri","Mangalore","Marmagao","Mathura","Meerut","Mirzapur","Mohali","Moradabad","Mount Abu","Mumbai","Mussoorie","Muzaffarnagar","Muzaffarpur","Mysore","Noida","Nagercoil","Nagpur","Nainital","Nashik","Nellore","New Delhi","Guntur","Nizamabad","Noida","Nanital","Ooty","Ongole","Palanpur","Panaji","Panipat","Pathankot","Patiala","Patna","Puducherry","Porbandar","Port Blair","Pune","Puri","Raipur","Rajkot","Ramanathapuram","Rameswaram","Ranchi","Rourkela","Rohtak","Roorkee","Rishikesh","Ropar","Rajapalayam","Salem","Samastipur","Sanawad","Sathyamangalam","Shillong","Sholapur","Silchar","Silvassa","Shimla","Siliguri","Srikakulam","SrinagarSurat","Surat","Tenali","Thane","Thanjavur","Thiruvallur","Thrissur","Thoothukudi ","Tiruchirappalli","Tirunelveli","Tirupathi","Tirupur","Thiruvananthapuram","Udaipur","Udupi","Ujjain","Varanasi","Vasco da Gama","Vellore","Vijayawada","Viluppuram","Visakhapatnam","Warangal","Wardha","Others"
+    };
+    String stateName[] = {
+            "Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jammu and Kashmir","Jharkhand","Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Orissa","Punjab","Rajasthan","Sikkim","Tamil Nadu","Tripura","Uttar Pradesh","Uttarakhand","West Bengal","Andaman and Nicobar Islands","Chandigarh","Dadra and Nagar Haveli","Daman and Diu","Lakshadweep","New Delhi","Puducherry","Others"
+
+    };
     ArrayList<String> array_sort;
     int textlength=0;
     AlertDialog myalertDialog=null;
 
+    String value[] = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        _nameText = (EditText)findViewById(R.id.input_name);
-        _emailText = (EditText)findViewById(R.id.input_email);
-        _collegeText = (EditText)findViewById(R.id.input_college);
-        _passwordText = (EditText)findViewById(R.id.input_password);
-        _signupButton = (Button)findViewById(R.id.btn_signup);
-        _signupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signup();
-            }
-        });
-        _collegeText.setOnClickListener(this);
-        _collegeText.setOnTouchListener(new View.OnTouchListener(){
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                // your code here....
-                if(status == 0)
-                {
-                    onClick(view);
-                    status = 1;
-                }
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                return false;
-            }
-        });
 
+        _nameText = (EditText)findViewById(R.id.input_user_name);
+        _emailText = (EditText)findViewById(R.id.input_email);
+        _collegeText = (TextView) findViewById(R.id.input_college);
+        _yearText = (TextView) findViewById(R.id.input_year);
+        _degreeText = (TextView) findViewById(R.id.input_degree);
+        _cityText = (TextView) findViewById(R.id.input_city);
+        _countryText = (TextView) findViewById(R.id.input_country);
+        _stateText = (TextView) findViewById(R.id.input_state);
+        _branchText = (TextView) findViewById(R.id.input_branch);
+        _passwordText = (EditText)findViewById(R.id.input_password);
+        _re_passwordText = (EditText)findViewById(R.id.input_re_password);
+        _fullnameText = (EditText)findViewById(R.id.input_name);
+        _college_Text = (EditText)findViewById(R.id.input_other);
+        _phoneText = (EditText)findViewById(R.id.input_phone);
+        _addressText = (EditText)findViewById(R.id.input_address);
+        _signupButton = (Button)findViewById(R.id.btn_signup);
+
+        _signupButton.setOnClickListener(v -> signup());
+
+        _collegeText.setOnClickListener(
+                view -> {
+                   id = view.getId();
+                    callAlert(view,CollegeName);
+                }
+        );
+
+        _stateText.setOnClickListener(
+                view -> {
+
+                    id = view.getId();
+                    callAlert(view,stateName);
+                }
+        );
+
+        _degreeText.setOnClickListener(
+                view -> {
+
+                    id = view.getId();
+                    callAlert(view,degreeName);
+                }
+        );
+
+       _cityText.setOnClickListener(
+               view -> {
+
+                   id = view.getId();
+                   callAlert(view,cityName);
+               }
+       );
+
+        _countryText.setOnClickListener(
+                view -> {
+
+                    id = view.getId();
+                    callAlert(view,countryName);
+                }
+        );
+
+       _branchText.setOnClickListener(
+               view -> {
+
+                   id = view.getId();
+                   callAlert(view,branchName);
+               }
+       );
+      _yearText.setOnClickListener(
+              view -> {
+                    id = view.getId();
+                  callAlert(view,yearName);
+              }
+      );
+      radioSexGroup = (RadioGroup) findViewById(R.id.radioGender);
     }
+
+
 
     public void signup() {
         Log.d(TAG, "Signup");
 
         if (!validate()) {
-            onSignupFailed();
+            onSignUpFailed();
             return;
         }
 
-        _signupButton.setEnabled(false);
+        _signupButton.setEnabled(true);
 
         final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -662,26 +799,82 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String name = _nameText.getText().toString();
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
+        final String name = _nameText.getText().toString();
+        Log.d(TAG, "Signup2");
 
-        // TODO: Implement your own signup logic here.
+        final String email = _emailText.getText().toString();
+        final String password = _passwordText.getText().toString();
+        String rePassword = _re_passwordText.getText().toString();
+        final String fullName = _fullnameText.getText().toString();
+        final String college_other = _college_Text.getText().toString();
+        final String phone = _phoneText.getText().toString();
+        final String address = _addressText.getText().toString();
 
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
-                        onSignupSuccess();
-                        // onSignupFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
+        String college = _collegeText.getText().toString();
+        final String  branch = _branchText.getText().toString();
+        final String year = _yearText.getText().toString();
+        final String degree = _degreeText.getText().toString();
+        final String city = _cityText.getText().toString();
+        final String state = _stateText.getText().toString();
+        final String country = _countryText.getText().toString();
+
+        if(college.equals("Others"))
+            college = college_other;
+        final String college_name = college;
+        // get selected radio button from radioGroup
+        int selectedId = radioSexGroup.getCheckedRadioButtonId();
+
+        // find the radiobutton by returned id
+        radioSexButton = (RadioButton) findViewById(selectedId);
+
+        Toast.makeText(SignUpActivity.this,
+                radioSexButton.getText(), Toast.LENGTH_SHORT).show();
+        final String gender = radioSexButton.getText().toString();
+        Log.d(TAG, "Signup3");
+
+        params.put("user_name",name);
+        params.put("user_password",password);
+        params.put("user_email",email);
+        params.put("user_fullname",fullName);
+        params.put("user_gender",gender);
+        params.put("user_course",degree);
+        params.put("user_year",year);
+        params.put("user_other_college",college_other);
+        params.put("user_branch",branch);
+        params.put("user_college",college_name);
+        params.put("user_country",country);
+        params.put("user_city",city);
+        params.put("user_state",state);
+        params.put("user_phone",phone);
+        params.put("user_address",address);
+
+        registerWithRetrofit();
     }
-    @Override
-    public void onClick(View view)
-    {
+
+    private void registerWithRetrofit() {
+
+        retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(Utilities.base_url)
+                .build();
+
+        LoginService loginService = retrofit.create(LoginService.class);
+
+        signUpObservable = loginService.register(params);
+
+        signUpObservable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(login -> {
+                    if(login.getStatusCode()==200) {
+                        onSignUpSuccess();
+                        finish();
+                    }
+                    progressDialog.dismiss();
+                });
+    }
+
+    public void callAlert(View view, final String TitleName[]) {
         AlertDialog.Builder myDialog = new AlertDialog.Builder(SignUpActivity.this);
 
         final EditText editText = new EditText(SignUpActivity.this);
@@ -724,36 +917,52 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 listview.setAdapter(new CustomAlertAdapter(SignUpActivity.this, array_sort));
             }
         });
-        myDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
+        myDialog.setNegativeButton("cancel", (dialog, which) -> {
+            dialog.dismiss();
         });
 
         myalertDialog=myDialog.show();
-
     }
-
 
     @Override
     public void onItemClick(AdapterView arg0, View arg1, int position, long arg3) {
 
         myalertDialog.dismiss();
         String strName=array_sort.get(position);
-        _collegeText.setText(strName);
+        switch(id)
+        {
+            case R.id.input_college:
+                _collegeText.setText(strName);
+                break;
+            case R.id.input_state:
+                _stateText.setText(strName);
+                break;
+            case R.id.input_city:
+                _cityText.setText(strName);
+                break;
+            case R.id.input_country:
+                _countryText.setText(strName);
+                break;
+            case R.id.input_branch:
+                _branchText.setText(strName);
+                break;
+            case R.id.input_year:
+                _yearText.setText(strName);
+                break;
+            case R.id.input_degree:
+                _degreeText.setText(strName);
+                break;
+        }
     }
 
-
-
-    public void onSignupSuccess() {
+    public void onSignUpSuccess() {
         _signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
+        getIntent().putExtra("username" , params.get("user_name"));
         finish();
     }
 
-    public void onSignupFailed() {
+    public void onSignUpFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
         _signupButton.setEnabled(true);
@@ -765,6 +974,19 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         String name = _nameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
+        String rePassword = _passwordText.getText().toString();
+        String fullName = _passwordText.getText().toString();
+        String college_other = _passwordText.getText().toString();
+        String phone = _passwordText.getText().toString();
+        String Address = _passwordText.getText().toString();
+
+        String college = _collegeText.getText().toString();
+        String branch = _branchText.getText().toString();
+        String year = _yearText.getText().toString();
+        String dept = _branchText.getText().toString();
+        String city = _cityText.getText().toString();
+        String state = _stateText.getText().toString();
+        String country = _countryText.getText().toString();
 
         if (name.isEmpty() || name.length() < 3) {
             _nameText.setError("at least 3 characters");
@@ -780,12 +1002,20 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             _emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+        if (password.isEmpty()) {
+            _passwordText.setError("Must be filled");
             valid = false;
         } else {
             _passwordText.setError(null);
         }
+        if(rePassword.isEmpty() || !rePassword.equals(password))
+        {
+            _re_passwordText.setError("Must be same as password");
+            valid = false;
+        } else {
+            _passwordText.setError(null);
+        }
+        //TODO remaining validate
 
         return valid;
     }

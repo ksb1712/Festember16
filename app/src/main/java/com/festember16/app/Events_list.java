@@ -4,41 +4,36 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class ClusterPage extends AppCompatActivity {
+import okhttp3.internal.Util;
 
-
+public class Events_list extends AppCompatActivity {
     private GridLayoutManager lLayout;
     DBHandler db;
-    String clusters[] = new String[15];
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().hide();
-        setContentView(R.layout.activity_cluster_page);
+        setContentView(R.layout.activity_events_list);
         setTitle(null);
-        Log.e("In cluster"," cluster");
         db = new DBHandler(this);
-
-      clusters = db.getClusters();
-      //  Log.e("clusters ",s);
         List<ItemObject> rowListItem = getAllItemList();
-        lLayout = new GridLayoutManager(ClusterPage.this, 2);
+        lLayout = new GridLayoutManager(Events_list.this, 2);
 
         RecyclerView rView = (RecyclerView)findViewById(R.id.recycler_view);
         rView.setHasFixedSize(true);
         rView.setLayoutManager(lLayout);
 
-        RecyclerViewAdapter rcAdapter = new RecyclerViewAdapter(ClusterPage.this, rowListItem);
+        RecyclerViewAdapter2 rcAdapter = new RecyclerViewAdapter2(Events_list.this, rowListItem);
         rView.setAdapter(rcAdapter);
     }
 
@@ -64,38 +59,40 @@ public class ClusterPage extends AppCompatActivity {
 
     private List<ItemObject> getAllItemList(){
 
-
         List<ItemObject> allItems = new ArrayList<ItemObject>();
-        if(clusters != null) {
-            for (int i = 0; i < clusters.length; i++) {
-                if (clusters[i] != null) {
-                    if (clusters[i].equals("workshops") || clusters[i].equals("informals") || (clusters[i].equals("pro_shows")))
-                        ;
-                    else
-                    {
-                        String name =clusters[i];
-                        String temp2="";
-                        if (name.contains("_")) {
-                            // Split it.
-                            String[] temp = name.split("_");
-                            for(int j=0;j<temp.length;j++) {
-                                String temp3 = temp[j].substring(0,1).toUpperCase() + temp[j].substring(1);
-                                temp2 = temp2 + temp3 + " ";
-                            }
-
-                        }else temp2=name.substring(0,1).toUpperCase() + name.substring(1);
-                        if(temp2.equals("Photography"))
-                            temp2 = "Photo\ngraphy";
-                        allItems.add(new ItemObject(temp2));
-                    }
+        for(int i = 0; i < Utilities.events.size();i++) {
+            String name = Utilities.events.get(i).getName();
+            String temp2 = "";
+            if (name.contains("_")) {
+                // Split it.
+                String[] temp = name.split("_");
+                for (int j = 0; j < temp.length; j++) {
+                    String temp3 = temp[j].substring(0, 1).toUpperCase() + temp[j].substring(1);
+                    temp2 = temp2 + temp3 + " ";
                 }
+
+            } else temp2 = name.substring(0, 1).toUpperCase() + name.substring(1);
+            if (temp2.equals("Live Photography"))
+                temp2 = "Live Photo graphy";
+            List valid = Arrays.asList(Utilities.map_events);
+            if (valid.contains(temp2)) {
+                // is valid
+
+            } else {
+                // not valid
+                Utilities.map_events[Utilities.global_index] = temp2;
+                Utilities.global_index++;
+                Utilities.map_events[Utilities.global_index] = ""+Utilities.events.get(i).getId();
+                Utilities.global_index++;
+
             }
+
+
+            allItems.add(new ItemObject(temp2));
         }
 
-        else
-            allItems.add(new ItemObject("No events"));
 
-        Utilities.clusters = clusters;
         return allItems;
     }
+
 }

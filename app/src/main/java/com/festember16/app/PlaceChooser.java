@@ -42,7 +42,7 @@ public class PlaceChooser extends AppCompatActivity {
     private static final String LON = "LON";
     private static final String LOCATION = "LOC";
 
-    private boolean gotLocation = false, isLoading = false;
+    private boolean gotLocation = false, isLoading = false, setLocation = false;
 
     Button HostelButton, EventsButton, UtilitiesButton, LocationDisabled;
     ProgressDialog dialog;
@@ -141,32 +141,53 @@ public class PlaceChooser extends AppCompatActivity {
             int fine_location_permission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
             int camera_permission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
 
-            if (camera_permission != PackageManager.PERMISSION_GRANTED) {
+            if (camera_permission != PackageManager.PERMISSION_GRANTED)
+            {
                 makeRequestCamera();
             }
-            if (fine_location_permission == PackageManager.PERMISSION_GRANTED) {
-                try {
-                    mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE, mLocationListeners[1]);
+            if (fine_location_permission == PackageManager.PERMISSION_GRANTED)
+            {
+                if( !setLocation)
+                {
+                    try
+                    {
+                        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE, mLocationListeners[1]);
 
-                } catch (SecurityException ex) {
-                    ex.printStackTrace();
-                } catch (IllegalArgumentException ex) {
-                    ex.getMessage();
+                    }
+                    catch (SecurityException ex)
+                    {
+                        ex.printStackTrace();
+                    }
+                    catch (IllegalArgumentException ex)
+                    {
+                        ex.getMessage();
+                    }
+
+
+                    try
+                    {
+                        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE, mLocationListeners[0]);
+                    }
+                    catch (SecurityException ex)
+                    {
+                        ex.printStackTrace();
+                    }
+                    catch (IllegalArgumentException ex)
+                    {
+                        ex.getMessage();
+                    }
+                    setLocation = true;
+                    if (!gotLocation && !isLoading)
+                    {
+                        showGettingLocation();
+                        isLoading = true;
+                    }
                 }
 
 
-                try {
-                    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE, mLocationListeners[0]);
-                } catch (SecurityException ex) {
-                    ex.printStackTrace();
-                } catch (IllegalArgumentException ex) {
-                    ex.getMessage();
-                }
-                if (!gotLocation && !isLoading) {
-                    showGettingLocation();
-                    isLoading = true;
-                }
-            } else {
+            }
+            else
+            {
                 makeRequestLocation();
 
             }
@@ -182,9 +203,15 @@ public class PlaceChooser extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+
+        super.onPause();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
-        mLocationManager.removeUpdates(mLocationListeners[0]);
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -195,10 +222,16 @@ public class PlaceChooser extends AppCompatActivity {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+        mLocationManager.removeUpdates(mLocationListeners[0]);
         mLocationManager.removeUpdates(mLocationListeners[1]);
+        setLocation = false;
         isLoading = false;
+        if( !gotLocation )
+        {
+            dialog.hide();
+        }
         gotLocation = false;
-        dialog.hide();
+        //dialog.hide();
     }
 
     private void showGettingLocation()
@@ -238,35 +271,7 @@ public class PlaceChooser extends AppCompatActivity {
                     HostelButton.setEnabled(true);
                     UtilitiesButton.setEnabled(true);
                     EventsButton.setEnabled(true);
-                    try {
-                        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE, mLocationListeners[1]);
-                    }
-                    catch (SecurityException ex)
-                    {
-                        ex.printStackTrace();
-                    }
-                    catch (IllegalArgumentException ex)
-                    {
-                        ex.getMessage();
-                    }
 
-
-                    try {
-                        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE, mLocationListeners[0]);
-                    }
-                    catch (SecurityException ex)
-                    {
-                        ex.printStackTrace();
-                    }
-                    catch (IllegalArgumentException ex)
-                    {
-                        ex.getMessage();
-                    }
-                    if( ! gotLocation && !isLoading )
-                    {
-                        showGettingLocation();
-                        isLoading = true;
-                    }
 
                 }
                 break;
@@ -276,6 +281,7 @@ public class PlaceChooser extends AppCompatActivity {
                     HostelButton.setEnabled(false);
                     UtilitiesButton.setEnabled(false);
                     EventsButton.setEnabled(false);
+                    dialog.hide();
 
                 }
                 break;
@@ -294,7 +300,7 @@ public class PlaceChooser extends AppCompatActivity {
         {
             mLastLocation.set(location);
             // Update UI Only if Location is Accurate
-            //if (location.getAccuracy() < 400)
+            if (location.getAccuracy() < 200)
             {
                 if (ActivityCompat.checkSelfPermission(PlaceChooser.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(PlaceChooser.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
@@ -308,6 +314,7 @@ public class PlaceChooser extends AppCompatActivity {
                 }
                 mLocationManager.removeUpdates(mLocationListeners[0]);
                 mLocationManager.removeUpdates(mLocationListeners[1]);
+                setLocation = false;
                 gotLocation = true;
                 dialog.hide();
             }

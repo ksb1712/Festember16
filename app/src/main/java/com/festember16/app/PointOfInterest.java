@@ -38,9 +38,9 @@ public class PointOfInterest implements Comparable<PointOfInterest>
     {
         if( dist > o.dist)
         {
-            return 1;
+            return -1;
         }
-        return -1;
+        return 1;
 
     }
 }
