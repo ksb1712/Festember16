@@ -1,15 +1,19 @@
 package com.festember16.app;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -20,6 +24,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     public static final int MAP_REQUEST_CODE = 1001;
     public static final String ID = "ID";
+    public static final String LOG_TAG = "DetailsActivity";
     int eventId = 2;
 
     public static DBHandler db;
@@ -33,9 +38,8 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         ButterKnife.inject(this);
         int id = getIntent().getIntExtra("event_id",0);
@@ -46,10 +50,21 @@ public class DetailsActivity extends AppCompatActivity {
         eventId = id;
         detailedEvent = db.getEvent(id);
 
+        try {
+            if (detailedEvent != null) {
+                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+                toolbar.setTitleTextColor(Color.WHITE);
+                toolbar.setTitle(EventsAdapter.parseEventName(detailedEvent.getName()));
+                setSupportActionBar(toolbar);
+            }
+        }
+        catch (NullPointerException e){
+            Log.e(LOG_TAG, e.getMessage());
+        }
         pager.setAdapter(
                 new MyPagerAdapter(getSupportFragmentManager(), eventId)
         );
-        pager.setCurrentItem(1);
+//        pager.setCurrentItem(1);
 
         tabs.setupWithViewPager(pager);
 

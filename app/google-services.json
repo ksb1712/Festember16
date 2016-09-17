@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "236204577614",
+    "firebase_url": "https://festember16-main-app.firebaseio.com",
+    "project_id": "festember16-main-app",
+    "storage_bucket": "festember16-main-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:236204577614:android:690ba292e3586390",
+        "android_client_info": {
+          "package_name": "com.festember16.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "236204577614-cn9i7oq8llm794vj6fgiat0pop2lopjq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbdu0mjVFe7W6t4o31o2lvjEiCADhb4oE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

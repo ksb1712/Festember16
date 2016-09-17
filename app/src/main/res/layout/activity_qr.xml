@@ -10,11 +10,16 @@
     tools:context="com.festember16.app.QR">
 
     <TextView
-        android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome, "
-        android:textSize="30sp" />
+        android:id="@+id/credits"
+        android:textSize="25sp"
+
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 
     <ImageView
         android:id="@+id/qr_code_image"

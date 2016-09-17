@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -19,7 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class PlaceChooser extends AppCompatActivity {
+public class PlaceChooser extends AppCompatActivity implements SensorEventListener {
 
 
     private LocationManager mLocationManager = null;
@@ -46,6 +50,7 @@ public class PlaceChooser extends AppCompatActivity {
 
     Button HostelButton, EventsButton, UtilitiesButton, LocationDisabled;
     ProgressDialog dialog;
+    private boolean enabled = true;
 
 
     @Override
@@ -56,6 +61,20 @@ public class PlaceChooser extends AppCompatActivity {
         HostelButton = (Button) findViewById(R.id.HostelButton);
         EventsButton = (Button) findViewById(R.id.EventsButton);
         UtilitiesButton = (Button) findViewById(R.id.UtilitiesButton);
+
+        SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        Sensor sensorMagnetic = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+        if( sensorMagnetic == null )
+        {
+            Toast.makeText( this , "No Compass, Can\'t use AR", Toast.LENGTH_LONG).show();
+            enabled = false;
+            return;
+        }
+        else
+        {
+            Toast.makeText( this , "Move your camera around to experience AR", Toast.LENGTH_LONG).show();
+        }
 
         HostelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,8 +216,18 @@ public class PlaceChooser extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed()
+    {
+        finish();
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onResume() {
-        checkPermissions();
+        if(enabled)
+        {
+            checkPermissions();
+        }
         super.onResume();
     }
 
@@ -222,15 +251,23 @@ public class PlaceChooser extends AppCompatActivity {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        mLocationManager.removeUpdates(mLocationListeners[0]);
-        mLocationManager.removeUpdates(mLocationListeners[1]);
-        setLocation = false;
-        isLoading = false;
-        if( !gotLocation )
+        try
         {
-            dialog.hide();
+            mLocationManager.removeUpdates(mLocationListeners[0]);
+            mLocationManager.removeUpdates(mLocationListeners[1]);
+            setLocation = false;
+            isLoading = false;
+            if( !gotLocation )
+            {
+                dialog.hide();
+            }
+            gotLocation = false;
         }
-        gotLocation = false;
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
         //dialog.hide();
     }
 
@@ -286,6 +323,16 @@ public class PlaceChooser extends AppCompatActivity {
                 }
                 break;
         }
+
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
 
     }
 

@@ -8,31 +8,43 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MyProfile"
     tools:showIn="@layout/activity_my_profile"
     android:background="@color/grey">
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/hello"
+        android:layout_alignParentTop="true"
+        android:textColor="@color/textColorLight"
+        android:layout_marginLeft="20sp"
+        android:textStyle="bold"
+        android:shadowColor="#7F000000"
+        android:text="hello!"
+       />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Hey John Doe!"
-        android:id="@+id/hello"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:typeface="sans"
+        android:id="@+id/credits"
+        android:text="credits"
+        android:layout_below="@+id/hello"
+        android:textSize="14sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginTop="10sp"
+        android:layout_marginBottom="10sp"
+        android:textStyle="bold"
         android:textColor="@color/textColorLight"
-        android:textStyle="bold|italic"
-        android:shadowColor="#7F000000"
-        android:shadowDx="5"
-        android:shadowDy="5"
-        android:shadowRadius="5"/>
-
+        />
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="20sp"
         android:padding="@dimen/activity_vertical_margin"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -44,10 +56,10 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="You have registered for:"
-            android:textStyle="bold|italic"
+            android:textStyle="bold"
             android:id="@+id/textView2"
             android:textColor="@color/textColorLight"
-            android:typeface="sans"
+
             android:shadowColor="#7f000000"
             android:shadowDx="3"
             android:shadowDy="3"

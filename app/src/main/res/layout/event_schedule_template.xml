@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp">
+
+    <TextView
+        android:id="@+id/eventNameTextBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/startTimeTextBlock"
+        android:text="Event Name"
+        android:textSize="16sp"
+        android:layout_marginLeft="5dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:id="@+id/eventVenueTextBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="venue"
+        android:textSize="14sp"
+        android:layout_below="@+id/eventNameTextBlock"
+        android:layout_marginLeft="5dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom"
+        />
+
+    <TextView
+        android:id="@+id/startTimeTextBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="startTime"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="20dp"/>
+
+    <TextView
+        android:id="@+id/endTimeTextBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/startTimeTextBlock"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="20dp"
+        android:gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:text="end time"/>
+
+</RelativeLayout>
