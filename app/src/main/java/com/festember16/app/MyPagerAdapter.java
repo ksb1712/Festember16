@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 public class MyPagerAdapter extends FragmentPagerAdapter {
 
-    int eventId = 2;
+    int eventId;
 
     RulesFragment rulesFragment;
     MapsTabFragment mapsTabFragment;

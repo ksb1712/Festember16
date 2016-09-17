@@ -8,13 +8,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.location.LocationManager;
 import android.os.Handler;
-import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +39,10 @@ public class MenuCanvas extends View
     Paint textPaint = new Paint();
     Paint backgroundPaint = new Paint();
     Paint titlePaint = new Paint();
-    Paint clickedPaint = new Paint();
+    Paint menuPaint = new Paint();
+    float scaleRadius;
+
+    Intent callIntent;
 
     boolean draw = true, touched = false;
 
@@ -53,7 +53,7 @@ public class MenuCanvas extends View
         super(context);
         this.context = context;
         // Set the gesture detector as the double tap
-
+        scaleRadius = 0;
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         dpHeight = displayMetrics.heightPixels;
         dpWidth = displayMetrics.widthPixels;
@@ -94,7 +94,12 @@ public class MenuCanvas extends View
         titlePaint.setTypeface(custom_font);
         titlePaint.setTextSize(maxRadius);
 
-        clickedPaint.setColor(Color.GRAY);
+        // TODO change menu paint as needed
+        menuPaint.setColor(Color.WHITE);
+        menuPaint.setTypeface(custom_font);
+        menuPaint.setTextSize(maxRadius);
+        menuPaint.setAntiAlias(true);
+        menuPaint.setTextAlign(Paint.Align.CENTER);
 
         initCircles();
 
@@ -109,6 +114,7 @@ public class MenuCanvas extends View
     private void initCircles()
     {
         float x , y , c;
+        scaleRadius = 0;
         Circle circle;
         circles.clear();
         Random random = new Random();
@@ -225,67 +231,67 @@ public class MenuCanvas extends View
     }
 
     @Override
-    protected void onDraw(Canvas canvas)
-    {
+    protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawColor(Color.rgb(100,0,100));
-
-        for( Circle c: circles)
-        {
-            if( c.visibility)
-            {
-                canvas.drawCircle( c.cx, c.cy , c.radius , c.colour );
-            }
-            else
-            {
+        canvas.drawColor(Color.rgb(100, 0, 100));
+        for (Circle c : circles) {
+            if (c.visibility) {
+                canvas.drawCircle(c.cx, c.cy, c.radius, c.colour);
+            } else {
                 c.visibility = true;
             }
 
         }
-        if( touched )
-        {
-            canvas.drawCircle( clickedCircle.cx , clickedCircle.cy , clickedCircle.radius , clickedPaint);
-            touched = false;
-        }
-        float div = 4;
-        if( draw )
-        {
-            for( int i = 0 ; i < mainCircles.size() ; i++)
-            {
+        float div;
+        if (draw) {
+            for (int i = 0; i < mainCircles.size(); i++) {
                 Circle c = mainCircles.get(i);
-                if( c.text.length() < 4)
-                {
-                    textPaint.setTextSize(maxRadius/2.5f);
+                if (c.text.length() < 4) {
+                    textPaint.setTextSize(maxRadius / 2.5f);
                     div = 3.5f;
-                }
-                else if( c.text.length() < 6)
-                {
-                    textPaint.setTextSize(maxRadius/2.5f);
+                } else if (c.text.length() < 6) {
+                    textPaint.setTextSize(maxRadius / 2.5f);
                     div = 4;
-                }
-                else if( c.text.length() < 9)
-                {
-                    textPaint.setTextSize(maxRadius/2.5f);
+                } else if (c.text.length() < 9) {
+                    textPaint.setTextSize(maxRadius / 2.5f);
                     div = 6;
-                }
-                else
-                {
+                } else {
                     div = 7;
-                    textPaint.setTextSize(maxRadius/3);
+                    textPaint.setTextSize(maxRadius / 3);
                 }
-                canvas.drawText( c.text , c.cx - c.text.length()/2.0f*maxRadius/div  , c.cy , textPaint );
+                canvas.drawText(c.text, c.cx - c.text.length() / 2.0f * maxRadius / div, c.cy, textPaint);
             }
         }
-        canvas.drawRect( 0 , 0 , dpWidth , maxRadius*1.4f, backgroundPaint );
-        canvas.drawText("Festember 2016" , maxRadius*0.1f, maxRadius, titlePaint);
-
+        canvas.drawRect(0, 0, dpWidth, maxRadius * 1.4f, backgroundPaint);
+        canvas.drawText("Festember 2016", maxRadius * 0.1f, maxRadius, titlePaint);
+        if( touched )
+        {
+            if(scaleRadius == 0){
+                scaleRadius = clickedCircle.radius;
+                invalidate();
+            } else {
+                if ((dist(clickedCircle.cx,clickedCircle.cy,0,0) > scaleRadius)
+                        || (dist(clickedCircle.cx,clickedCircle.cy,0,dpHeight) > scaleRadius)
+                        || (dist(clickedCircle.cx,clickedCircle.cy,dpWidth,dpHeight) > scaleRadius)
+                        || (dist(clickedCircle.cx,clickedCircle.cy,dpWidth,0) > scaleRadius) ) {
+                    canvas.drawCircle(clickedCircle.cx, clickedCircle.cy, scaleRadius, clickedCircle.colour);
+//                    canvas.drawText("Festember 2016", maxRadius * 0.1f, maxRadius, titlePaint);
+                    scaleRadius += dpHeight / 50;
+                    invalidate();
+                } else {
+                    canvas.drawCircle(clickedCircle.cx, clickedCircle.cy, scaleRadius, clickedCircle.colour);
+//                    canvas.drawText("Festember 2016", maxRadius * 0.1f, maxRadius, titlePaint);
+                    canvas.drawText(clickedCircle.text,dpWidth/2,dpHeight/2,menuPaint);
+                }
+            }
+        }
     }
 
 
     //Call other activities
     public boolean tapped( float x , float y)
     {
-
+        int waitTime = 1000;
         for(int i = 0; i < circles.size() ; i++)
         {
             Circle c = circles.get(i);
@@ -295,67 +301,65 @@ public class MenuCanvas extends View
                 {
                     case "Map":
                         // Call Intents
-                        Log.d(LOG_TAG, "You clicked Map");
+//                        Log.d(LOG_TAG, "You clicked Map");
+//                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
+                        callIntent = new Intent(context, MainMapsActivity.class);
                         touchEffect(c);
-                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(context, MainMapsActivity.class);
-                        context.startActivity(intent);
                         break;
                     case "Events":
                         // goto events Page
-                        Log.e(LOG_TAG, "You click Events");
+//                        Log.e(LOG_TAG, "You click Events");
+                        callIntent = new Intent(context, ClusterPage.class);
                         touchEffect(c);
-                        DBHandler db;
-                        db = new DBHandler(context);
-
-
+//                        DBHandler db;
+//                        db = new DBHandler(context);
                         //String s = db.getCluster();
                         //Log.e("Cluster ",s);
-                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
-                        Intent i1 = new Intent(context, ClusterPage.class);
-                        context.startActivity(i1);
+//                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         break;
                     case "Game":
                         // goto events Page
-                        Log.d(LOG_TAG, "You clicked Game");
+                        callIntent = new Intent(context, DetailsActivity.class);
                         touchEffect(c);
-                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
-                        Intent i2 = new Intent(context, DetailsActivity.class);
-                        context.startActivity(i2);
-
+//                        Log.d(LOG_TAG, "You clicked Game");
+//                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         break;
                     case "Profile":
-                        Log.d(LOG_TAG, "You clicked Profile");
+                        callIntent = new Intent(context,MyProfile.class);
                         touchEffect(c);
-                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
-                        Intent i3 = new Intent(context,MyProfile.class);
-                        context.startActivity(i3);
+//                        Log.d(LOG_TAG, "You clicked Profile");
+//                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         break;
 
                     // Add other cases
 
                     case "Schedule":
-                        touchEffect(c);
                         Log.d(LOG_TAG, "You clicked Schedule");
-                        Intent i4 = new Intent(context,UpcomingActivity.class);
-                        context.startActivity(i4);
+                        callIntent = new Intent(context,UpcomingActivity.class);
+                        touchEffect(c);
                         break;
 
                     case "Scoreboard":
+                        callIntent = new Intent(context,Scoreboard.class);
                         touchEffect(c);
-                        Log.d(LOG_TAG, "You clicked ScoreBoard");
-                        Intent i5 = new Intent(context,Scoreboard.class);
-                        context.startActivity(i5);
+//                        Log.d(LOG_TAG, "You clicked ScoreBoard");
                         break;
 
                     case "Notifications":
+                        // TODO add callIntent intent to notifications
                         touchEffect(c);
-                        Log.d(LOG_TAG, "You clicked Notifications");
-
+                        break;
                     default:
                         // do nothing
-
                 }
+                new Handler().postDelayed(() -> {
+                    touched = false;
+                    scaleRadius = 0;
+                    if(callIntent != null)
+                        context.startActivity(callIntent);
+                    else
+                        invalidate();
+                }, waitTime);
             }
         }
         return true;
@@ -363,6 +367,7 @@ public class MenuCanvas extends View
 
     void touchEffect(Circle c)
     {
+        Log.d(LOG_TAG,"touchEffect called");
         clickedCircle = c;
         touched = true;
         invalidate();
@@ -441,7 +446,7 @@ public class MenuCanvas extends View
             for( i = 0 ; i < mainCircles.size() ; i++)
             {
                 c = mainCircles.get(i);
-                if( c.text == "")
+                if( c.text.isEmpty() )
                 {
                     c.text = s;
                     mainCircles.set( i , c);

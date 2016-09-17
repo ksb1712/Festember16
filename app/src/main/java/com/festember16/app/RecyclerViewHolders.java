@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     public TextView name;
@@ -27,21 +29,12 @@ public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View
     public void onClick(View view) {
         Intent i;
         Toast.makeText(view.getContext(),name.getText().toString(),Toast.LENGTH_SHORT).show();
-        switch (getPosition())
-        {
-            case 0:
-                i = new Intent(view.getContext(),Events_list.class);
-                String s[] = {"event1","event2"};
-                i.putExtra("events",s);
-                view.getContext().startActivity(i);
+        DBHandler db = new DBHandler(view.getContext());
+        Utilities.events = new ArrayList<Events>();
+        Utilities.events = db.getEventsByCluster(Utilities.clusters[getPosition()]);
+        i = new Intent(view.getContext(),Events_list.class);
+        view.getContext().startActivity(i);
 
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-        }
+
     }
 }

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DBHandler extends SQLiteOpenHelper {
@@ -169,7 +170,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public String[] getClusters() {
-        String[] clusters = new String[100];
+        String[] clusters = new String[15];
         int i = 0;
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -177,8 +178,19 @@ public class DBHandler extends SQLiteOpenHelper {
         String select = "SELECT DISTINCT " + KEY_CLUSTER + " FROM " + TABLE_EVENTS;
         Cursor cursor = db.rawQuery(select, null);
         if(cursor.moveToFirst()) {
+            List valid = Arrays.asList(clusters);
             do {
-                clusters[i] = cursor.getString(0);
+                String temp = cursor.getString(0);
+                if (valid.contains(temp.toLowerCase())) {
+                    // is valid
+                    i--;
+                } else {
+                    // not valid
+                    if(temp.equals("shrutilaya") || temp.equals("")||temp == null)
+                        i--;
+                    else
+                        clusters[i] = temp.toLowerCase();
+                }
                 i++;
             } while (cursor.moveToNext());
         }

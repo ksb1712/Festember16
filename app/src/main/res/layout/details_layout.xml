@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -11,100 +11,68 @@
 
 
 
+   <TextView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_centerHorizontal="true"
+       android:text="Venue"
+       android:textColor="@color/textColorLight"
+       android:id="@+id/eventVenue"
+       android:layout_marginTop="50sp"
+       android:textSize="20sp"
+       android:layout_marginBottom="30sp"/>
+
+
+
+
+
+
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Event Venue:"
-        android:id="@+id/eventVenue"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:text="Starts at"
+        android:id="@+id/eventStartTime"
+        android:gravity="center"
         android:textColor="@color/textColorLight"
-        android:textStyle="bold|italic"
-        android:typeface="serif" />
-
-    <Space
-        android:layout_width="20px"
-        android:layout_height="20px" />
-
-
+        android:textStyle="bold"
+        android:typeface="serif"
+        android:layout_below="@+id/eventVenue"
+        android:layout_centerHorizontal="true"
+        />
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/scrollView">
+android:layout_width="match_parent"
+android:layout_height="200dp"
+android:id="@+id/scrollView"
+        android:layout_below="@id/eventStartTime"
+        android:layout_marginBottom="30sp">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:background="@color/grey">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Starts at"
-                android:id="@+id/eventStartTime"
-                android:layout_below="@+id/eventVenue"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:textColor="@color/textColorLight"
-                android:textStyle="bold|italic"
-                android:typeface="serif" />
-
-            <Space
-                android:layout_width="20px"
-                android:layout_height="20px" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/lorem_ipsum"
-                android:id="@+id/eventDesc"
-                android:layout_below="@+id/eventVenue"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:textStyle="bold|italic"
-                android:typeface="serif"
-                android:textColor="@color/textColorVibrant" />
-
-            <Space
-                android:layout_width="20px"
-                android:layout_height="20px" />
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-                <!--android:id="@+id/eventCluster"-->
-                <!--android:layout_below="@+id/eventStartTime"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:text="Cluster"-->
-                <!--android:textColor="@color/textColorLight"-->
-                <!--android:textStyle="bold|italic"-->
-                <!--android:typeface="serif" -->
-                <!--android:visibility="gone"/>-->
-
-            <Space
-                android:layout_width="20px"
-                android:layout_height="20px" />
-
-
-        </LinearLayout>
-
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20sp"
+        android:id="@+id/eventDesc"
+        android:text="Desc"
+        android:gravity="center"
+       android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:textColor="@color/textColorVibrant"
+        android:layout_alignBottom="@+id/scrollView"
+        android:layout_centerHorizontal="true" />
     </ScrollView>
-
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/registerButton"
-        android:layout_width="fill_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="54dp"
         android:padding="12dp"
-        android:text="Register"/>
 
-</LinearLayout>
+        android:text="Register"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
 
 

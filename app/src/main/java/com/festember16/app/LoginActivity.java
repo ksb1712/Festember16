@@ -90,12 +90,12 @@ public class LoginActivity extends AppCompatActivity {
     public void login() {
 
         Log.d(TAG, "Login");
-
+/*
         if (!validate()) {
             onLoginFailed();
             return;
         }
-        _loginButton.setEnabled(false);
+  */     // _loginButton.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -120,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
 
         LoginService loginService = retrofit.create(LoginService.class);
 
-        loginObservable = loginService.authenticate(email, password);
+        loginObservable = loginService.authenticate("106114073@nitt.edu", "Bsep233566");
 
         loginObservable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -136,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("token", login.getMessage());
                         Utilities.token = login.getMessage();
                         editor.putString("user_id", login.getUserId());
-                        Utilities.password = login.getUserId();
+                        Utilities.user_id = login.getUserId();
                         editor.apply();
 
 

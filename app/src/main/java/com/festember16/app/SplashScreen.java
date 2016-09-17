@@ -29,7 +29,11 @@ import java.util.List;
 import java.util.Map;
 
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class SplashScreen extends Activity {
 
@@ -64,7 +68,7 @@ public class SplashScreen extends Activity {
         final ImageView festemberLogo = (ImageView) findViewById(R.id.festember_logo);
 
         //TODO Retrofit for Events dB
-        /*db = new DBHandler(this);
+        db = new DBHandler(this);
 
         retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -83,12 +87,12 @@ public class SplashScreen extends Activity {
                         for (Events event : data.getEvents()) {
                             db.addEvent(event);
                         }
-                    } else Log.e("fest", "RetroError"
+                    } else Log.e("fest", "RetroError");
         });
-    */
+
 
 //TODO called volley
-
+/*
         StringRequest stringRequest = new StringRequest(Request.Method.GET, Utilities.event_details_url,
                 response -> {
 
@@ -111,7 +115,7 @@ public class SplashScreen extends Activity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-
+*/
         polo.startAnimation(downAnimation);
         downAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
