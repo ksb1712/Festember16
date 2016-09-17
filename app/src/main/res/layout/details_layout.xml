@@ -37,7 +37,7 @@
         android:id="@+id/eventStartTime"
         android:gravity="center"
         android:textColor="@color/textColorLight"
-        android:textStyle="bold|italic"
+        android:textStyle="bold"
         android:typeface="serif"
         android:layout_below="@+id/eventVenue"
         android:layout_centerHorizontal="true"
