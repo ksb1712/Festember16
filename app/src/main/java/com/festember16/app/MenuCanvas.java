@@ -347,7 +347,9 @@ public class MenuCanvas extends View
                         break;
 
                     case "Notifications":
-                        // TODO add callIntent intent to notifications
+
+                        Log.d(LOG_TAG,"You clicked Notifications");
+                        callIntent = new Intent(context,Notification.class);
                         touchEffect(c);
                         break;
                     default:
