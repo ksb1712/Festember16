@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
+     	android:titleTextColor="@color/white"
         app:popupTheme="@style/AppTheme.PopupOverlay"
        />
 
