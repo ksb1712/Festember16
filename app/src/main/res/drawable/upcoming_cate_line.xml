@@ -4,7 +4,7 @@
     android:shape="rectangle">
 
     <solid
-        android:color="#666666"/>
+        android:color="#ffffff"/>
 
 
     <size

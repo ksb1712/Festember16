@@ -18,6 +18,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.logging.Handler;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,61 +31,13 @@ public class UpcomingActivity extends AppCompatActivity {
 
     String[] Number;
     String[][] present;
-    String[][] tempeve={{"rat","barn","rodent"}
-            ,{"cow","barn","mammal"}
-            ,{"horse","barn","brown"}
-            ,{"sheep","pen","mammal"}
-            ,{"rooster","coop","bird"}
-            ,{"tiger","den","stripe"}
-            ,{"dog","kennel","nose"}
-            ,{"snake","hole","twist"}
-            ,{"monkey","tree","brown"}
-            ,{"boar","field","tusk"}
-            ,{"dragon","sky","scales"}
-            ,{"rabbit","burrow","carrot"}};
+    String[][] tempeve;
     int[][] prtime;
     int[][] temptime;
     int[] id;
-    String[] evstarttime={"10:30:00"
-            ,"21:30:00"
-            ,"22:30:00"
-            ,"22:30:00"
-            ,"15:30:00"
-            ,"17:30:00"
-            ,"18:30:00"
-            ,"19:30:00"
-            ,"20:30:00"
-            ,"21:30:00"
-            ,"14:30:00"
-            ,"16:30:00"
-    }; //array of start times off all events
-    String[] evendtime={"11:30:00"
-            ,"22:30:00"
-            ,"23:30:00"
-            ,"23:30:00"
-            ,"16:30:00"
-            ,"18:30:00"
-            ,"19:30:00"
-            ,"20:30:00"
-            ,"21:30:00"
-            ,"22:30:00"
-            ,"15:30:00"
-            ,"17:30:00"
-    };  //array of end times off all events
-    String fakedate="2016-09-10";
-    String[] evdate={fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-            ,fakedate
-    };   //array of dates off all events
+    String[] evstarttime; //array of start times off all events
+    String[] evendtime;  //array of end times off all events
+    String[] evdate;   //array of dates off all events
     String[] evlastupdate;    //array of last updates off all events
 
     //flag variables
@@ -105,7 +59,6 @@ public class UpcomingActivity extends AppCompatActivity {
     Spinner spinner ;
     Spinner spinnertime;
     Spinner spinnercate;
-    String[] items,itemscate;
     ArrayAdapter<String> spadapter;
     ArrayAdapter<String> caadapter;
 
@@ -211,8 +164,6 @@ public class UpcomingActivity extends AppCompatActivity {
         db = new DBHandler(this);
         E=db.getAllEvents();
         no=E.size();
-        String a=(no!=0)?"Not Empty":"Empty";
-        Toast.makeText(this,a,Toast.LENGTH_LONG).show();
         tempeve=new String[no][3];
         temptime=new int[no][6];
         id=new int[no];
@@ -220,9 +171,6 @@ public class UpcomingActivity extends AppCompatActivity {
         evendtime=new String[no];
         evdate=new String[no];
         evlastupdate=new String[no];
-        /*String[] temp1=new String[no];
-        String[] temp2=new String[no];
-        */
         co1=0;
         co2=0;
 
@@ -235,10 +183,14 @@ public class UpcomingActivity extends AppCompatActivity {
         //event information entered one by one
         for (int i = 0; i < no; i++) {
         tempeve[i][0] = E.get(i).getName();
+            if(tempeve[i][0].equals("shruthilaya"))
+                tempeve[i][0]="shrutilaya";
             evstarttime[i] =E.get(i).getStartTime();
             evendtime[i] = E.get(i).getEndTime();
             tempeve[i][1] = E.get(i).getVenue();
             tempeve[i][2] =E.get(i).getCluster();
+            if(tempeve[i][2].equals("shruthilaya"))
+                tempeve[i][2]="shrutilaya";
             evdate[i] = E.get(i).getDate();
             id[i] =  E.get(i).getId();
             evlastupdate[i]=E.get(i).getLastUpdateTime();
@@ -294,26 +246,28 @@ public class UpcomingActivity extends AppCompatActivity {
         for(int j=0;j<co2;j++){
             cates[j]=temp2[j];
         }
-        handlerecycle();
-        optsel();
-        optsel();
-        String[][] temps=tempeve;
-        int[][] temt=temptime;
-       /*POPCORN
-       StorePresent.storepresent=temps ;
-        StorePresent.storetime=temt;
-        StorePresent.si=no;
-        */
-        //prepare Alarm Service to trigger Widget
-       /*POPCORN Intent intenttime = new Intent(UpcomingWidget.MY_WIDGET_UPDATE);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intenttime, 0);
-        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.add(Calendar.SECOND, 10);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 60 * 1000, pendingIntent);
-        */
-        swipeContainer.setRefreshing(false);
+        if(!swipeContainer.isRefreshing()) {
+            handlerecycle();
+
+            optsel();
+            optsel();
+            swipeContainer.setRefreshing(false);
+        }
+        else {
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    handlerecycle();
+
+                    optsel();
+                    optsel();
+                    swipeContainer.setRefreshing(false);
+                }
+            };
+            android.os.Handler h = new android.os.Handler();
+            h.postDelayed(r, 4000);
+        }
+
     }
 
     //updating list when spinner option is changed
@@ -321,14 +275,6 @@ public class UpcomingActivity extends AppCompatActivity {
         if(tempeve!=null) {
             sort(tempeve, temptime, no);
         }
-/*POPCORN
-        Intent intent = new Intent(this, UpcomingWidget.class);
-        intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-        int ids[] = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), UpcomingWidget.class));
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-        sendBroadcast(intent);
-
-*/
         RecycleList adapter = new
                 RecycleList(UpcomingActivity.this, present,prtime,t,Number,cates,co2);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclelist);
@@ -352,7 +298,8 @@ public class UpcomingActivity extends AppCompatActivity {
         int c=1;
         if(venues!=null) {
             for (int i = 0; i < co1; i++) {
-                items[i + 1] = propergram(venues[i]);
+               items[i + 1] = propergram(venues[i]);
+               // items[i + 1] = venues[i];
             }
         }
         //spinner for venues
@@ -407,16 +354,15 @@ public class UpcomingActivity extends AppCompatActivity {
         if(cates!=null) {
             for (int i = 0; i < co2; i++) {
                 itemscate[i + 1] = propergram(cates[i]);
+               // itemscate[i + 1] = cates[i];
             }
         }
-        caadapter = new ArrayAdapter<String>(
-                this, R.layout.spinnerstyle, itemscate);
+        caadapter = new ArrayAdapter<String>(this, R.layout.spinnerstyle, itemscate);
         spinnercate.setAdapter(caadapter);
         spinnercate.setSelection(catech+1);
         spinnercate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 catech=position-1;
                 optsel();
             }
@@ -427,10 +373,10 @@ public class UpcomingActivity extends AppCompatActivity {
         });
     }
 
-    //to format the text to remove underscores and to make some uppercase
+    //NOT NEEDED SINCE ALREADY FORMATTED IN DB:to format the text to remove underscores and to make some uppercase
     public String propergram(String word){
         // word.toLowerCase();
-      /*  String[] tempstr =word.split("_");
+        String[] tempstr =word.split("_");
         String tempstr2;
         for(int i=0;i<tempstr.length;i++){
             if((tempstr[i].charAt(0))>='A'&&(tempstr[i].charAt(0))<='Z') {
@@ -445,7 +391,7 @@ public class UpcomingActivity extends AppCompatActivity {
             } else {
                 word = tempstr[i];
             }
-        }*/
+        }
         return word;
     }
 
@@ -454,13 +400,7 @@ public class UpcomingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upcoming);
         setTitle("Upcoming Events Schedule");
-     /*   mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
-        //setContentView(R.layout.activity_main);
-
         // Lookup the swipe container view
-
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -477,6 +417,7 @@ public class UpcomingActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
 
         parseevents();
         Button notif_button = (Button) findViewById(R.id.btn_notif);

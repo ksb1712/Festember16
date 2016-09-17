@@ -56,6 +56,7 @@ public class RecycleList extends RecyclerView.Adapter<RecycleList.CustomViewHold
             this.Cate = (TextView) view.findViewById(R.id.Cate);
             this.lay=(RelativeLayout)itemView.findViewById(R.id.singlelistlayout);
             this.line=(ImageView)itemView.findViewById(R.id.line);
+            this.lay=(RelativeLayout)view.findViewById(R.id.singlelistlayout);
             //this.text=(TextView)view.findViewById(R.id.textView);
 
         }
@@ -109,11 +110,11 @@ public class RecycleList extends RecyclerView.Adapter<RecycleList.CustomViewHold
         customViewHolder.Event.setText(propergram(temp[0]));
         customViewHolder.Location.setText(propergram(temp[1]));
        customViewHolder.Cate.setText(propergram(temp[2]));
-        int colt[]={0Xffd41414,0Xffe32b2b,0Xffe36f2b,0Xffe3a62b,
-                0Xffe3d72b,0Xffd1e32b,0Xffb2e32b,0Xff62e32b,
-                0Xff2be353,0Xff2be3b8,0Xff2b68e3,0Xffa62be3,
-                0Xffe32bbf,0Xffe32b65,0Xffe32b2b,0Xffe36f2b,
-                0Xffe3a62b,0Xffe3d72b,0Xffd1e32b,0Xffb2e32b,
+        int colt[]={0Xffd41414,0Xffee1010,0Xffee6d10,0Xffee9510,
+                0Xffc78d04,0Xff988600,0Xff779800,0Xff519800,
+                0Xff0a6500,0Xff009889,0Xff005465,0Xff006398,
+                0Xff003d98,0Xff3e4c8d,0Xff7f02fc,0Xff4c0098,
+                0Xffca02fc,0Xffa201ca,0Xff98006f,0Xfffc0273,
                 0Xff62e32b,0Xff2be353,0Xff2be3b8,0Xff2b68e3,
                 0Xffa62be3,0Xffe32bbf,0Xffe32b65};
         int p=0;
@@ -124,7 +125,7 @@ public class RecycleList extends RecyclerView.Adapter<RecycleList.CustomViewHold
         }
         customViewHolder.Cate.getBackground().setColorFilter(colt[p], PorterDuff.Mode.MULTIPLY );
         customViewHolder.line.getBackground().setColorFilter(colt[p], PorterDuff.Mode.MULTIPLY );
-
+        customViewHolder.lay.getBackground().setColorFilter(colt[p], PorterDuff.Mode.MULTIPLY );
       /*  customViewHolder.Event.setText(temp[0]);
         customViewHolder.Location.setText(temp[1]);
         customViewHolder.Cate.setText(temp[2]);
