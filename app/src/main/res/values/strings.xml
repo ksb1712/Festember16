@@ -22,6 +22,7 @@
     <string name="action_refresh">Settings</string>
     <string name="action_new">Settings</string>
     <string name="title_activity_activity_ar">ActivityAR</string>
+    <string name="registered">REGISTERED</string>
 
     <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
 

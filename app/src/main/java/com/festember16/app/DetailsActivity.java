@@ -46,7 +46,6 @@ public class DetailsActivity extends AppCompatActivity {
         db = new DBHandler(this);
 
         //Todo: get id from parent activity// eventId = getIntent().getIntExtra("ID", 0);
-        //Todo: Test out dbhandler call
         eventId = id;
         detailedEvent = db.getEvent(id);
 
@@ -91,7 +90,8 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-        //db.close();
+        if(db!= null)
+            db.close();
     }
 
     @Override

@@ -70,7 +70,6 @@ public class LoginActivity extends AppCompatActivity {
     Retrofit retrofit, retrofit1;
     Observable<LoginRegister> loginObservable;
     Observable<Data> eventsObservable;
-    ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -139,6 +138,7 @@ public class LoginActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(login -> {
                     if(login.getStatusCode()==200) {
+                        progressDialog.dismiss();
                         SharedPreferences.Editor editor = pref.edit();
                         Utilities.status = 2;
                         editor.putInt("Logged_in", Utilities.status);
@@ -177,11 +177,11 @@ public class LoginActivity extends AppCompatActivity {
     public void callDB(Context context) {
         DBHandler db = new DBHandler(this);
         new DBHandler(context);
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
+        final ProgressDialog dialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching data...");
-        progressDialog.show();
+        dialog.setIndeterminate(true);
+        dialog.setMessage("Fetching data...");
+        dialog.show();
 
         retrofit1 = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -208,13 +208,13 @@ public class LoginActivity extends AppCompatActivity {
                         //System.out.println(formattedDate);
                         editor.putString("time",""+formattedDate);
                         editor.apply();
-                        progressDialog.dismiss();
                     } else {
                         String defaultValue = "Not yet updated";
                         String time = prefs.getString("time", defaultValue);
                         Toast.makeText(LoginActivity.this," Events Last updated at "+ time,Toast.LENGTH_LONG).show();
                     }
-        });
+                    dialog.dismiss();
+                });
     }
 
     @Override
