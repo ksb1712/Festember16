@@ -29,11 +29,15 @@ import java.util.List;
 import java.util.Map;
 
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class SplashScreen extends Activity {
 
-    SharedPreferences prefs;
+    SharedPreferences prefs,pref;
     Retrofit retrofit;
     Observable<Data> eventsObservable;
     DBHandler db;
@@ -50,7 +54,16 @@ public class SplashScreen extends Activity {
                "Time_stamp", Context.MODE_PRIVATE);
 
         int numberOfClouds = 5;
-
+        pref = getSharedPreferences("user_auth", Context.MODE_PRIVATE);
+        int status = pref.getInt("login_status",1);
+        if(status == 1 )
+        {
+            Utilities.token = pref.getString("token","");
+            Utilities.user_id = pref.getString("user_id","");
+            Utilities.user_profile_name = pref.getString("user_name","");
+            Log.e("name " , Utilities.user_profile_name);
+        }
+        Log.e("status ",""+status );
         Animation downAnimation = AnimationUtils.loadAnimation(SplashScreen.this, R.anim.panda_fall);
         Animation upLongAnimation = AnimationUtils.loadAnimation(SplashScreen.this, R.anim.object_rise);
         final Animation logoEntrance = AnimationUtils.loadAnimation(SplashScreen.this, R.anim.logo_entrance);
@@ -64,7 +77,7 @@ public class SplashScreen extends Activity {
         final ImageView festemberLogo = (ImageView) findViewById(R.id.festember_logo);
 
         //TODO Retrofit for Events dB
-        /*db = new DBHandler(this);
+        db = new DBHandler(this);
 
         retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -83,12 +96,12 @@ public class SplashScreen extends Activity {
                         for (Events event : data.getEvents()) {
                             db.addEvent(event);
                         }
-                    } else Log.e("fest", "RetroError"
+                    } else Log.e("fest", "RetroError");
         });
-    */
+
 
 //TODO called volley
-
+/*
         StringRequest stringRequest = new StringRequest(Request.Method.GET, Utilities.event_details_url,
                 response -> {
 
@@ -111,7 +124,7 @@ public class SplashScreen extends Activity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-
+*/
         polo.startAnimation(downAnimation);
         downAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -131,8 +144,19 @@ public class SplashScreen extends Activity {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        Intent intent = new Intent(SplashScreen.this, MainActivity.class);
-                        startActivity(intent);
+                        Intent intent;
+                        switch(status){
+                            default:
+                             intent = new Intent(SplashScreen.this, LoginActivity.class);
+                            startActivity(intent);
+                                finish();
+                                break;
+                            case 2:
+                                intent = new Intent(SplashScreen.this,MainMenu.class);
+                                startActivity(intent);
+                                finish();
+                        }
+
                     }
 
                     @Override

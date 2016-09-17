@@ -15,8 +15,10 @@ import java.util.List;
 
 public class ClusterPage extends AppCompatActivity {
 
+
     private GridLayoutManager lLayout;
     DBHandler db;
+    String clusters[] = new String[15];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,9 +29,8 @@ public class ClusterPage extends AppCompatActivity {
         Log.e("In cluster"," cluster");
         db = new DBHandler(this);
 
-
-//        String s = db.getCluster();
-//        Log.e("clusters ",s);
+      clusters = db.getClusters();
+      //  Log.e("clusters ",s);
         List<ItemObject> rowListItem = getAllItemList();
         lLayout = new GridLayoutManager(ClusterPage.this, 2);
 
@@ -65,12 +66,36 @@ public class ClusterPage extends AppCompatActivity {
 
 
         List<ItemObject> allItems = new ArrayList<ItemObject>();
-        allItems.add(new ItemObject("Dance"));
-        allItems.add(new ItemObject("Danc3"));
-        allItems.add(new ItemObject("Danc1"));
-        allItems.add(new ItemObject("Dance2"));
+        if(clusters != null) {
+            for (int i = 0; i < clusters.length; i++) {
+                if (clusters[i] != null) {
+                    if (clusters[i].equals("workshops") || clusters[i].equals("informals") || (clusters[i].equals("pro_shows")))
+                        ;
+                    else
+                    {
+                        String name =clusters[i];
+                        String temp2="";
+                        if (name.contains("_")) {
+                            // Split it.
+                            String[] temp = name.split("_");
+                            for(int j=0;j<temp.length;j++) {
+                                String temp3 = temp[j].substring(0,1).toUpperCase() + temp[j].substring(1);
+                                temp2 = temp2 + temp3 + " ";
+                            }
 
+                        }else temp2=name.substring(0,1).toUpperCase() + name.substring(1);
+                        if(temp2.equals("Photography"))
+                            temp2 = "Photo\ngraphy";
+                        allItems.add(new ItemObject(temp2));
+                    }
+                }
+            }
+        }
 
+        else
+            allItems.add(new ItemObject("No events"));
+
+        Utilities.clusters = clusters;
         return allItems;
     }
 }

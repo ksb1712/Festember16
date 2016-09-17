@@ -109,7 +109,13 @@ public class RecycleList extends RecyclerView.Adapter<RecycleList.CustomViewHold
         customViewHolder.Event.setText(propergram(temp[0]));
         customViewHolder.Location.setText(propergram(temp[1]));
        customViewHolder.Cate.setText(propergram(temp[2]));
-        int colt[]={0Xffd41414,0Xffe32b2b,0Xffe36f2b,0Xffe3a62b,0Xffe3d72b,0Xffd1e32b,0Xffb2e32b,0Xff62e32b,0Xff2be353,0Xff2be3b8,0Xff2b68e3,0Xffa62be3,0Xffe32bbf,0Xffe32b65};
+        int colt[]={0Xffd41414,0Xffe32b2b,0Xffe36f2b,0Xffe3a62b,
+                0Xffe3d72b,0Xffd1e32b,0Xffb2e32b,0Xff62e32b,
+                0Xff2be353,0Xff2be3b8,0Xff2b68e3,0Xffa62be3,
+                0Xffe32bbf,0Xffe32b65,0Xffe32b2b,0Xffe36f2b,
+                0Xffe3a62b,0Xffe3d72b,0Xffd1e32b,0Xffb2e32b,
+                0Xff62e32b,0Xff2be353,0Xff2be3b8,0Xff2b68e3,
+                0Xffa62be3,0Xffe32bbf,0Xffe32b65};
         int p=0;
         for(;p<co2;p++){
             if(temp[2].equals(cates[p])){

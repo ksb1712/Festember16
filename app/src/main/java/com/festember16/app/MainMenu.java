@@ -1,5 +1,7 @@
 package com.festember16.app;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,15 +32,37 @@ public class MainMenu extends AppCompatActivity implements GestureDetector.OnGes
     {
         super.onCreate(savedInstanceState);
 
-        DBHandler db = new DBHandler(this);
-        String[] clusters = db.getClusters();
-        List<Events> e = db.getEventsByCluster("english_lits");
-        //Log.e("test" , clusters[5]);
+//        DBHandler db = new DBHandler(this);
+//        String[] clusters = db.getClusters();
+//        List<Events> e = db.getEventsByCluster("english_lits");
+//        Log.e("test" , clusters[5] + "size " + clusters.length);
+//        Log.e("events", e.get(0).getName());
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_main_menu);
+        SharedPreferences pref = getSharedPreferences("user_auth", Context.MODE_PRIVATE);
+        int status = pref.getInt("login_status",1);
+        if(status == 2 )
+        {
+            Utilities.token = pref.getString("token","");
+            Utilities.user_id = pref.getString("user_id","");
+            Utilities.username = pref.getString("user_email","");
+            String temp2 = "";
+            if (Utilities.username.contains("@")) {
+                // Split it.
+                String[] temp = Utilities.username.split("@");
+                temp2 = temp[0];
+                }
 
+             else
+                temp2 = Utilities.username;
+            Utilities.user_profile_name = temp2;
+
+
+            Log.e("status " , Utilities.user_profile_name);
+        }
+        Log.e("status ",""+status );
         LayoutRoot = (RelativeLayout) findViewById(R.id.LayoutRoot);
         c = new MenuCanvas(this);
         LayoutRoot.addView(c);

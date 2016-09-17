@@ -25,8 +25,8 @@ import butterknife.InjectView;
 public class MyProfile extends AppCompatActivity {
 
     public static final String ID = "ID";
-    private String name;
-    private String rollNo = "123456789";
+    private String name = Utilities.user_profile_name;
+
 
     DBHandler db;
     int eventMenuPosBuf;
@@ -47,14 +47,14 @@ public class MyProfile extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Welcome " + rollNo + "!");
-
+      //  getSupportActionBar().setTitle("Welcome " + name + "!");
+        hello = (TextView)findViewById(R.id.hello);
+        hello.setText("Welcome " + Utilities.user_profile_name);
         ButterKnife.inject(this);
 
         db = new DBHandler(this);
 
-        name = "John Doe";
-        hello.setText("Hey " + name + "!");
+
 
         eventses = new ArrayList<>();
 

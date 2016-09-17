@@ -90,12 +90,12 @@ public class LoginActivity extends AppCompatActivity {
     public void login() {
 
         Log.d(TAG, "Login");
-
+/*
         if (!validate()) {
             onLoginFailed();
             return;
         }
-        _loginButton.setEnabled(false);
+  */     // _loginButton.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -120,29 +120,35 @@ public class LoginActivity extends AppCompatActivity {
 
         LoginService loginService = retrofit.create(LoginService.class);
 
-        loginObservable = loginService.authenticate(email, password);
+        loginObservable = loginService.authenticate("106114073@nitt.edu", "Bsep233566");
 
         loginObservable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(login -> {
                     if(login.getStatusCode()==200) {
                         SharedPreferences.Editor editor = pref.edit();
-                        Utilities.status = 1;
+                        Utilities.status = 2;
                         editor.putInt("Logged_in", Utilities.status);
                         editor.putString("user_email", email);
                         Utilities.username = email;
                         editor.putString("user_pass", password);
+                        editor.putInt("login_status",2);
                         Utilities.password = password;
+                        String[] parts = email.split("(?=@)");
+                        String part1 = parts[0]; // 004
                         editor.putString("token", login.getMessage());
+                        editor.putString("user_name",part1);
+                        Utilities.user_profile_name = part1;
                         Utilities.token = login.getMessage();
                         editor.putString("user_id", login.getUserId());
-                        Utilities.password = login.getUserId();
+                        Utilities.user_id = login.getUserId();
                         editor.apply();
 
-
+                        Log.e("fck ", Utilities.username + " " );
                         Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
                         Intent i = new Intent(LoginActivity.this, MainMenu.class);
                         startActivity(i);
+                        finish();
                     }
                 });
     }

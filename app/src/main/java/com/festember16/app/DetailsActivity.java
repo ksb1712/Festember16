@@ -22,7 +22,7 @@ public class DetailsActivity extends AppCompatActivity {
     public static final String ID = "ID";
     int eventId = 2;
 
-    //public static DBHandler db;
+    public static DBHandler db;
     public static Events detailedEvent;
 
     @InjectView(R.id.pager)
@@ -33,17 +33,17 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         ButterKnife.inject(this);
-
-        //db = new DBHandler(this);
+        int id = getIntent().getIntExtra("event_id",0);
+        db = new DBHandler(this);
 
         //Todo: get id from parent activity// eventId = getIntent().getIntExtra("ID", 0);
         //Todo: Test out dbhandler call
-        //detailedEvent = db.getEvent(eventId);
+        eventId = id;
+        detailedEvent = db.getEvent(id);
 
         pager.setAdapter(
                 new MyPagerAdapter(getSupportFragmentManager(), eventId)

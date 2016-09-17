@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_view"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="100dp"
     card_view:cardUseCompatPadding="true"
     card_view:cardCornerRadius="20sp"
     android:padding="10sp">
@@ -23,7 +23,7 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
-            android:textSize="30sp"
+            android:textSize="26sp"
             android:text="hello"
             />
 
