@@ -37,7 +37,7 @@ import rx.schedulers.Schedulers;
 
 public class SplashScreen extends Activity {
 
-    SharedPreferences prefs;
+    SharedPreferences prefs,pref;
     Retrofit retrofit;
     Observable<Data> eventsObservable;
     DBHandler db;
@@ -54,7 +54,16 @@ public class SplashScreen extends Activity {
                "Time_stamp", Context.MODE_PRIVATE);
 
         int numberOfClouds = 5;
-
+        pref = getSharedPreferences("user_auth", Context.MODE_PRIVATE);
+        int status = pref.getInt("login_status",1);
+        if(status == 1 )
+        {
+            Utilities.token = pref.getString("token","");
+            Utilities.user_id = pref.getString("user_id","");
+            Utilities.user_profile_name = pref.getString("user_name","");
+            Log.e("name " , Utilities.user_profile_name);
+        }
+        Log.e("status ",""+status );
         Animation downAnimation = AnimationUtils.loadAnimation(SplashScreen.this, R.anim.panda_fall);
         Animation upLongAnimation = AnimationUtils.loadAnimation(SplashScreen.this, R.anim.object_rise);
         final Animation logoEntrance = AnimationUtils.loadAnimation(SplashScreen.this, R.anim.logo_entrance);
@@ -135,8 +144,19 @@ public class SplashScreen extends Activity {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        Intent intent = new Intent(SplashScreen.this, MainActivity.class);
-                        startActivity(intent);
+                        Intent intent;
+                        switch(status){
+                            default:
+                             intent = new Intent(SplashScreen.this, LoginActivity.class);
+                            startActivity(intent);
+                                finish();
+                                break;
+                            case 2:
+                                intent = new Intent(SplashScreen.this,MainMenu.class);
+                                startActivity(intent);
+                                finish();
+                        }
+
                     }
 
                     @Override

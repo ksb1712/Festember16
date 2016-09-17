@@ -204,6 +204,7 @@ public class DetailsFragment extends Fragment {
                                 if(status == 200) {
 
                                     Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+                                    registerButton.setEnabled(false);
                                     pDialog.dismiss();
                                 }
                                 else{

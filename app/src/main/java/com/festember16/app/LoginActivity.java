@@ -127,22 +127,28 @@ public class LoginActivity extends AppCompatActivity {
                 .subscribe(login -> {
                     if(login.getStatusCode()==200) {
                         SharedPreferences.Editor editor = pref.edit();
-                        Utilities.status = 1;
+                        Utilities.status = 2;
                         editor.putInt("Logged_in", Utilities.status);
                         editor.putString("user_email", email);
                         Utilities.username = email;
                         editor.putString("user_pass", password);
+                        editor.putInt("login_status",2);
                         Utilities.password = password;
+                        String[] parts = email.split("(?=@)");
+                        String part1 = parts[0]; // 004
                         editor.putString("token", login.getMessage());
+                        editor.putString("user_name",part1);
+                        Utilities.user_profile_name = part1;
                         Utilities.token = login.getMessage();
                         editor.putString("user_id", login.getUserId());
                         Utilities.user_id = login.getUserId();
                         editor.apply();
 
-
+                        Log.e("fck ", Utilities.username + " " );
                         Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
                         Intent i = new Intent(LoginActivity.this, MainMenu.class);
                         startActivity(i);
+                        finish();
                     }
                 });
     }

@@ -36,6 +36,7 @@ public class Utilities {
     public static String[] clusters = new String[15];
     public static  List<Events> events;
     public static int global_index = 0;
+    public static String user_profile_name;
     public static Events single_event;
    // public static Typeface typeface = Typeface.createFromAsset(getAss)
 
