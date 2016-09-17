@@ -325,7 +325,7 @@ public class MenuCanvas extends View
 //                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();
                         break;
                     case "Profile":
-                        callIntent = new Intent(context,MyProfile.class);
+                        callIntent = new Intent(context,QR.class);
                         touchEffect(c);
 //                        Log.d(LOG_TAG, "You clicked Profile");
 //                        Toast.makeText(context, c.text, Toast.LENGTH_SHORT).show();

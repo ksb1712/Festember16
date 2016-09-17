@@ -192,11 +192,7 @@ public class MyProfile extends AppCompatActivity {
         int id = item.getItemId();
 
         switch(id){
-            case R.id.qr_code:
-                Intent i = new Intent(this,QR.class);
-                startActivity(i);
 
-                break;
 
             case R.id.logout:
                 //Todo: Call api for logout

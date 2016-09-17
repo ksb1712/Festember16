@@ -72,7 +72,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_activity_ar"
             android:screenOrientation="landscape"
-            android:theme="@style/CustomNoActionBarTheme" />
+            android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".PlaceChooser"
             android:screenOrientation="landscape"
@@ -114,7 +114,7 @@
 
         <activity android:name=".FeedbackActivity"></activity>
         <activity android:name=".ScheduleActivity"
-            android:theme="@style/ScheduleActivityTheme">
+            android:theme="@style/CustomNoActionBarTheme">
         </activity>
 
     </application>
