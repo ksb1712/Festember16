@@ -64,6 +64,8 @@ public class DetailsFragment extends Fragment {
     TextView eventDesc;
     @InjectView(R.id.eventStartTime)
     TextView eventStartTime;
+    @InjectView(R.id.eventName)
+    TextView eventName;
 //    @InjectView(R.id.eventCluster)
 //    TextView eventCluster;
 
@@ -120,6 +122,18 @@ public class DetailsFragment extends Fragment {
         eventVenue.setText("Venue: " + events.getVenue());
         eventStartTime.setText("Starts at: " + EventsAdapter.parseEventTime(events.getStartTime()));
         eventDesc.setText(events.getDescription());
+        String name = events.getName();
+        String temp2 = "";
+        if (name.contains("_")) {
+            // Split it.
+            String[] temp = name.split("_");
+            for (int j = 0; j < temp.length; j++) {
+                String temp3 = temp[j].substring(0, 1).toUpperCase() + temp[j].substring(1);
+                temp2 = temp2 + temp3 + " ";
+            }
+
+        } else temp2 = name.substring(0, 1).toUpperCase() + name.substring(1);
+        eventName.setText(temp2);
        // eventCluster.setText(events.getCluster());
 
 
