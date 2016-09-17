@@ -251,7 +251,7 @@ public class VirtualLayer extends View
             for( PointOfInterest poi: poisInView)
             {
 
-                canvas.drawBitmap( blue , (float)poi.left, (float)poi.top + (float)(shiftBy), paint);
+                canvas.drawBitmap( green , (float)poi.left, (float)poi.top + (float)(shiftBy), paint);
                 //canvas.drawRect( (float) poi.left , (float) poi.top + (float)shiftBy, (float)poi.left + dp(100) , (float)poi.top + dp(100)  + (float)shiftBy, pt );
                 String title[] = poi.Title.split(" ");
                 int top = dp(18);

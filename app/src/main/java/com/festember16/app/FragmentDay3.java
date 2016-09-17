@@ -44,6 +44,7 @@ public class FragmentDay3 extends android.support.v4.app.Fragment
 
         View list =  inflater.inflate( R.layout.layout_fragment_day_3 , container, false);
 
+        listView = (ListView) list.findViewById(R.id.EventsListDay3);
         t = (TextView) list.findViewById(R.id.day3NoEvent);
         if( eventNames.size() == 0)
         {
@@ -55,7 +56,6 @@ public class FragmentDay3 extends android.support.v4.app.Fragment
         {
             t.setVisibility(View.GONE);
         }
-        listView = (ListView) list.findViewById(R.id.EventsListDay3);
         listView.setAdapter( adapter );
 
         return list;    }
