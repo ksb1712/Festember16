@@ -105,7 +105,7 @@ public class Scoreboard   extends AppCompatActivity{
             }
             }catch (JSONException e) {
                 e.printStackTrace();
-
+                allItems.add(new Score_class("Not updated try later","",""));
 
             }
 

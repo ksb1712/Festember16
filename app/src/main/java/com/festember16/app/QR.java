@@ -46,14 +46,14 @@ public class QR extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr);
-        Log.e("profile *", Utilities.user_profile_name);
+       // Log.e("profile *", Utilities.user_profile_name);
 
        {
             ImageView qrCodeImage = (ImageView) findViewById(R.id.qr_code_image);
             qrCodeImage.setVisibility(View.VISIBLE);
-            Bitmap bitmap = new SaveImage(Utilities.user_profile_name, null).loadFromCacheFile();
+            Bitmap bitmap = new SaveImage(Utilities.username, null).loadFromCacheFile();
            TextView textView = (TextView)findViewById(R.id.welcomeText);
-           textView.setText("Welcome " + Utilities.user_profile_name);
+           textView.setText("Welcome " + Utilities.username);
             if (bitmap == null) GetQR();
             else {
                 qrCodeImage.setImageBitmap(bitmap);
@@ -111,7 +111,7 @@ public class QR extends AppCompatActivity {
                     ImageView image = (ImageView) QR.this.findViewById(R.id.qr_code_image);
                     Bitmap bitmap = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
                     image.setImageBitmap(bitmap);
-                    SaveImage save = new SaveImage(Utilities.user_profile_name, bitmap);
+                    SaveImage save = new SaveImage(Utilities.username, bitmap);
                     save.saveToCacheFile(bitmap);
                     addImageToGallery(save.getCacheFilename(), QR.this);
                     pDialog.dismiss();

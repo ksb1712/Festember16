@@ -48,19 +48,10 @@ public class MainMenu extends AppCompatActivity implements GestureDetector.OnGes
             Utilities.token = pref.getString("token","");
             Utilities.user_id = pref.getString("user_id","");
             Utilities.username = pref.getString("user_email","");
-            String temp2 = "";
-            if (Utilities.username.contains("@")) {
-                // Split it.
-                String[] temp = Utilities.username.split("@");
-                temp2 = temp[0];
-                }
-
-             else
-                temp2 = Utilities.username;
-            Utilities.user_profile_name = temp2;
 
 
-            Log.e("status " , Utilities.user_profile_name);
+
+
         }
         Log.e("status ",""+status );
         LayoutRoot = (RelativeLayout) findViewById(R.id.LayoutRoot);

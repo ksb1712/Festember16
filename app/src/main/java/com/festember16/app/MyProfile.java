@@ -1,5 +1,6 @@
 package com.festember16.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -173,14 +174,12 @@ public class MyProfile extends AppCompatActivity {
             case R.id.logout:
                 //Todo: Call api for logout
                 //Todo: if(response==true)
-
-                SharedPreferences preferences = getSharedPreferences
-                        (DetailsFragment.REGISTERED_EVENTS, MODE_PRIVATE);
-
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.clear();
+               SharedPreferences pref = getSharedPreferences("user_auth", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putInt("login_status",1);
                 editor.apply();
-
+                Intent in = new Intent(this,LoginActivity.class);
+                startActivity(in);
         }
 
         return super.onOptionsItemSelected(item);

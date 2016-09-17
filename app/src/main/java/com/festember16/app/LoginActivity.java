@@ -90,12 +90,12 @@ public class LoginActivity extends AppCompatActivity {
     public void login() {
 
         Log.d(TAG, "Login");
-/*
+
         if (!validate()) {
             onLoginFailed();
             return;
         }
-  */     // _loginButton.setEnabled(false);
+       _loginButton.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -120,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
 
         LoginService loginService = retrofit.create(LoginService.class);
 
-        loginObservable = loginService.authenticate("106114073@nitt.edu", "Bsep233566");
+        loginObservable = loginService.authenticate(email,password);
 
         loginObservable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -144,11 +144,15 @@ public class LoginActivity extends AppCompatActivity {
                         Utilities.user_id = login.getUserId();
                         editor.apply();
 
-                        Log.e("fck ", Utilities.username + " " );
+                       Log.e("fck ", Utilities.username + " " + Utilities.user_profile_name);
                         Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
                         Intent i = new Intent(LoginActivity.this, MainMenu.class);
                         startActivity(i);
                         finish();
+                    }
+                    else
+                    {
+                        onLoginFailed();
                     }
                 });
     }

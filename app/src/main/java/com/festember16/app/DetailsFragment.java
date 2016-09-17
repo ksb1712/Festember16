@@ -208,7 +208,7 @@ public class DetailsFragment extends Fragment {
                                     pDialog.dismiss();
                                 }
                                 else{
-                                    Toast.makeText(getContext(),"Try again ",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }, new Response.ErrorListener() {
