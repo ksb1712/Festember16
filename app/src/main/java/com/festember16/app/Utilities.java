@@ -29,6 +29,7 @@ public class Utilities {
     public static String event_register = base_url + "/events/register";
     public static String user_profile = base_url + "/events/user/details";
     public static String user_qr = base_url + "/tshirt/qr";
+    public static String user_credits = base_url + "/user/credits";
     public static String scoreboard_url = "https://festember.com/scoreboard/getScoreBoard";
     public static Context context;
     public static String user_id;

@@ -144,6 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                         Utilities.user_id = login.getUserId();
                         editor.apply();
 
+                        callCheck_auth();
                        Log.e("fck ", Utilities.username + " " + Utilities.user_profile_name);
                         Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
                         Intent i = new Intent(LoginActivity.this, MainMenu.class);
@@ -303,6 +304,21 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(Intent.ACTION_VIEW,
                     Uri.parse("https://twitter.com/festember")));
         }
+
+    }
+    public void callCheck_auth()
+    {
+        String temp2 = "";
+        if (Utilities.username.contains("@")) {
+            // Split it.
+            String[] temp = Utilities.username.split("@");
+            temp2 = temp[1];
+
+        }
+        if(temp2.equals("nitt.edu"))
+            Utilities.user_qr = Utilities.base_url + "/tshirt/qr";
+        else
+            Utilities.user_qr = Utilities.base_url + "/pr/qr";
 
     }
 

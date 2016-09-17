@@ -1,11 +1,13 @@
 package com.festember16.app;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +17,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +40,7 @@ import butterknife.InjectView;
 public class MyProfile extends AppCompatActivity {
 
     public static final String ID = "ID";
-    private String name = Utilities.user_profile_name;
-
+    private String name;
 
     DBHandler db;
     int eventMenuPosBuf;
@@ -36,6 +49,7 @@ public class MyProfile extends AppCompatActivity {
 
     @InjectView(R.id.hello)
     TextView hello;
+    TextView credits;
 
     @InjectView(R.id.listView2)
 
@@ -48,14 +62,25 @@ public class MyProfile extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        String temp2 = "";
+        if (Utilities.username.contains("@")) {
+            // Split it.
+            String[] temp = Utilities.username.split("@");
+            temp2 = temp[0];
+
+            }
+
+         else temp2 = Utilities.username;
       //  getSupportActionBar().setTitle("Welcome " + name + "!");
         hello = (TextView)findViewById(R.id.hello);
-        hello.setText("Welcome " + Utilities.user_profile_name);
+        credits = (TextView)findViewById(R.id.credits);
+        hello.setText("Welcome " + temp2);
+        Utilities.user_profile_name = temp2;
         ButterKnife.inject(this);
 
         db = new DBHandler(this);
 
-
+        callCredits();
 
         eventses = new ArrayList<>();
 
@@ -184,4 +209,75 @@ public class MyProfile extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    public void callCredits() {
+        final ProgressDialog pDialog = new ProgressDialog(MyProfile.this,
+                R.style.AppTheme_Dark_Dialog);
+        pDialog.setMessage("Loading...");
+        pDialog.setCancelable(false);
+        pDialog.setCanceledOnTouchOutside(false);
+        pDialog.show();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Utilities.user_credits, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                pDialog.dismiss();
+                JSONObject jsonResponse = null;
+                try {
+                    jsonResponse = new JSONObject(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                int status = 0;
+                try {
+                    status = jsonResponse.getInt("status_code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String message = null;
+                try {
+                    message = jsonResponse.getString("message");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.e("QR ", message);
+                if (status == 200) {
+
+                    credits.setText("Your credits: " + message);
+                    pDialog.dismiss();
+                } else {
+                    Toast.makeText(MyProfile.this, message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                pDialog.dismiss();
+                error.printStackTrace();
+                Toast.makeText(MyProfile.this, "Please check your internet and try again", Toast.LENGTH_LONG).show();
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                // the POST parameters:
+                int pid = 2;
+                params.put("token", Utilities.token);
+                params.put("user_id", Utilities.user_id);
+
+                return params;
+            }
+
+        };
+
+        int socketTimeout = 10000;//10 seconds
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        stringRequest.setRetryPolicy(policy);
+        Volley.newRequestQueue(this).add(stringRequest);
+
+
+//
+
+    }
+
 }

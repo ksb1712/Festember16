@@ -48,12 +48,14 @@ public class QR extends AppCompatActivity {
         setContentView(R.layout.activity_qr);
        // Log.e("profile *", Utilities.user_profile_name);
 
+        if(Utilities.user_profile_name == null)
+            Utilities.user_profile_name = Utilities.username;
        {
             ImageView qrCodeImage = (ImageView) findViewById(R.id.qr_code_image);
             qrCodeImage.setVisibility(View.VISIBLE);
-            Bitmap bitmap = new SaveImage(Utilities.username, null).loadFromCacheFile();
-           TextView textView = (TextView)findViewById(R.id.welcomeText);
-           textView.setText("Welcome " + Utilities.username);
+            Bitmap bitmap = new SaveImage(Utilities.user_profile_name, null).loadFromCacheFile();
+
+
             if (bitmap == null) GetQR();
             else {
                 qrCodeImage.setImageBitmap(bitmap);
@@ -76,7 +78,7 @@ public class QR extends AppCompatActivity {
 
     public void GetQR() {
 
-        final ProgressDialog pDialog = new ProgressDialog(this);
+        final ProgressDialog pDialog = new ProgressDialog(this,  R.style.AppTheme_Dark_Dialog);
         pDialog.setMessage("Loading...");
         pDialog.setCancelable(false);
         pDialog.setCanceledOnTouchOutside(false);
@@ -111,7 +113,7 @@ public class QR extends AppCompatActivity {
                     ImageView image = (ImageView) QR.this.findViewById(R.id.qr_code_image);
                     Bitmap bitmap = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
                     image.setImageBitmap(bitmap);
-                    SaveImage save = new SaveImage(Utilities.username, bitmap);
+                    SaveImage save = new SaveImage(Utilities.user_profile_name, bitmap);
                     save.saveToCacheFile(bitmap);
                     addImageToGallery(save.getCacheFilename(), QR.this);
                     pDialog.dismiss();
