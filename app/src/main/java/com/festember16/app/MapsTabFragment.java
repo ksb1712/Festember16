@@ -81,7 +81,11 @@ public class MapsTabFragment extends Fragment implements OnMapReadyCallback{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-       if(view==null)
+        if(!hasPermission()){
+            callPermissionRequest();
+        }
+
+        if(view==null)
        {
            view = inflater.inflate(R.layout.mapsfragmentlayout, container, false);
 
